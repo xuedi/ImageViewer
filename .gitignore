@@ -1,0 +1,5 @@
+composer.lock
+public/cache/*
+data/*
+vendor/*
+.idea/*

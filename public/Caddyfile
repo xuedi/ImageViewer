@@ -1,0 +1,5 @@
+localhost:8080
+browse
+index index.php
+fastcgi / 127.0.0.1:9000 php
+log stdout
