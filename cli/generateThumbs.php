@@ -1,12 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace ImageViewer;
+// TODO: to be moved to a multiThreaded command
 
-require '../vendor/autoload.php';
-
-$factory = new Factory('/home/xuedi/private/myPictures/');
-
-$thumbGenerator = $factory->getThumbGenerator();
-$thumbGenerator->build(100);
-$thumbGenerator->build(200);
+//$thumbGenerator = $factory->getThumbGenerator();
+//$thumbGenerator->build(100);
+//$thumbGenerator->build(200);
 

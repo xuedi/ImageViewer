@@ -3,3 +3,4 @@ public/cache/*
 data/*
 vendor/*
 .idea/*
+config/local.ini

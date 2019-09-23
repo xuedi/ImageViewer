@@ -1,0 +1,26 @@
+#!/usr/bin/php
+<?php
+
+namespace ImageViewer;
+
+use Exception;
+use ImageViewer\Commands\DiscoverCommand;
+use ImageViewer\Configuration\Configuration;
+use Symfony\Component\Console\Application;
+
+require __DIR__ . '/vendor/autoload.php';
+
+//try {
+
+    $config = new Configuration(__dir__ . '/config/local.ini');
+    $factory = new Factory($config);
+
+    $application = new Application();
+    $application->add(new DiscoverCommand($factory));
+    $application->run();
+
+//} catch (Exception $e) {
+//    echo $e->getMessage();
+//}
+
+

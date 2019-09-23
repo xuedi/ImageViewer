@@ -5,7 +5,11 @@
     }
   },
   "require": {
-    "php": "7.3"
+    "php": "^7.3",
+    "symfony/console": "^4.3",
+    "ext-json": "*",
+    "ext-exif": "*",
+    "ext-pdo": "*"
   },
   "require-dev": {
     "symfony/var-dumper": "^4.3"

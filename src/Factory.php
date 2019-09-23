@@ -2,23 +2,29 @@
 
 namespace ImageViewer;
 
+use ImageViewer\Configuration\Configuration;
+use ImageViewer\Configuration\DatabaseConfig;
+
 class Factory
 {
-    /** @var string */
-    private $path;
+    /** @var Configuration */
+    private $config;
 
-    public function __construct(string $path)
+    public function __construct(Configuration $config)
     {
-        $this->path = $path;
+        $this->config = $config;
+    }
+
+    public function getDatabase(): Database
+    {
+        return new Database($this->config->getDatabase());
     }
 
     public function getFileScanner(): FileScanner
     {
-        return new FileScanner($this->path);
-    }
-
-    public function getThumbGenerator(): ThumbGenerator
-    {
-        return new ThumbGenerator($this->path);
+        return new FileScanner(
+            $this->getDatabase(),
+            $this->config->getImagePath()
+        );
     }
 }
