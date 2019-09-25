@@ -39,11 +39,12 @@ class FileScanner
         $progressBar->setFormat('Search: [%bar%] %memory:6s%');
         $progressBar->start();
         foreach ($this->fileList as $file) {
-            if($this->doesFileExist($file)) {
-                $newFiles[] = $file;
+            if (!$this->doesFileExist($file)) {
+                $this->newFiles[] = $file;
             }
             $progressBar->advance();
         }
+        $progressBar->advance();
         $progressBar->finish();
 
         $output->write(PHP_EOL);
@@ -57,9 +58,10 @@ class FileScanner
         $progressBar->setFormat('Parse:  [%bar%] %memory:6s%');
         $progressBar->start();
         foreach ($this->newFiles as $newFile) {
-            $this->parseFile($newFile);
+            $this->toBeSaved[] = $this->parseFile($newFile);
             $progressBar->advance();
         }
+        $progressBar->advance();
         $progressBar->finish();
 
         $output->write(PHP_EOL);
@@ -70,50 +72,37 @@ class FileScanner
         $progressBar = new ProgressBar($output, count($this->toBeSaved));
         $progressBar->setFormat('Write:  [%bar%] %memory:6s%');
         $progressBar->start();
-        foreach ($this->toBeSaved as $file) {
+        foreach ($this->toBeSaved as $data) {
             // TODO: Add to PDO until 500 then flush
+            $this->database->insert('files', $data);
             $progressBar->advance();
         }
+        $progressBar->advance();
         $progressBar->finish();
 
         $output->write(PHP_EOL);
         // TODO: flush the rest
     }
 
+    // Todo: PARAM: 'File' value object (must must exisit, get as string, get changed date, get fileHash, getNameHash)
     private function doesFileExist(string $file): bool
     {
         $hash = sha1($file);
-        if(isset($this->knownFiles[$hash])) {
-            return false;
+        if (in_array($hash, $this->knownFiles)) {
+            return true;
         }
 
-        return true;
+        return false;
     }
 
-    private function parseFile(string $file): void
+    private function parseFile(string $file): array
     {
-        // TODO: check file details and add values as to be saved into the database cache
-        /*
-            "af139927012e76633f585d07ddbaccb81297defa": { // is name hash
-                "fileName": "China\/2006-01 Leshan\/2006-01-26 Abreise aus Beijing\/p1000736.jpg",
-                "fileHash": "f085b5aac5a55888cf6ecb3f8106625d74e7db88",
-                "meta": {
-                    "fileName": "p1000736.jpg",
-                    "dateTime": "2010:05:31 01:04:55",
-                    "orientation": 1,
-                    "tags": [
-                        "2006",
-                        "2006 Chinese new year",
-                        "Leshan",
-                        "events",
-                        "inChina",
-                        "places",
-                        "timeline"
-                    ]
-                }
-            },
-         */
-        $this->toBeSaved[] = $file;
+        return [
+            'nameHash' => sha1($file),
+            'fileHash' => sha1_file($file),
+            'fileName' => $file,
+            'createdAt' => date('Y-m-d H:i:s'),
+        ];
     }
 
     private function makeFileList($dir, &$results = [])

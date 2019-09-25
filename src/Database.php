@@ -23,8 +23,22 @@ class Database
 
     public function getImages(): array
     {
-        //TODO: get imageList from Database as (id: uuid => file: relativeFileName)
-        return [];
+        $statement = $this->pdo->prepare("SELECT nameHash FROM files; ");
+        $statement->execute();
+
+        return $statement->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+    public function insert(string $table, array $data)
+    {
+        $columns = [];
+        $placeholder = [];
+        foreach ($data as $key => $value){
+            $columns[] = $key;
+            $placeholder[] = ":$key";
+        }
+        $statement = $this->pdo->prepare("INSERT INTO $table (".implode(', ', $columns).") VALUES (".implode(', ', $placeholder).")");
+        $statement->execute($data);
     }
 
 }

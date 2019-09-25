@@ -12,6 +12,9 @@ class Configuration
     /** @var DatabaseConfig */
     private $database;
 
+    /** @var string */
+    private $imageLocation;
+
     public function __construct(string $configFile)
     {
         $this->path = $this->getBasePath();
@@ -19,6 +22,8 @@ class Configuration
 
         list($database, $locations) = $this->getSections($configFile);
         $this->database = new DatabaseConfig($database);
+
+        $this->imageLocation = $locations['images'];
     }
 
     public function getDatabase(): DatabaseConfig
@@ -28,7 +33,7 @@ class Configuration
 
     public function getImagePath(): string
     {
-        return $this->path;
+        return $this->imageLocation;
     }
 
     private function ensureFileExists(string $configFile): void
