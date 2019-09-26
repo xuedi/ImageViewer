@@ -2,5 +2,7 @@ composer.lock
 public/cache/*
 data/*
 vendor/*
+reports/*
+tests/.phpunit.result.cache
 .idea/*
 config/local.ini

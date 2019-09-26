@@ -24,6 +24,7 @@ reset_database: ## resets the database to basic seed
 	vendor/bin/phinx seed:run -e default -c database/phinx.php
 
 test: ## runs tests
-	vendor/bin/phpstan analyse src/App --level 5
-	./vendor/bin/phpunit --bootstrap vendor/autoload.php src/Tests/*
+	./vendor/bin/phpunit -c tests/phpunit.xml
+	./vendor/bin/psalm --config='tests/psalm.xml'
+
 

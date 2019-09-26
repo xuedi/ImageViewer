@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit backupGlobals="false" bootstrap="bootstrap.php" colors="false">
+
+    <testsuite name="UnitTests">
+        <directory suffix="Test.php">unit</directory>
+    </testsuite>
+
+    <logging>
+        <log type="coverage-html" target="../reports/coverage/unit" highLowerBound="100"/>
+        <log type="coverage-text" target="php://stdout" showOnlySummary="true"/>
+    </logging>
+
+    <filter>
+        <whitelist addUncoveredFilesFromWhitelist="true" processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">../src</directory>
+        </whitelist>
+    </filter>
+
+</phpunit>
