@@ -21,58 +21,74 @@ class FileScanner
     /** @var array */
     private $toBeSaved;
 
-    /** @var array */
-    private $knownFiles;
+    /** @var string */
+    private $path;
+
+    /** @var OutputInterface */
+    private $output;
 
     public function __construct(Database $database, string $path)
     {
         $this->database = $database;
-        $this->fileList = $this->makeFileList($path);
-        $this->knownFiles = $this->database->getImages();
+        $this->path = $path;
     }
 
-    public function search(OutputInterface $output)
+    public function scan(OutputInterface $output): void
     {
-        $this->newFiles = [];
+        $this->output = $output;
 
-        $progressBar = new ProgressBar($output, count($this->fileList));
+        $newFiles = $this->search();
+        $toBeSaved = $this->parse($newFiles);
+        $this->saveNewFiles($toBeSaved);
+    }
+
+    private function search(): array
+    {
+        $fileList = $this->makeFileList($this->path);
+        $knownFiles = $this->database->getImages();
+
+        $newFiles = [];
+
+        $progressBar = new ProgressBar($this->output, count($this->fileList));
         $progressBar->setFormat('Search: [%bar%] %memory:6s%');
         $progressBar->start();
-        foreach ($this->fileList as $file) {
-            if (!$this->doesFileExist($file)) {
-                $this->newFiles[] = $file;
+        foreach ($fileList as $file) {
+            if (!in_array(sha1($file), $knownFiles)) {
+                $newFiles[] = $file;
             }
             $progressBar->advance();
         }
         $progressBar->advance();
         $progressBar->finish();
 
-        $output->write(PHP_EOL);
+        $this->output->write(PHP_EOL);
+        return $newFiles;
     }
 
-    public function parse(OutputInterface $output)
+    private function parse(array $newFiles): array
     {
-        $this->toBeSaved = [];
+        $toBeSaved = [];
 
-        $progressBar = new ProgressBar($output, count($this->newFiles));
+        $progressBar = new ProgressBar($this->output, count($newFiles));
         $progressBar->setFormat('Parse:  [%bar%] %memory:6s%');
         $progressBar->start();
-        foreach ($this->newFiles as $newFile) {
-            $this->toBeSaved[] = $this->parseFile($newFile);
+        foreach ($newFiles as $newFile) {
+            $toBeSaved[] = $this->parseFile($newFile);
             $progressBar->advance();
         }
         $progressBar->advance();
         $progressBar->finish();
 
-        $output->write(PHP_EOL);
+        $this->output->write(PHP_EOL);
+        return $toBeSaved;
     }
 
-    public function saveNewFiles(OutputInterface $output): void
+    private function saveNewFiles(array $toBeSaved): void
     {
-        $progressBar = new ProgressBar($output, count($this->toBeSaved));
+        $progressBar = new ProgressBar($this->output, count($this->toBeSaved));
         $progressBar->setFormat('Write:  [%bar%] %memory:6s%');
         $progressBar->start();
-        foreach ($this->toBeSaved as $data) {
+        foreach ($toBeSaved as $data) {
             // TODO: Add to PDO until 500 then flush
             $this->database->insert('files', $data);
             $progressBar->advance();
@@ -80,19 +96,8 @@ class FileScanner
         $progressBar->advance();
         $progressBar->finish();
 
-        $output->write(PHP_EOL);
+        $this->output->write(PHP_EOL);
         // TODO: flush the rest
-    }
-
-    // Todo: PARAM: 'File' value object (must must exisit, get as string, get changed date, get fileHash, getNameHash)
-    private function doesFileExist(string $file): bool
-    {
-        $hash = sha1($file);
-        if (in_array($hash, $this->knownFiles)) {
-            return true;
-        }
-
-        return false;
     }
 
     private function parseFile(string $file): array

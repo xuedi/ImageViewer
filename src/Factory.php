@@ -4,6 +4,7 @@ namespace ImageViewer;
 
 use ImageViewer\Configuration\Configuration;
 use ImageViewer\Configuration\DatabaseConfig;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class Factory
 {

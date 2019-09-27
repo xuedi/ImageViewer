@@ -13,17 +13,38 @@ class Configuration
     private $database;
 
     /** @var string */
-    private $imageLocation;
+    private $imagePath;
+
+    /** @var string */
+    private $cache;
+
+    /** @var string */
+    private $migrations;
 
     public function __construct(string $configFile)
     {
         $this->path = $this->getBasePath();
         $this->ensureFileExists($configFile);
 
-        list($database, $locations) = $this->getSections($configFile);
-        $this->database = new DatabaseConfig($database);
+        $this->database = new DatabaseConfig(
+            $this->getSections($configFile, 'database')
+        );
 
-        $this->imageLocation = $locations['images'];
+        $locations = $this->getSections($configFile, 'locations');
+        $this->imagePath = $locations['images'];
+        $this->cache = $locations['cache'];
+        $this->migrations = $locations['migrations'];
+    }
+
+    public function getBasePath(): string
+    {
+        $basePath = realpath(__dir__ . '/../../');
+        $basePath = rtrim($basePath, '/') . '/';
+        if (!file_exists($basePath . 'ImageViewer')) {
+            throw new RuntimeException("Could not set basePath: '{$basePath}'");
+        }
+
+        return $basePath;
     }
 
     public function getDatabase(): DatabaseConfig
@@ -33,7 +54,17 @@ class Configuration
 
     public function getImagePath(): string
     {
-        return $this->imageLocation;
+        return $this->imagePath;
+    }
+
+    public function getCachePath(): string
+    {
+        return $this->cache;
+    }
+
+    public function getMigrationsPath(): string
+    {
+        return $this->migrations;
     }
 
     private function ensureFileExists(string $configFile): void
@@ -43,30 +74,14 @@ class Configuration
         }
     }
 
-    private function getSections(string $configFile): array
+    private function getSections(string $configFile, string $section): array
     {
         $processSections = true;
         $iniFile = parse_ini_file($configFile, $processSections);
-        if (!isset($iniFile['database'])) {
-            throw new RuntimeException("Could not get section 'database'");
-        }
-        if (!isset($iniFile['locations'])) {
-            throw new RuntimeException("Could not get section 'location'");
+        if (!isset($iniFile[$section])) {
+            throw new RuntimeException("Could not get section '$section'");
         }
 
-        return [
-            $iniFile['database'],
-            $iniFile['locations']
-        ];
-    }
-
-    private function getBasePath(): string
-    {
-        $basePath = __dir__ . '/../../';
-        if (!file_exists($basePath . 'ImageViewer')) {
-            throw new RuntimeException("Could not set basePath: '{$basePath}'");
-        }
-
-        return $basePath;
+        return $iniFile[$section];
     }
 }

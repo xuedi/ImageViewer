@@ -5,11 +5,15 @@ SQL_HOST:=$(shell sed -n 's/.*host *= *\([^ ]*.*\)/\1/p' < config/local.ini)
 SQL_PORT:=$(shell sed -n 's/.*port *= *\([^ ]*.*\)/\1/p' < config/local.ini)
 SQL:=mysql --user=$(SQL_USER) --password=$(SQL_PASS) --database=$(SQL_NAME) --host=$(SQL_HOST) --port=$(SQL_PORT)
 
+default: help
 
-run:
+help: ## Show this help
+	@cat $(MAKEFILE_LIST) | grep -e "^[a-zA-Z_\-]*: *.*## *" | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
+
+run: ## Runs all kind of stuff
 	./ImageViewer app:discover
 
-autoload: ## just update the autoloader
+autoload: ## Just update the autoloader
 	composer dump-autoload
 
 install: ## for the incial install
@@ -23,8 +27,14 @@ reset_database: ## resets the database to basic seed
 	vendor/bin/phinx migrate -e default -c database/phinx.php
 	vendor/bin/phinx seed:run -e default -c database/phinx.php
 
-test: ## runs tests
+
+
+test: test_unit test_psalm ## run all tests
+
+test_unit: ## run unit tests
 	./vendor/bin/phpunit -c tests/phpunit.xml
+
+test_psalm: ## run psalm static analysis
 	./vendor/bin/psalm --config='tests/psalm.xml'
 
 

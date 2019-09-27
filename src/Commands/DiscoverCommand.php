@@ -12,16 +12,8 @@ class DiscoverCommand extends FactoryCommand
 {
     protected static $defaultName = 'app:discover';
 
-    protected function configure()
-    {
-
-    }
-
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $fileScanner = $this->factory->getFileScanner();
-        $fileScanner->search($output);
-        $fileScanner->parse($output);
-        $fileScanner->saveNewFiles($output);
+        $this->factory->getFileScanner()->scan($output);
     }
 }
