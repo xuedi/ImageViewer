@@ -9,6 +9,9 @@ class Configuration
     /** @var string */
     private $path;
 
+    /** @var TagGroupConfig */
+    private $tagGroup;
+
     /** @var DatabaseConfig */
     private $database;
 
@@ -28,6 +31,10 @@ class Configuration
 
         $this->database = new DatabaseConfig(
             $this->getSections($configFile, 'database')
+        );
+
+        $this->tagGroup = new TagGroupConfig(
+            $this->getSections($configFile, 'tagGroups')
         );
 
         $locations = $this->getSections($configFile, 'locations');
@@ -52,6 +59,11 @@ class Configuration
     public function getImagePath(): string
     {
         return $this->imagePath;
+    }
+
+    public function getTagGroup(): array
+    {
+        return $this->tagGroup->getGroup();
     }
 
     public function getCachePath(): string

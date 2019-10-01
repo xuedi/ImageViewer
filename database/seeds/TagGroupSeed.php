@@ -12,27 +12,35 @@ class TagGroupSeed extends AbstractSeed
         $data = [
             [
                 'id' => 1,
-                'name' => 'country',
+                'name' => 'unknown',
             ],
             [
                 'id' => 2,
-                'name' => 'city',
+                'name' => 'country',
             ],
             [
                 'id' => 3,
-                'name' => 'people',
+                'name' => 'city',
             ],
             [
                 'id' => 4,
-                'name' => 'madeBy',
+                'name' => 'people',
             ],
             [
                 'id' => 5,
-                'name' => 'misc',
+                'name' => 'madeBy',
             ],
             [
                 'id' => 6,
+                'name' => 'misc',
+            ],
+            [
+                'id' => 7,
                 'name' => 'year',
+            ],
+            [
+                'id' => 8,
+                'name' => 'event',
             ],
         ];
 

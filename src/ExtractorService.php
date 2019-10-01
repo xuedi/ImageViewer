@@ -25,22 +25,17 @@ class ExtractorService
     /** @var MetaExtractor */
     private $metaExtractor;
 
-    /** @var FileWriter */
-    private $fileWriter;
-
     public function __construct(
         FileScanner $fileScanner,
         LocationExtractor $locationExtractor,
         EventExtractor $eventExtractor,
         MetaExtractor $metaExtractor,
-        FileBuilder $fileBuilder,
-        FileWriter $fileWriter
+        FileBuilder $fileBuilder
     )
     {
         $this->fileScanner = $fileScanner;
         $this->eventExtractor = $eventExtractor;
         $this->locationExtractor = $locationExtractor;
-        $this->fileWriter = $fileWriter;
         $this->metaExtractor = $metaExtractor;
         $this->fileBuilder = $fileBuilder;
     }
@@ -50,11 +45,10 @@ class ExtractorService
         $this->output = $output;
 
         $newFiles = $this->fileScanner->scan($output);
-        $locations = $this->locationExtractor->getBy($output, $newFiles);
-        $events = $this->eventExtractor->getBy($output, $newFiles, $locations);
+        $locations = $this->locationExtractor->parse($output, $newFiles);
+        $events = $this->eventExtractor->parse($output, $newFiles, $locations);
         $tags = $this->metaExtractor->parse($output, $newFiles);
         $files = $this->fileBuilder->parse($output, $newFiles, $locations, $events, $tags); // glue together
-        $this->fileWriter->write($output, $files);
-        dump($events);
+        dump($files);
     }
 }

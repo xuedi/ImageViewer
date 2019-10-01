@@ -19,7 +19,7 @@ class LocationExtractor
         $this->path = $path;
     }
 
-    public function getBy(OutputInterface $output, array $fileNames): array
+    public function parse(OutputInterface $output, array $fileNames): array
     {
         $progressBar = new ProgressBar($output, count($fileNames));
         $progressBar->setFormat('Locations: [%bar%] %memory:6s%');

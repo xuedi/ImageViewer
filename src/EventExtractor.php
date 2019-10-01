@@ -24,7 +24,7 @@ class EventExtractor
         $this->path = $path;
     }
 
-    public function getBy(OutputInterface $output, array $fileNames, array $locationIds): array
+    public function parse(OutputInterface $output, array $fileNames, array $locationIds): array
     {
         $progressBar = new ProgressBar($output, count($fileNames));
         $progressBar->setFormat('Events:    [%bar%] %memory:6s%');

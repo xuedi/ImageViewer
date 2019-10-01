@@ -3,6 +3,7 @@
 namespace ImageViewer;
 
 use ImageViewer\Configuration\Configuration;
+use ImageViewer\Configuration\TagGroupConfig;
 
 class Factory
 {
@@ -26,8 +27,7 @@ class Factory
             $this->getLocationExtractor(),
             $this->getEventExtractor(),
             $this->getMetaExtractor(),
-            $this->getFileBuilder(),
-            $this->getFileWriter()
+            $this->getFileBuilder()
         );
     }
 
@@ -59,15 +59,8 @@ class Factory
     {
         return new MetaExtractor(
             $this->getDatabase(),
-            $this->config->getImagePath()
-        );
-    }
-
-    private function getFileWriter(): FileWriter
-    {
-        return new FileWriter(
-            $this->getDatabase(),
-            $this->config->getImagePath()
+            $this->config->getImagePath(),
+            $this->config->getTagGroup()
         );
     }
 

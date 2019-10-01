@@ -30,7 +30,7 @@ class FileBuilder
         $progressBar->setFormat('Files:     [%bar%] %memory:6s%');
         $progressBar->start();
         foreach ($newFiles as $newFile) {
-            $files[] = $this->parseFile($newFile);
+            $this->database->insert('files', $this->parseFile($newFile));
             $progressBar->advance();
         }
         $progressBar->advance();
@@ -42,22 +42,22 @@ class FileBuilder
 
     private function parseFile(string $file): array
     {
-        /*
         $imageExif = exif_read_data($file);
-        if ($imageExif) {
-            $returnExif = [
-                'fileName' => $imageExif['FileName'] ?? null,
-                'dateTime' => $imageExif['DateTime'] ?? null,
-                'orientation' => $imageExif['Orientation'] ?? null,
-            ];
+        list($width, $height) = getimagesize($file);
+
+        $fileName = $file;
+        if(substr($file,0, strlen($this->path)) == $this->path) {
+            $fileName = substr($file,strlen($this->path));
         }
-        getimagesize($file, $info);
-         */
+
         return [
             'nameHash' => sha1($file),
             'fileHash' => sha1_file($file),
-            'fileName' => $file,
-            'createdAt' => date('Y-m-d H:i:s'),
+            'fileName' => $fileName,
+            'createdAt' => date('Y-m-d H:i:s',strtotime($imageExif['DateTime'] ?? date())),
+            'width' => $width,
+            'height' => $height,
+            'size' => filesize($file),
         ];
     }
 }
