@@ -73,4 +73,14 @@ final class ConfigurationTest extends TestCase
 
         new Configuration($configFile);
     }
+
+    public function testExceptionOnMissingConfigurationSection(): void
+    {
+        $configFile = __DIR__ . '/../../resources/configMissingSection.ini';
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage("Could not get section 'database'");
+
+        new Configuration($configFile);
+    }
 }

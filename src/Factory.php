@@ -3,8 +3,6 @@
 namespace ImageViewer;
 
 use ImageViewer\Configuration\Configuration;
-use ImageViewer\Configuration\DatabaseConfig;
-use Symfony\Component\Console\Output\OutputInterface;
 
 class Factory
 {
@@ -21,9 +19,61 @@ class Factory
         return new Database($this->config->getDatabase());
     }
 
+    public function getExtractorService(): ExtractorService
+    {
+        return new ExtractorService(
+            $this->getFileScanner(),
+            $this->getLocationExtractor(),
+            $this->getEventExtractor(),
+            $this->getMetaExtractor(),
+            $this->getFileBuilder(),
+            $this->getFileWriter()
+        );
+    }
+
     public function getFileScanner(): FileScanner
     {
         return new FileScanner(
+            $this->getDatabase(),
+            $this->config->getImagePath()
+        );
+    }
+
+    public function getLocationExtractor(): LocationExtractor
+    {
+        return new LocationExtractor(
+            $this->getDatabase(),
+            $this->config->getImagePath()
+        );
+    }
+
+    public function getEventExtractor(): EventExtractor
+    {
+        return new EventExtractor(
+            $this->getDatabase(),
+            $this->config->getImagePath()
+        );
+    }
+
+    private function getMetaExtractor(): MetaExtractor
+    {
+        return new MetaExtractor(
+            $this->getDatabase(),
+            $this->config->getImagePath()
+        );
+    }
+
+    private function getFileWriter(): FileWriter
+    {
+        return new FileWriter(
+            $this->getDatabase(),
+            $this->config->getImagePath()
+        );
+    }
+
+    private function getFileBuilder(): FileBuilder
+    {
+        return new FileBuilder(
             $this->getDatabase(),
             $this->config->getImagePath()
         );

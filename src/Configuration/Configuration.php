@@ -40,9 +40,6 @@ class Configuration
     {
         $basePath = realpath(__dir__ . '/../../');
         $basePath = rtrim($basePath, '/') . '/';
-        if (!file_exists($basePath . 'ImageViewer')) {
-            throw new RuntimeException("Could not set basePath: '{$basePath}'");
-        }
 
         return $basePath;
     }

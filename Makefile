@@ -23,9 +23,9 @@ update: ## update the app
 	composer update
 
 reset_database: ## resets the database to basic seed
-	$(SQL) --execute='DROP TABLE IF EXISTS phinxlog, files;'
+	$(SQL) --execute='DROP TABLE IF EXISTS phinxlog, files, tags, locations, events, file_tags, tag_group;'
 	vendor/bin/phinx migrate -e default -c database/phinx.php
-	vendor/bin/phinx seed:run -e default -c database/phinx.php
+	vendor/bin/phinx seed:run -e default -c database/phinx.php -s LocationsSeed -s EventsSeed -s TagGroupSeed
 
 
 

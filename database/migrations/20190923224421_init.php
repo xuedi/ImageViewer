@@ -6,12 +6,36 @@ class Init extends AbstractMigration
 {
     public function change()
     {
+        $files = $this->table('files');
+        $files->addColumn('nameHash', 'string', ['limit' => 40]);
+        $files->addColumn('fileHash', 'string', ['limit' => 40]);
+        $files->addColumn('fileName', 'string');
+        $files->addColumn('createdAt', 'datetime', ['default' => 'CURRENT_TIMESTAMP']);
+        $files->create();
 
-        $user = $this->table('files', ['primary_key' => 'uuid']);
-        $user->addColumn('nameHash', 'string', ['limit' => 40]);
-        $user->addColumn('fileHash', 'string', ['limit' => 40]);
-        $user->addColumn('fileName', 'string');
-        $user->addColumn('createdAt', 'datetime', ['default' => 'CURRENT_TIMESTAMP']);
-        $user->create();
+        $locations = $this->table('locations');
+        $locations->addColumn('name', 'string', ['limit' => 128]);
+        $locations->create();
+
+        $tags = $this->table('tags');
+        $tags->addColumn('name', 'string', ['limit' => 128]);
+        $tags->addColumn('tag_group_id', 'integer');
+        $tags->create();
+
+        $tags = $this->table('tag_group');
+        $tags->addColumn('name', 'string', ['limit' => 128]);
+        $tags->create();
+
+        $tags = $this->table('file_tags', ['id' => false]);
+        $tags->addColumn('file_id', 'integer');
+        $tags->addColumn('tag_id', 'integer');
+        $tags->create();
+
+        $events = $this->table('events');
+        $events->addColumn('locationId', 'integer');
+        $events->addColumn('date', 'string', ['limit' => 10]);
+        $events->addColumn('name', 'string', ['limit' => 128]);
+        //$events->addForeignKey('locationId', 'locations', ['id'], ['constraint' => 'location_constraint']);
+        $events->create();
     }
 }
