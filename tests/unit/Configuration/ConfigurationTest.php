@@ -64,7 +64,52 @@ final class ConfigurationTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    public function testExceptionOnMissingConfiguration(): void
+    public function testCanRetrievetagGroup(): void
+    {
+        $expected = [
+            'people' => [
+                0 => 'friendA',
+                1 => 'friendB',
+                2 => 'friendC',
+            ],
+            'country' => [
+                0 => 'germany',
+                1 => 'sweden',
+                2 => 'denmark',
+                3 => 'greece',
+                4 => 'china',
+            ],
+            'city' => [
+                0 => 'amsterdam',
+                1 => 'london',
+                2 => 'berlin',
+            ],
+            'madeBy' => [
+                0 => 'friendA',
+                1 => 'friendC',
+            ],
+            'misc' => [
+                0 => 'dinner',
+                1 => 'party',
+                2 => 'study',
+                3 => 'goingOut',
+                4 => 'traveling',
+                5 => 'food',
+                6 => 'cute',
+            ],
+            'year' => [
+                0 => '2000',
+                1 => '2001',
+                2 => '2002',
+                3 => '2003',
+            ],
+        ];
+        $actual = $this->subject->getTagGroup();
+        $this->assertEquals($expected, $actual);
+    }
+
+    public
+    function testExceptionOnMissingConfiguration(): void
     {
         $configFile = '/MeepMeep';
 
@@ -74,7 +119,8 @@ final class ConfigurationTest extends TestCase
         new Configuration($configFile);
     }
 
-    public function testExceptionOnMissingConfigurationSection(): void
+    public
+    function testExceptionOnMissingConfigurationSection(): void
     {
         $configFile = __DIR__ . '/../../resources/configMissingSection.ini';
 
