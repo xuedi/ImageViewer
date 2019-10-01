@@ -54,7 +54,7 @@ class FileBuilder
             'nameHash' => sha1($file),
             'fileHash' => sha1_file($file),
             'fileName' => $fileName,
-            'createdAt' => date('Y-m-d H:i:s',strtotime($imageExif['DateTime'] ?? date())),
+            'createdAt' => date('Y-m-d H:i:s',strtotime($imageExif['DateTime'] ?? date('Y-m-d H:i:s'))),
             'width' => $width,
             'height' => $height,
             'size' => filesize($file),
