@@ -45,10 +45,14 @@ class ExtractorService
         $this->output = $output;
 
         $newFiles = $this->fileScanner->scan($output);
+        //dump($newFiles);
         $locations = $this->locationExtractor->parse($output, $newFiles);
+        //dump($locations);
         $events = $this->eventExtractor->parse($output, $newFiles, $locations);
+        //dump($events);
         $tags = $this->metaExtractor->parse($output, $newFiles);
+        dump($tags);
         $files = $this->fileBuilder->parse($output, $newFiles, $locations, $events, $tags); // glue together
-        dump($files);
+        //dump($files);
     }
 }

@@ -10,7 +10,7 @@ default: help
 help: ## Show this help
 	@cat $(MAKEFILE_LIST) | grep -e "^[a-zA-Z_\-]*: *.*## *" | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
-run: ## Runs all kind of stuff
+run: reset_database ## Runs all kind of stuff
 	./ImageViewer app:discover
 
 autoload: ## Just update the autoloader

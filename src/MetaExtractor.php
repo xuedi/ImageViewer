@@ -2,7 +2,6 @@
 
 namespace ImageViewer;
 
-use RuntimeException;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -64,6 +63,8 @@ class MetaExtractor
                     'name' => $tag,
                     'tag_group_id' => $tagGroup
                 ]);
+            } else {
+                echo PHP_EOL . "No TagGroup for '$tag'" . PHP_EOL;
             }
         }
     }
@@ -71,7 +72,7 @@ class MetaExtractor
     private function getTagGroupId(string $tag): int
     {
         $tag = strtolower(trim($tag));
-        if(!isset($this->tagGroup[$tag])) {
+        if (!isset($this->tagGroup[$tag])) {
             //throw new RuntimeException("Unknown Tag '$tag'");
             //echo $tag.PHP_EOL;
             return 1;

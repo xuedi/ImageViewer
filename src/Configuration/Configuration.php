@@ -38,9 +38,9 @@ class Configuration
         );
 
         $locations = $this->getSections($configFile, 'locations');
-        $this->imagePath = $locations['images'];
-        $this->cache = $locations['cache'];
+        $this->imagePath = $this->processImagePath($locations['images']);
         $this->migrations = $locations['migrations'];
+        $this->cache = $locations['cache'];
     }
 
     public function getBasePath(): string
@@ -92,5 +92,17 @@ class Configuration
         }
 
         return $iniFile[$section];
+    }
+
+    private function processImagePath(string $imagePath): string
+    {
+        if (is_dir($imagePath)) {
+            return realpath($imagePath) . '/';
+        }
+        $imagePathRelative = $this->getBasePath() . ltrim($imagePath, '/');
+        if (is_dir($imagePathRelative)) {
+            return $imagePathRelative;
+        }
+        throw new RuntimeException("Could not find the image path: '$imagePath'");
     }
 }

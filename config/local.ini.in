@@ -1,7 +1,7 @@
 
 [locations]
 cache = 'public/cache/'
-images = '<pathToYourImages>>'
+images = 'tests/resources/images/'
 migrations = 'database/migrations/'
 
 [database]
