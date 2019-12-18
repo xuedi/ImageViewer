@@ -9,11 +9,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class FileScanner
 {
-    /** @var Database */
-    private $database;
-
-    /** @var string */
-    private $path;
+    private string $path;
+    private Database $database;
 
     public function __construct(Database $database, string $path)
     {

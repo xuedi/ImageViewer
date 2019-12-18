@@ -1,9 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace ImageViewer;
+namespace ImageViewer\Extractors;
 
 use Error;
 use Exception;
+use ImageViewer\Database;
+use ImageViewer\EventDate;
 use RuntimeException;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;

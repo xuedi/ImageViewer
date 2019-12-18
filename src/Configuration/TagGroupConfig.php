@@ -4,8 +4,7 @@ namespace ImageViewer\Configuration;
 
 class TagGroupConfig
 {
-    /** @var array */
-    private $groups = [];
+    private array $groups = [];
 
     public function __construct(array $data)
     {

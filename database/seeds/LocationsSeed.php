@@ -14,7 +14,7 @@ class LocationsSeed extends AbstractSeed
         $data = [
             [
                 'id' => self::UNKNOWN_ID,
-                'name' => 'Unknown',
+                'name' => 'unknown',
             ],
         ];
 

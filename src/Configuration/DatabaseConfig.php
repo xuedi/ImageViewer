@@ -6,8 +6,7 @@ use RuntimeException;
 
 class DatabaseConfig
 {
-    /** @var array */
-    private $data = [
+    private array $data = [
         'host',
         'port',
         'user',

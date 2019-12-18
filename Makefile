@@ -14,20 +14,18 @@ run: reset_database ## Runs all kind of stuff
 	./ImageViewer app:discover
 
 autoload: ## Just update the autoloader
-	composer dump-autoload
+	./composer.phar dump-autoload
 
 install: ## for the incial install
-	composer install
+	./composer.phar install
 
 update: ## update the app
-	composer update
+	./composer.phar update
 
 reset_database: ## resets the database to basic seed
 	$(SQL) --execute='DROP TABLE IF EXISTS phinxlog, files, tags, locations, events, file_tags, tag_group;'
 	vendor/bin/phinx migrate -e default -c database/phinx.php
 	vendor/bin/phinx seed:run -e default -c database/phinx.php -s LocationsSeed -s EventsSeed -s TagGroupSeed
-
-
 
 test: test_unit test_psalm ## run all tests
 

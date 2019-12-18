@@ -32,7 +32,7 @@ final class ConfigurationTest extends TestCase
 
     public function testCanRetrieveImagePath(): void
     {
-        $expected = 'tests/resources/images/';
+        $expected = realpath(__DIR__ . '/../../resources/images/') . '/';
         $actual = $this->subject->getImagePath();
         $this->assertEquals($expected, $actual);
     }

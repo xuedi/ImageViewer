@@ -7,14 +7,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class FileBuilder
 {
-    /** @var Database */
-    private $database;
-
-    /** @var string */
-    private $path;
-
-    /** @var OutputInterface */
-    private $output;
+    private string $path;
+    private Database $database;
+    private OutputInterface $output;
 
     public function __construct(Database $database, string $path)
     {

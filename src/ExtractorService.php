@@ -2,28 +2,19 @@
 
 namespace ImageViewer;
 
-use Symfony\Component\Console\Helper\ProgressBar;
+use ImageViewer\Extractors\EventExtractor;
+use ImageViewer\Extractors\LocationExtractor;
+use ImageViewer\Extractors\MetaExtractor;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ExtractorService
 {
-    /** @var OutputInterface */
-    private $output;
-
-    /** @var LocationExtractor */
-    private $locationExtractor;
-
-    /** @var EventExtractor */
-    private $eventExtractor;
-
-    /** @var FileScanner */
-    private $fileScanner;
-
-    /** @var FileBuilder */
-    private $fileBuilder;
-
-    /** @var MetaExtractor */
-    private $metaExtractor;
+    private OutputInterface $output;
+    private LocationExtractor $locationExtractor;
+    private EventExtractor $eventExtractor;
+    private FileScanner $fileScanner;
+    private FileBuilder $fileBuilder;
+    private MetaExtractor $metaExtractor;
 
     public function __construct(
         FileScanner $fileScanner,
@@ -45,14 +36,14 @@ class ExtractorService
         $this->output = $output;
 
         $newFiles = $this->fileScanner->scan($output);
-        //dump($newFiles);
+        dump($newFiles);
         $locations = $this->locationExtractor->parse($output, $newFiles);
-        //dump($locations);
+        dump($locations);
         $events = $this->eventExtractor->parse($output, $newFiles, $locations);
-        //dump($events);
+        dump($events);
         $tags = $this->metaExtractor->parse($output, $newFiles);
         dump($tags);
         $files = $this->fileBuilder->parse($output, $newFiles, $locations, $events, $tags); // glue together
-        //dump($files);
+        dump($files);
     }
 }

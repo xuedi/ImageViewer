@@ -3,12 +3,13 @@
 namespace ImageViewer;
 
 use ImageViewer\Configuration\Configuration;
-use ImageViewer\Configuration\TagGroupConfig;
+use ImageViewer\Extractors\EventExtractor;
+use ImageViewer\Extractors\LocationExtractor;
+use ImageViewer\Extractors\MetaExtractor;
 
 class Factory
 {
-    /** @var Configuration */
-    private $config;
+    private Configuration $config;
 
     public function __construct(Configuration $config)
     {

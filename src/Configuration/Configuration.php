@@ -6,23 +6,12 @@ use RuntimeException;
 
 class Configuration
 {
-    /** @var string */
-    private $path;
-
-    /** @var TagGroupConfig */
-    private $tagGroup;
-
-    /** @var DatabaseConfig */
-    private $database;
-
-    /** @var string */
-    private $imagePath;
-
-    /** @var string */
-    private $cache;
-
-    /** @var string */
-    private $migrations;
+    private string $path;
+    private string $imagePath;
+    private string $cache;
+    private string $migrations;
+    private DatabaseConfig $database;
+    private TagGroupConfig $tagGroup;
 
     public function __construct(string $configFile)
     {

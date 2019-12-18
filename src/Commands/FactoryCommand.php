@@ -8,8 +8,7 @@ use Symfony\Component\Console\Command\Command;
 
 abstract class FactoryCommand extends Command
 {
-    /** @var Factory */
-    protected $factory;
+    protected Factory $factory;
 
     public function __construct(Factory $factory)
     {

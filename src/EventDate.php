@@ -6,14 +6,9 @@ use RuntimeException;
 
 class EventDate
 {
-    /** @var string|null */
-    private $year;
-
-    /** @var string|null */
-    private $month;
-
-    /** @var string|null */
-    private $day;
+    private ?string $year;
+    private ?string $month;
+    private ?string $day;
 
     public static function fromString(string $data)
     {

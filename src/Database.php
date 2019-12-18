@@ -8,14 +8,13 @@ use PDO;
 
 class Database
 {
-    /** @var PDO */
-    private $pdo;
+    private PDO $pdo;
 
     public function __construct(DatabaseConfig $config)
     {
         $options = [
-            PDO::ATTR_EMULATE_PREPARES   => false, // turn off emulation mode for "real" prepared statements
-            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION, //turn on errors in the form of exceptions
+            PDO::ATTR_EMULATE_PREPARES => false, // turn off emulation mode for "real" prepared statements
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, //turn on errors in the form of exceptions
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, //make the default fetch be an associative array
         ];
         $this->pdo = new PDO($config->getDsn(), $config->getUser(), $config->getPass(), $options);
@@ -25,11 +24,11 @@ class Database
     {
         $columns = [];
         $placeholder = [];
-        foreach ($data as $key => $value){
+        foreach ($data as $key => $value) {
             $columns[] = $key;
             $placeholder[] = ":$key";
         }
-        $statement = $this->pdo->prepare("INSERT INTO $table (".implode(', ', $columns).") VALUES (".implode(', ', $placeholder).")");
+        $statement = $this->pdo->prepare("INSERT INTO $table (" . implode(', ', $columns) . ") VALUES (" . implode(', ', $placeholder) . ")");
         $statement->execute($data);
     }
 
@@ -47,7 +46,7 @@ class Database
         $statement->execute();
 
         $result = $statement->fetchAll(PDO::FETCH_KEY_PAIR);
-        if($reverse) {
+        if ($reverse) {
             $result = array_flip($result);
         }
 
@@ -60,7 +59,7 @@ class Database
         $statement->execute();
 
         $result = $statement->fetchAll(PDO::FETCH_KEY_PAIR);
-        if($reverse) {
+        if ($reverse) {
             $result = array_flip($result);
         }
 
