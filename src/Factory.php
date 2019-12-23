@@ -6,6 +6,7 @@ use ImageViewer\Configuration\Configuration;
 use ImageViewer\Extractors\EventExtractor;
 use ImageViewer\Extractors\LocationExtractor;
 use ImageViewer\Extractors\MetaExtractor;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 class Factory
 {
@@ -36,6 +37,7 @@ class Factory
     {
         return new FileScanner(
             $this->getDatabase(),
+            $this->getOutput(),
             $this->config->getImagePath()
         );
     }
@@ -44,6 +46,7 @@ class Factory
     {
         return new LocationExtractor(
             $this->getDatabase(),
+            $this->getOutput(),
             $this->config->getImagePath()
         );
     }
@@ -52,6 +55,7 @@ class Factory
     {
         return new EventExtractor(
             $this->getDatabase(),
+            $this->getOutput(),
             $this->config->getImagePath()
         );
     }
@@ -60,6 +64,7 @@ class Factory
     {
         return new MetaExtractor(
             $this->getDatabase(),
+            $this->getOutput(),
             $this->config->getImagePath(),
             $this->config->getTagGroup()
         );
@@ -69,7 +74,13 @@ class Factory
     {
         return new FileBuilder(
             $this->getDatabase(),
+            $this->getOutput(),
             $this->config->getImagePath()
         );
+    }
+
+    private function getOutput(): ConsoleOutput
+    {
+        return new ConsoleOutput();
     }
 }

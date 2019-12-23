@@ -11,21 +11,23 @@ class FileScanner
 {
     private string $path;
     private Database $database;
+    private OutputInterface $output;
 
-    public function __construct(Database $database, string $path)
+    public function __construct(Database $database, OutputInterface $output, string $path)
     {
         $this->database = $database;
+        $this->output = $output;
         $this->path = $path;
     }
 
-    public function scan(OutputInterface $output): array
+    public function scan(): array
     {
         $fileList = $this->makeFileList($this->path);
         $knownFiles = $this->database->getImages();
 
         $newFiles = [];
 
-        $progressBar = new ProgressBar($output, count($fileList));
+        $progressBar = new ProgressBar($this->output, count($fileList));
         $progressBar->setFormat('Search:    [%bar%] %memory:6s%');
         $progressBar->start();
         foreach ($fileList as $file) {
@@ -37,7 +39,7 @@ class FileScanner
         $progressBar->advance();
         $progressBar->finish();
 
-        $output->write(PHP_EOL);
+        $this->output->write(PHP_EOL);
         return $newFiles;
     }
 

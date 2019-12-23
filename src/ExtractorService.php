@@ -5,11 +5,9 @@ namespace ImageViewer;
 use ImageViewer\Extractors\EventExtractor;
 use ImageViewer\Extractors\LocationExtractor;
 use ImageViewer\Extractors\MetaExtractor;
-use Symfony\Component\Console\Output\OutputInterface;
 
 class ExtractorService
 {
-    private OutputInterface $output;
     private LocationExtractor $locationExtractor;
     private EventExtractor $eventExtractor;
     private FileScanner $fileScanner;
@@ -31,19 +29,17 @@ class ExtractorService
         $this->fileBuilder = $fileBuilder;
     }
 
-    public function scan(OutputInterface $output): void
+    public function scan(): void
     {
-        $this->output = $output;
-
-        $newFiles = $this->fileScanner->scan($output);
+        $newFiles = $this->fileScanner->scan();
         dump($newFiles);
-        $locations = $this->locationExtractor->parse($output, $newFiles);
+        $locations = $this->locationExtractor->parse($newFiles);
         dump($locations);
-        $events = $this->eventExtractor->parse($output, $newFiles, $locations);
+        $events = $this->eventExtractor->parse($newFiles, $locations);
         dump($events);
-        $tags = $this->metaExtractor->parse($output, $newFiles);
+        $tags = $this->metaExtractor->parse($newFiles);
         dump($tags);
-        $files = $this->fileBuilder->parse($output, $newFiles, $locations, $events, $tags); // glue together
+        $files = $this->fileBuilder->build($newFiles, $locations, $events, $tags); // glue together
         dump($files);
     }
 }

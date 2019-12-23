@@ -8,28 +8,23 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class MetaExtractor
 {
-    /** @var Database */
-    private $database;
+    private array $tags;
+    private array $tagGroup;
+    private string $path;
+    private Database $database;
+    private OutputInterface $output;
 
-    /** @var string */
-    private $path;
-
-    /** @var array */
-    private $tags;
-
-    /** @var array */
-    private $tagGroup;
-
-    public function __construct(Database $database, string $path, array $tagGroup)
+    public function __construct(Database $database, OutputInterface $output, string $path, array $tagGroup)
     {
         $this->database = $database;
+        $this->output = $output;
         $this->path = $path;
         $this->tagGroup = $this->buildLookup($tagGroup);
     }
 
-    public function parse(OutputInterface $output, array $newFiles): array
+    public function parse(array $newFiles): array
     {
-        $progressBar = new ProgressBar($output, count($newFiles));
+        $progressBar = new ProgressBar($this->output, count($newFiles));
         $progressBar->setFormat('Tags:      [%bar%] %memory:6s%');
         $progressBar->start();
 
@@ -41,7 +36,7 @@ class MetaExtractor
         $progressBar->advance();
         $progressBar->finish();
 
-        $output->write(PHP_EOL);
+        $this->output->write(PHP_EOL);
         return $this->database->getTags(true);
     }
 

@@ -11,17 +11,18 @@ class FileBuilder
     private Database $database;
     private OutputInterface $output;
 
-    public function __construct(Database $database, string $path)
+    public function __construct(Database $database, OutputInterface $output, string $path)
     {
         $this->database = $database;
+        $this->output = $output;
         $this->path = $path;
     }
 
-    public function parse(OutputInterface $output, array $newFiles, array $locations, array $events, array $tags): array
+    public function build(array $newFiles, array $locations, array $events, array $tags): array
     {
         $files = [];
 
-        $progressBar = new ProgressBar($output, count($newFiles));
+        $progressBar = new ProgressBar($this->output, count($newFiles));
         $progressBar->setFormat('Files:     [%bar%] %memory:6s%');
         $progressBar->start();
         foreach ($newFiles as $newFile) {
@@ -31,7 +32,7 @@ class FileBuilder
         $progressBar->advance();
         $progressBar->finish();
 
-        $output->write(PHP_EOL);
+        $this->output->write(PHP_EOL);
         return $files;
     }
 

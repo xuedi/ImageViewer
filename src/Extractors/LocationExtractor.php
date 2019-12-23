@@ -8,21 +8,20 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class LocationExtractor
 {
-    /** @var Database */
-    private $database;
+    private string $path;
+    private Database $database;
+    private OutputInterface $output;
 
-    /** @var string */
-    private $path;
-
-    public function __construct(Database $database, string $path)
+    public function __construct(Database $database, OutputInterface $output, string $path)
     {
         $this->database = $database;
+        $this->output = $output;
         $this->path = $path;
     }
 
-    public function parse(OutputInterface $output, array $fileNames): array
+    public function parse(array $fileNames): array
     {
-        $progressBar = new ProgressBar($output, count($fileNames));
+        $progressBar = new ProgressBar($this->output, count($fileNames));
         $progressBar->setFormat('Locations: [%bar%] %memory:6s%');
         $progressBar->start();
 
@@ -41,7 +40,7 @@ class LocationExtractor
         $progressBar->advance();
         $progressBar->finish();
 
-        $output->write(PHP_EOL);
+        $this->output->write(PHP_EOL);
         return $this->database->getLocations(true);
     }
 }
