@@ -7,11 +7,13 @@ class Init extends AbstractMigration
     public function change()
     {
         $files = $this->table('files');
+        $files->addColumn('event_id', 'integer');
         $files->addColumn('nameHash', 'string', ['limit' => 40]);
         $files->addColumn('fileHash', 'string', ['limit' => 40]);
         $files->addColumn('fileName', 'string');
         $files->addColumn('width', 'integer');
         $files->addColumn('height', 'integer');
+        $files->addColumn('pixel', 'integer');
         $files->addColumn('size', 'integer');
         $files->addColumn('createdAt', 'datetime', ['default' => 'CURRENT_TIMESTAMP']);
         $files->create();

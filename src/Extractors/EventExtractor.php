@@ -59,6 +59,6 @@ class EventExtractor
 
         $this->output->write(PHP_EOL);
 
-        return $this->database->getEvents();
+        return $this->database->getEvents(true);
     }
 }

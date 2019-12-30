@@ -15,7 +15,7 @@ class EventsSeed extends AbstractSeed
             [
                 'id' => self::UNKNOWN_ID,
                 'locationId' => LocationsSeed::UNKNOWN_ID,
-                'date' => '000-00-00',
+                'date' => '0000-00-00',
                 'name' => 'unknown',
             ],
         ];

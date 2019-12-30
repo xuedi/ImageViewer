@@ -75,6 +75,7 @@ class Factory
         return new FileBuilder(
             $this->getDatabase(),
             $this->getOutput(),
+            $this->getMetaExtractor(),
             $this->config->getImagePath()
         );
     }

@@ -1,1 +1,1 @@
-To Edit meta tags: geeqie
+To Edit meta tags: gThumb --> T

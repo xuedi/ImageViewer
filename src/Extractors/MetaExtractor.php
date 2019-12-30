@@ -10,6 +10,7 @@ class MetaExtractor
 {
     private array $tags;
     private array $tagGroup;
+    private array $knownTags;
     private string $path;
     private Database $database;
     private OutputInterface $output;
@@ -19,6 +20,7 @@ class MetaExtractor
         $this->database = $database;
         $this->output = $output;
         $this->path = $path;
+        $this->knownTags = $this->database->getTags(true);
         $this->tagGroup = $this->buildLookup($tagGroup);
     }
 
@@ -29,9 +31,11 @@ class MetaExtractor
         $progressBar->start();
 
         $this->tags = $this->database->getTags();
+
         foreach ($newFiles as $newFile) {
             $progressBar->advance();
-            $this->getTags($newFile);
+            $tags = $this->getTags($newFile);
+            $this->saveTags($tags);
         }
         $progressBar->advance();
         $progressBar->finish();
@@ -40,27 +44,31 @@ class MetaExtractor
         return $this->database->getTags(true);
     }
 
-    private function getTags(string $file): void
+    public function getTags(string $file): array
     {
         $tags = [];
         getimagesize($file, $info);
         if (is_array($info) && isset($info["APP13"])) {
             $iptc = iptcparse($info["APP13"]);
             if (isset($iptc['2#025']) && is_array($iptc['2#025'])) {
-                $tags = $iptc['2#025'];
+                foreach ($iptc['2#025'] as $tag) {
+                    $tags[] = strtolower($tag);
+                }
             }
         }
 
+        return $tags;
+    }
+
+    private function saveTags(array $tags): void
+    {
         foreach ($tags as $tag) {
             $tagGroup = $this->getTagGroupId($tag);
-            if (!in_array($tag, $this->tags) && $tagGroup != 1) {
-                $this->tags[] = $tag;
-                $this->database->insert('tags', [
+            if (!isset($this->knownTags[$tag])) {
+                $this->knownTags[$tag] = $this->database->insert('tags', [
                     'name' => $tag,
                     'tag_group_id' => $tagGroup
                 ]);
-            } else {
-                echo PHP_EOL . "No TagGroup for '$tag'" . PHP_EOL;
             }
         }
     }
@@ -69,9 +77,7 @@ class MetaExtractor
     {
         $tag = strtolower(trim($tag));
         if (!isset($this->tagGroup[$tag])) {
-            //throw new RuntimeException("Unknown Tag '$tag'");
-            //echo $tag.PHP_EOL;
-            return 1;
+            return 1; // unknown
         }
         return $this->tagGroup[$tag];
     }
@@ -96,6 +102,7 @@ class MetaExtractor
                 $retVal[$tag] = $groupLookup[$group];
             }
         }
+
         return $retVal;
     }
 }

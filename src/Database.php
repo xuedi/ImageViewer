@@ -2,7 +2,6 @@
 
 namespace ImageViewer;
 
-use Exception;
 use ImageViewer\Configuration\DatabaseConfig;
 use PDO;
 
@@ -20,7 +19,7 @@ class Database
         $this->pdo = new PDO($config->getDsn(), $config->getUser(), $config->getPass(), $options);
     }
 
-    public function insert(string $table, array $data)
+    public function insert(string $table, array $data): int
     {
         $columns = [];
         $placeholder = [];
@@ -30,6 +29,8 @@ class Database
         }
         $statement = $this->pdo->prepare("INSERT INTO $table (" . implode(', ', $columns) . ") VALUES (" . implode(', ', $placeholder) . ")");
         $statement->execute($data);
+
+        return (int)$this->pdo->lastInsertId();
     }
 
     public function getImages(): array
@@ -66,13 +67,17 @@ class Database
         return $result;
     }
 
-    public function getEvents()
+    public function getEvents(bool $reverse = false)
     {
         $statement = $this->pdo->prepare("SELECT id, name FROM events; ");
         $statement->execute();
 
-        return $statement->fetchAll(PDO::FETCH_KEY_PAIR);
+        $result = $statement->fetchAll(PDO::FETCH_KEY_PAIR);
+        if ($reverse) {
+            $result = array_flip($result);
+        }
 
+        return $result;
     }
 
 }
