@@ -3,6 +3,8 @@
 namespace ImageViewer;
 
 use ImageViewer\Configuration\DatabaseConfig;
+use ImageViewer\DataTransferObjects\EventsDto;
+use ImageViewer\DataTransferObjects\LocationsDto;
 use PDO;
 
 class Database
@@ -41,7 +43,7 @@ class Database
         return $statement->fetchAll(PDO::FETCH_COLUMN);
     }
 
-    public function getLocations(bool $reverse = false)
+    public function getLocations(bool $reverse = false): array
     {
         $statement = $this->pdo->prepare("SELECT id, name FROM locations; ");
         $statement->execute();
@@ -54,7 +56,7 @@ class Database
         return $result;
     }
 
-    public function getTags(bool $reverse = false)
+    public function getTags(bool $reverse = false): array
     {
         $statement = $this->pdo->prepare("SELECT id, name FROM tags; ");
         $statement->execute();
@@ -67,7 +69,7 @@ class Database
         return $result;
     }
 
-    public function getEvents(bool $reverse = false)
+    public function getEvents(bool $reverse = false): array
     {
         $statement = $this->pdo->prepare("SELECT id, name FROM events; ");
         $statement->execute();
@@ -80,4 +82,33 @@ class Database
         return $result;
     }
 
+    public function getEventDto(): array
+    {
+        $list = [];
+
+        $statement = $this->pdo->prepare("SELECT id, locationId as location, `date` as eventDate, `name` as eventName FROM events ORDER BY `date`; ");
+        $statement->execute();
+
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($results as $item) {
+            $list[] = EventsDto::fromArray($item);
+        }
+
+        return $list;
+    }
+
+    public function getLocationDto()
+    {
+        $list = [];
+
+        $statement = $this->pdo->prepare("SELECT id, `name` FROM locations ORDER BY id; ");
+        $statement->execute();
+
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($results as $item) {
+            $list[] = LocationsDto::fromArray($item);
+        }
+
+        return $list;
+    }
 }
