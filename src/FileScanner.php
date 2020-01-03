@@ -11,10 +11,12 @@ class FileScanner
 {
     private string $path;
     private Database $database;
+    private ProgressBar $progressBar;
     private OutputInterface $output;
 
-    public function __construct(Database $database, OutputInterface $output, string $path)
+    public function __construct(Database $database, OutputInterface $output, ProgressBar $progressBar, string $path)
     {
+        $this->progressBar = $progressBar;
         $this->database = $database;
         $this->output = $output;
         $this->path = $path;
@@ -27,17 +29,17 @@ class FileScanner
 
         $newFiles = [];
 
-        $progressBar = new ProgressBar($this->output, count($fileList));
-        $progressBar->setFormat('Search:    [%bar%] %memory:6s%');
-        $progressBar->start();
+        $this->progressBar->setMaxSteps(count($fileList));
+        $this->progressBar->setFormat('Search:    [%bar%] %memory:6s%');
+        $this->progressBar->start();
         foreach ($fileList as $file) {
             if (!in_array(sha1($file), $knownFiles)) {
                 $newFiles[] = $file;
             }
-            $progressBar->advance();
+            $this->progressBar->advance();
         }
-        $progressBar->advance();
-        $progressBar->finish();
+        $this->progressBar->advance();
+        $this->progressBar->finish();
 
         $this->output->write(PHP_EOL);
         return $newFiles;

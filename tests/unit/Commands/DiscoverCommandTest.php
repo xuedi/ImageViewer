@@ -12,7 +12,7 @@ final class DiscoverCommandTest extends TestCase
     public function testCanBuildFactory(): void
     {
         $factory = $this->createMock(Factory::class);
-        $factory->expects($this->once())->method('getFileScanner');
+        $factory->expects($this->once())->method('getExtractorService');
 
         $application = new Application();
         $application->add(new DiscoverCommand($factory));

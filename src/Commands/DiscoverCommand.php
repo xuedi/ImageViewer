@@ -11,6 +11,6 @@ class DiscoverCommand extends FactoryCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->factory->getExtractorService()->scan($output);
+        $this->factory->getExtractorService()->scan();
     }
 }

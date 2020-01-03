@@ -10,7 +10,6 @@ class MetaExtractor
 {
     private array $tags;
     private array $tagGroup;
-    private array $knownTags;
     private string $path;
     private Database $database;
     private OutputInterface $output;
@@ -20,7 +19,6 @@ class MetaExtractor
         $this->database = $database;
         $this->output = $output;
         $this->path = $path;
-        $this->knownTags = $this->database->getTags(true);
         $this->tagGroup = $this->buildLookup($tagGroup);
     }
 
@@ -62,10 +60,11 @@ class MetaExtractor
 
     private function saveTags(array $tags): void
     {
+        $knownTags = $this->database->getTags(true);
         foreach ($tags as $tag) {
             $tagGroup = $this->getTagGroupId($tag);
-            if (!isset($this->knownTags[$tag])) {
-                $this->knownTags[$tag] = $this->database->insert('tags', [
+            if (!isset($knownTags[$tag])) {
+                $knownTags[$tag] = $this->database->insert('tags', [
                     'name' => $tag,
                     'tag_group_id' => $tagGroup
                 ]);

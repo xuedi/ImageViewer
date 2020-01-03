@@ -6,6 +6,7 @@ use ImageViewer\Configuration\Configuration;
 use ImageViewer\Extractors\EventExtractor;
 use ImageViewer\Extractors\LocationExtractor;
 use ImageViewer\Extractors\MetaExtractor;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 class Factory
@@ -38,6 +39,7 @@ class Factory
         return new FileScanner(
             $this->getDatabase(),
             $this->getOutput(),
+            $this->getProgressBar(),
             $this->config->getImagePath()
         );
     }
@@ -83,5 +85,12 @@ class Factory
     private function getOutput(): ConsoleOutput
     {
         return new ConsoleOutput();
+    }
+
+    private function getProgressBar(): ProgressBar
+    {
+        return new ProgressBar(
+            $this->getOutput()
+        );
     }
 }
