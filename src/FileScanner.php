@@ -5,8 +5,6 @@ namespace ImageViewer;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 
-// TODO: To be put into a nice service
-
 class FileScanner
 {
     private string $path;

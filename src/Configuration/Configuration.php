@@ -88,10 +88,7 @@ class Configuration
         if (is_dir($imagePath)) {
             return realpath($imagePath) . '/';
         }
-        $imagePathRelative = $this->getBasePath() . ltrim($imagePath, '/');
-        if (is_dir($imagePathRelative)) {
-            return $imagePathRelative;
-        }
+
         throw new RuntimeException("Could not find the image path: '$imagePath'");
     }
 }

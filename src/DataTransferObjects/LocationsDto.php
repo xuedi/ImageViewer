@@ -2,7 +2,7 @@
 
 namespace ImageViewer\DataTransferObjects;
 
-use ImageViewer\EventDate;
+use DtoTypes;
 use JsonSerializable;
 
 class LocationsDto implements JsonSerializable
@@ -10,17 +10,23 @@ class LocationsDto implements JsonSerializable
     private int          $id;
     private string       $name;
 
-    static function fromArray(array $input) : self
+    use DtoTypes;
+
+    static function fromArray(array $parameter): self
     {
-        return new self($input['id'], $input['name']);
+        self::ensureParameter($parameter, ['id', 'name']);
+        self::ensureInteger($parameter, 'id');
+        self::ensureString($parameter, 'name');
+
+        return new self($parameter['id'], $parameter['name']);
     }
 
-    public function getId() : int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getName() : string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -28,14 +34,14 @@ class LocationsDto implements JsonSerializable
     public function jsonSerialize()
     {
         return [
-            'id'   => $this->id,
+            'id' => $this->id,
             'name' => $this->name,
         ];
     }
 
     private function __construct(int $id, string $name)
     {
-        $this->id   = $id;
+        $this->id = $id;
         $this->name = $name;
     }
 }

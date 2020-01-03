@@ -27,13 +27,24 @@ final class ConfigurationTest extends TestCase
     {
         $expected = realpath(__dir__ . '/../../../') . '/';
         $actual = $this->subject->getBasePath();
+
         $this->assertEquals($expected, $actual);
+    }
+
+    public function testCanRetrieveRelativeBasePath(): void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage("Could not find the image path: '/tmp/nonExistingPath'");
+
+        $file = __DIR__ . '/../../resources/configMissingImagePath.ini';
+        new Configuration($file);
     }
 
     public function testCanRetrieveImagePath(): void
     {
         $expected = realpath(__DIR__ . '/../../resources/images/') . '/';
         $actual = $this->subject->getImagePath();
+
         $this->assertEquals($expected, $actual);
     }
 
@@ -41,6 +52,7 @@ final class ConfigurationTest extends TestCase
     {
         $expected = 'tests/resources/tmp/';
         $actual = $this->subject->getCachePath();
+
         $this->assertEquals($expected, $actual);
     }
 
@@ -48,11 +60,13 @@ final class ConfigurationTest extends TestCase
     {
         $expected = 'database/migrations/';
         $actual = $this->subject->getMigrationsPath();
+
         $this->assertEquals($expected, $actual);
     }
 
     public function testCanRetrieveDatabase(): void
     {
+        $actual = $this->subject->getDatabase();
         $expected = new DatabaseConfig([
             'host' => '127.0.0.1',
             'port' => '3306',
@@ -60,12 +74,13 @@ final class ConfigurationTest extends TestCase
             'pass' => 'imageViewer',
             'name' => 'imageViewer',
         ]);
-        $actual = $this->subject->getDatabase();
+
         $this->assertEquals($expected, $actual);
     }
 
     public function testCanRetrievetagGroup(): void
     {
+        $actual = $this->subject->getTagGroup();
         $expected = [
             'people' => [
                 0 => 'friendA',
@@ -104,7 +119,7 @@ final class ConfigurationTest extends TestCase
                 3 => '2003',
             ],
         ];
-        $actual = $this->subject->getTagGroup();
+
         $this->assertEquals($expected, $actual);
     }
 
