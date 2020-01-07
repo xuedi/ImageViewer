@@ -10,10 +10,12 @@ class LocationExtractor
 {
     private string $path;
     private Database $database;
+    private ProgressBar $progressBar;
     private OutputInterface $output;
 
-    public function __construct(Database $database, OutputInterface $output, string $path)
+    public function __construct(Database $database, OutputInterface $output, ProgressBar $progressBar, string $path)
     {
+        $this->progressBar = $progressBar;
         $this->database = $database;
         $this->output = $output;
         $this->path = $path;
@@ -21,13 +23,13 @@ class LocationExtractor
 
     public function parse(array $fileNames): array
     {
-        $progressBar = new ProgressBar($this->output, count($fileNames));
-        $progressBar->setFormat('Locations: [%bar%] %memory:6s%');
-        $progressBar->start();
+        $this->progressBar->setMaxSteps(count($fileNames));
+        $this->progressBar->setFormat('Locations: [%bar%] %memory:6s%');
+        $this->progressBar->start();
 
         $locations = $this->database->getLocations();
         foreach ($fileNames as $fileName) {
-            $progressBar->advance();
+            $this->progressBar->advance();
             if(substr($fileName,0, strlen($this->path)) == $this->path) {
                 $fileName = substr($fileName,strlen($this->path));
             }
@@ -37,8 +39,8 @@ class LocationExtractor
                 $this->database->insert('locations', ['name' => $location]);
             }
         }
-        $progressBar->advance();
-        $progressBar->finish();
+        $this->progressBar->advance();
+        $this->progressBar->finish();
 
         $this->output->write(PHP_EOL);
         return $this->database->getLocations(true);

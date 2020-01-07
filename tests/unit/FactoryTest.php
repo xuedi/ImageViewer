@@ -5,10 +5,12 @@ namespace ImageViewer;
 use ImageViewer\Configuration\Configuration;
 use ImageViewer\Configuration\DatabaseConfig;
 use ImageViewer\Extractors\LocationExtractor;
-use ImageViewer\Extractors\MetaExtractor;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \ImageViewer\Factory
+ */
 final class FactoryTest extends TestCase
 {
     private Factory $subject;

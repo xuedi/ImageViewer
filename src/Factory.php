@@ -49,6 +49,7 @@ class Factory
         return new LocationExtractor(
             $this->getDatabase(),
             $this->getOutput(),
+            $this->getProgressBar(),
             $this->config->getImagePath()
         );
     }
@@ -58,6 +59,7 @@ class Factory
         return new EventExtractor(
             $this->getDatabase(),
             $this->getOutput(),
+            $this->getProgressBar(),
             $this->config->getImagePath()
         );
     }
