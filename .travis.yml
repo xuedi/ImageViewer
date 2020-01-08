@@ -6,4 +6,4 @@ install:
   - make install
 
 script:
-  - make test
+  - make test_unit
