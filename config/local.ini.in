@@ -13,6 +13,7 @@ name = 'imageViewer'
 
 [options]
 ajax = true
+threads = 16
 
 [tagGroups]
 people = friendA,friendB,friendC

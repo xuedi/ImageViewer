@@ -5,6 +5,8 @@ namespace ImageViewer;
 
 use Exception;
 use ImageViewer\Commands\DiscoverCommand;
+use ImageViewer\Commands\ThumbnailsCommand;
+use ImageViewer\Commands\ThumbnailsWorkerCommand;
 use ImageViewer\Configuration\Configuration;
 use Symfony\Component\Console\Application;
 
@@ -17,6 +19,8 @@ require __DIR__ . '/vendor/autoload.php';
 
     $application = new Application();
     $application->add(new DiscoverCommand($factory));
+    $application->add(new ThumbnailsCommand($factory));
+    $application->add(new ThumbnailsWorkerCommand($factory));
     $application->run();
 
 //} catch (Exception $e) {

@@ -10,8 +10,11 @@ default: help
 help: ## Show this help
 	@cat $(MAKEFILE_LIST) | grep -e "^[a-zA-Z_\-]*: *.*## *" | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
-run: reset_database ## Runs all kind of stuff
+reset: reset_database ## Runs all kind of stuff
 	./ImageViewer app:discover
+
+thumbs: ## Generate thumbnails
+	./ImageViewer app:generateThumbnails
 
 autoload: ## Just update the autoloader
 	./composer.phar dump-autoload
@@ -23,7 +26,7 @@ update: ## update the app
 	./composer.phar update
 
 reset_database: ## resets the database to basic seed
-	$(SQL) --execute='DROP TABLE IF EXISTS phinxlog, files, tags, locations, events, file_tags, tag_group;'
+	$(SQL) --execute='DROP TABLE IF EXISTS phinxlog, files, tags, locations, events, file_tags, tag_group, thumbs, thumb_size;'
 	vendor/bin/phinx migrate -e default -c database/phinx.php
 	vendor/bin/phinx seed:run -e default -c database/phinx.php -s LocationsSeed -s EventsSeed -s TagGroupSeed
 

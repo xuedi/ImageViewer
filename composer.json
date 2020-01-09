@@ -10,6 +10,7 @@
     "ext-exif": "*",
     "ext-pdo": "*",
     "ext-mbstring": "*",
+    "ext-pcntl": "*",
     "symfony/console": "4.*",
     "robmorgan/phinx": "0.11.*"
   },

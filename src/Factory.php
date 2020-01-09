@@ -64,6 +64,13 @@ class Factory
         );
     }
 
+    public function getThumbnailGenerator(): ThumbnailGenerator
+    {
+        return new ThumbnailGenerator(
+            $this->getDatabase()
+        );
+    }
+
     private function getMetaExtractor(): MetaExtractor
     {
         return new MetaExtractor(

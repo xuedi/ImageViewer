@@ -40,7 +40,15 @@ class Init extends AbstractMigration
         $events->addColumn('locationId', 'integer');
         $events->addColumn('date', 'string', ['limit' => 10]);
         $events->addColumn('name', 'string', ['limit' => 128]);
-        //$events->addForeignKey('locationId', 'locations', ['id'], ['constraint' => 'location_constraint']);
+        $events->create();
+
+        $events = $this->table('thumbs');
+        $events->addColumn('file_id', 'integer');
+        $events->addColumn('size_id', 'integer');
+        $events->create();
+
+        $events = $this->table('thumb_size');
+        $events->addColumn('size', 'integer');
         $events->create();
     }
 }
