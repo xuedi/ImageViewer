@@ -2,7 +2,6 @@
 
 namespace ImageViewer;
 
-use ImageViewer\Configuration\DatabaseConfig;
 use ImageViewer\DataTransferObjects\EventsDto;
 use ImageViewer\DataTransferObjects\LocationsDto;
 use PDO;
@@ -11,14 +10,9 @@ class Database
 {
     private PDO $pdo;
 
-    public function __construct(DatabaseConfig $config)
+    public function __construct(PDO $pdo)
     {
-        $options = [
-            PDO::ATTR_EMULATE_PREPARES => false, // turn off emulation mode for "real" prepared statements
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, //turn on errors in the form of exceptions
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, //make the default fetch be an associative array
-        ];
-        $this->pdo = new PDO($config->getDsn(), $config->getUser(), $config->getPass(), $options);
+        $this->pdo = $pdo;
     }
 
     public function insert(string $table, array $data): int
@@ -29,7 +23,8 @@ class Database
             $columns[] = $key;
             $placeholder[] = ":$key";
         }
-        $statement = $this->pdo->prepare("INSERT INTO $table (" . implode(', ', $columns) . ") VALUES (" . implode(', ', $placeholder) . ")");
+        $statement = $this->pdo->prepare("INSERT INTO $table (" . implode(', ', $columns) . ") VALUES (" . implode(', ',
+                $placeholder) . ")");
         $statement->execute($data);
 
         return (int)$this->pdo->lastInsertId();

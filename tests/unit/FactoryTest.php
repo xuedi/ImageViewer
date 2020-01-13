@@ -35,6 +35,11 @@ final class FactoryTest extends TestCase
         $this->assertInstanceOf(Factory::class, $this->subject);
     }
 
+    public function testCanGetThumbnailGenerator(): void
+    {
+        $this->assertInstanceOf(ThumbnailGenerator::class, $this->subject->getThumbnailGenerator());
+    }
+
     public function testCanGetDatabase(): void
     {
         $this->assertInstanceOf(Database::class, $this->subject->getDatabase());

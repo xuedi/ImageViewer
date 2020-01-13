@@ -2,15 +2,13 @@
 
 namespace ImageViewer;
 
-use ImageViewer\Configuration\Configuration;
 use ImageViewer\Configuration\DatabaseConfig;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
-final class DatabaseTest extends TestCase
+final class DatabaseConfigTest extends TestCase
 {
-    /** @var DatabaseConfig */
-    private $subject;
+    private DatabaseConfig $subject;
 
     protected function setUp(): void
     {
@@ -39,7 +37,6 @@ final class DatabaseTest extends TestCase
             'pass' => 'pass',
             'name' => 'name',
         ]);
-
     }
 
     public function testCanRetrieveDsn(): void

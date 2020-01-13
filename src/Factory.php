@@ -6,6 +6,7 @@ use ImageViewer\Configuration\Configuration;
 use ImageViewer\Extractors\EventExtractor;
 use ImageViewer\Extractors\LocationExtractor;
 use ImageViewer\Extractors\MetaExtractor;
+use PDO;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
@@ -20,7 +21,23 @@ class Factory
 
     public function getDatabase(): Database
     {
-        return new Database($this->config->getDatabase());
+        return new Database($this->getPdo());
+    }
+
+    public function getPdo(): PDO
+    {
+        $config = $this->config->getDatabase();
+        $options = [
+            PDO::ATTR_EMULATE_PREPARES => false, // turn off emulation mode for "real" prepared statements
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, //turn on errors in the form of exceptions
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, //make the default fetch be an associative array
+        ];
+        return new PDO(
+            $config->getDsn(),
+            $config->getUser(),
+            $config->getPass(),
+            $options
+        );
     }
 
     public function getExtractorService(): ExtractorService
