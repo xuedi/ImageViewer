@@ -27,9 +27,9 @@ class Configuration
         );
 
         $locations = $this->getSections($configFile, 'locations');
-        $this->imagePath = $this->processImagePath($locations['images']);
-        $this->migrations = $locations['migrations'];
-        $this->cache = $locations['cache'];
+        $this->imagePath = $this->processImagePath((string)$locations['images']);
+        $this->migrations = (string)$locations['migrations'];
+        $this->cache = (string)$locations['cache'];
     }
 
     public function getBasePath(): string
@@ -78,6 +78,9 @@ class Configuration
         $iniFile = parse_ini_file($configFile, $processSections);
         if (!isset($iniFile[$section])) {
             throw new RuntimeException("Could not get section '$section'");
+        }
+        if (!is_array($iniFile[$section])) {
+            throw new RuntimeException("Section is the wrong dataType '$section'");
         }
 
         return $iniFile[$section];

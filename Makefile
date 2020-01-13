@@ -10,32 +10,50 @@ default: help
 help: ## Show this help
 	@cat $(MAKEFILE_LIST) | grep -e "^[a-zA-Z_\-]*: *.*## *" | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
-reset: reset_database ## Runs all kind of stuff
+
+
+
+### app actions ###
+
+rebuild: reset_database ## Runs all kind of stuff
 	./ImageViewer app:discover
 
 thumbs: ## Generate thumbnails
 	./ImageViewer app:generateThumbnails
-
-autoload: ## Just update the autoloader
-	./composer.phar dump-autoload
-
-install: ## for the incial install
-	./composer.phar install
-
-update: ## update the app
-	./composer.phar update
 
 reset_database: ## resets the database to basic seed
 	$(SQL) --execute='DROP TABLE IF EXISTS phinxlog, files, tags, locations, events, file_tags, tag_group, thumbs, thumb_size;'
 	vendor/bin/phinx migrate -e default -c database/phinx.php
 	vendor/bin/phinx seed:run -e default -c database/phinx.php -s LocationsSeed -s EventsSeed -s TagGroupSeed
 
-test: test_unit test_psalm ## run all tests
+
+
+
+### composer ###
+
+composer_autoload: ## Just update the autoloader
+	./composer.phar dump-autoload
+
+composer_install: ## for the incial install
+	./composer.phar install
+
+composer_update: ## update the app
+	./composer.phar update
+
+
+
+
+### tests ###
+
+test: reset_screen composer_autoload test_unit test_psalm ## run all tests
 
 test_unit: ## run unit tests
 	./vendor/bin/phpunit -c tests/phpunit.xml
 
 test_psalm: ## run psalm static analysis
-	./vendor/bin/psalm --config='tests/psalm.xml'
+	./vendor/bin/psalm --config='tests/psalm.xml' --show-info=false
+
+reset_screen: ## basic clearing of history and screen of terminal
+	reset
 
 

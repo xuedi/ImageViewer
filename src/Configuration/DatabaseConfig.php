@@ -6,54 +6,57 @@ use RuntimeException;
 
 class DatabaseConfig
 {
-    private array $data = [
-        'host',
-        'port',
-        'user',
-        'pass',
-        'name',
-    ];
+    private string $host;
+    private string $port;
+    private string $user;
+    private string $pass;
+    private string $name;
 
     public function __construct(array $configValues)
     {
-        $setData = [];
-        foreach ($this->data as $expectedField) {
-            if (!isset($configValues[$expectedField])) {
-                throw new RuntimeException("Config 'database' is missing: '{$expectedField}'");
-            } else {
-                $setData[$expectedField] = $configValues[$expectedField];
-            }
-        }
-        $this->data = $setData;
+        $this->host = $this->ensureParameter($configValues, 'host');
+        $this->port = $this->ensureParameter($configValues, 'port');
+        $this->user = $this->ensureParameter($configValues, 'user');
+        $this->pass = $this->ensureParameter($configValues, 'pass');
+        $this->name = $this->ensureParameter($configValues, 'name');
     }
 
     public function getDsn(): string
     {
-        return 'mysql:host=' . $this->getHost() . ';port=' . $this->getPort() . ';dbname=' . $this->getName() . ';charset=utf8mb4';
+        return 'mysql:host=' . $this->host . ';port=' . $this->port . ';dbname=' . $this->name . ';charset=utf8mb4';
     }
 
     public function getHost(): string
     {
-        return $this->data['host'];
+        return $this->host;
     }
 
     public function getUser(): string
     {
-        return $this->data['user'];
+        return $this->user;
     }
 
     public function getPass(): string
     {
-        return $this->data['pass'];
+        return $this->pass;
     }
 
     public function getPort(): string
     {
-        return $this->data['port'];
+        return $this->port;
     }
 
     public function getName(): string
     {
-        return $this->data['name'];
+        return $this->name;
+    }
+
+    public function ensureParameter(array $parameters, string $field): string
+    {
+        if (!isset($parameters[$field])) {
+            throw new RuntimeException("Config 'database' is missing: '{$field}'");
+        }
+
+        return (string)$parameters[$field];
     }
 }

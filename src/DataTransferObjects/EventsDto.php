@@ -12,34 +12,34 @@ class EventsDto implements JsonSerializable
     private string    $eventName;
     private EventDate $eventDate;
 
-    static function fromArray(array $input) : self
+    static function fromArray(array $input): self
     {
         // TODO: optional $input validation
 
         return new self(
-            $input['id'],
-            $input['location'],
-            EventDate::fromString($input['eventDate']),
-            $input['eventName']
+            (int)$input['id'],
+            (int)$input['location'],
+            EventDate::fromString((string)$input['eventDate']),
+            (string)$input['eventName']
         );
     }
 
-    public function getId() : int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getLocation() : int
+    public function getLocation(): int
     {
         return $this->location;
     }
 
-    public function getEventDate() : EventDate
+    public function getEventDate(): EventDate
     {
         return $this->eventDate;
     }
 
-    public function getEventName() : string
+    public function getEventName(): string
     {
         return $this->eventName;
     }
@@ -47,8 +47,8 @@ class EventsDto implements JsonSerializable
     public function jsonSerialize()
     {
         return [
-            'id'        => $this->id,
-            'location'  => $this->location,
+            'id' => $this->id,
+            'location' => $this->location,
             'eventDate' => $this->eventDate->asString(),
             'eventName' => $this->eventName,
         ];
@@ -56,8 +56,8 @@ class EventsDto implements JsonSerializable
 
     private function __construct(int $id, int $location, EventDate $eventDate, string $eventName)
     {
-        $this->id        = $id;
-        $this->location  = $location;
+        $this->id = $id;
+        $this->location = $location;
         $this->eventDate = $eventDate;
         $this->eventName = $eventName;
     }

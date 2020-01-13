@@ -12,7 +12,8 @@
     "ext-mbstring": "*",
     "ext-pcntl": "*",
     "symfony/console": "4.*",
-    "robmorgan/phinx": "0.11.*"
+    "robmorgan/phinx": "0.11.*",
+    "symfony/process": "^5.0"
   },
   "require-dev": {
     "symfony/var-dumper": "4.*",

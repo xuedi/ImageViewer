@@ -2,6 +2,7 @@
 
 namespace ImageViewer\Configuration;
 
+// TODO: move to database via phinx seed
 class TagGroupConfig
 {
     private array $groups = [];
@@ -9,7 +10,7 @@ class TagGroupConfig
     public function __construct(array $data)
     {
         foreach ($data as $group => $values) {
-            $this->groups[$group] = explode(',', $values);
+            $this->groups[(string)$group] = explode(',', (string)$values);
         }
     }
 

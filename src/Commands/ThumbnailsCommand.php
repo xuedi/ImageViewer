@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace ImageViewer\Commands;
 
@@ -8,16 +8,21 @@ use Symfony\Component\Process\Process;
 
 class ThumbnailsCommand extends FactoryCommand
 {
-    protected static $defaultName = 'app:generateThumbnails';
-
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function configure()
     {
-        $output->write('Start X worker ... ');
+        $this->setName('app:generateThumbnails');
+        $this->setDescription('Regenerates all thumbnails');
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $maxWorker = 16;
+
+        $output->write("Start $maxWorker worker ... ");
 
         pcntl_async_signals(true);
 
         $runningProcesses = [];
-        $maxWorker = 16;
         for ($numbers = 1; $numbers <= $maxWorker; $numbers++) {
             //$process = new Process(['./ImageViewer', 'app:generateThumbnails:worker', $number]);
             $process = new Process(['stress', '--cpu', '1', '--timeout', '2']);
@@ -37,5 +42,7 @@ class ThumbnailsCommand extends FactoryCommand
         }
 
         $output->writeln('DONE');
+
+        return 0;
     }
 }
