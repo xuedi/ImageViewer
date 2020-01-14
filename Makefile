@@ -28,7 +28,7 @@ reset_screen: ## basic clearing of history and screen of terminal
 
 ci_codacy: ## report coverage to coverage
 	export CODACY_PROJECT_TOKEN=%Project_Token%
-	vendor/bin/codacycoverage clover reports/coverage
+	vendor/bin/codacycoverage clover reports/coverage/clover.xml
 
 
 
