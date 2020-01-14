@@ -3,7 +3,7 @@ php:
   - '7.4'
 
 install:
-  - make install
+  - make composer_install
 
 script:
   - make test_unit

@@ -78,7 +78,7 @@ class MetaExtractor
         if (!isset($this->tagGroup[$tag])) {
             return 1; // unknown
         }
-        return $this->tagGroup[$tag];
+        return (int)$this->tagGroup[$tag];
     }
 
     private function buildLookup(array $tagGroup): array
@@ -97,8 +97,8 @@ class MetaExtractor
         foreach ($tagGroup as $group => $values) {
             foreach ($values as $tag) {
                 $tag = strtolower(trim($tag));
-                $group = strtolower(trim($group));
-                $retVal[$tag] = $groupLookup[$group];
+                $group = strtolower(trim((string)$group));
+                $retVal[$tag] = $groupLookup[(string)$group];
             }
         }
 

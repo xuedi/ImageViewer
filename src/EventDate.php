@@ -48,7 +48,7 @@ class EventDate
     private function ensureDashes(string $data): array
     {
         $chunks = explode('-', $data);
-        if (empty($chunks) || !is_array($chunks) || count($chunks) != 3) {
+        if (empty($chunks) || count($chunks) != 3) {
             throw new RuntimeException("Cound not create EventDate from '{$data}'");
         }
 

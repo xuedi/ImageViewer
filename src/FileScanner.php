@@ -43,7 +43,7 @@ class FileScanner
         return $newFiles;
     }
 
-    private function makeFileList(string $dir, &$results = []): array
+    private function makeFileList(string $dir, array &$results = []): array
     {
         $files = scandir($dir);
 

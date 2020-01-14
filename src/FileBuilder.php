@@ -41,7 +41,10 @@ class FileBuilder
     private function parseFile(string $file, array $events): array
     {
         $imageExif = exif_read_data($file);
-        list($width, $height) = getimagesize($file);
+        $imageSite = getimagesize($file);
+
+        $width = (int)$imageSite[0];
+        $height = (int)$imageSite[1];
 
         $fileName = $file;
         if (substr($file, 0, strlen($this->path)) == $this->path) {
@@ -67,8 +70,8 @@ class FileBuilder
 
     private function parseTags(array $file, array $tags, int $fileId): void
     {
-        $fileName = $this->path . $file['fileName'];
-        if(file_exists($fileName)) {
+        $fileName = $this->path . (string)$file['fileName'];
+        if (file_exists($fileName)) {
             $fileTags = $this->metaExtractor->getTags($fileName);
             foreach ($fileTags as $tag) {
                 $tagId = $tags[strtolower($tag)] ?? null;

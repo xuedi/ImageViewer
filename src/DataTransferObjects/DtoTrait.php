@@ -5,7 +5,7 @@ trait DtoTypes
     public static function ensureParameter(array $parameter, array $expectedFields): void
     {
         foreach ($expectedFields as $fieldName) {
-            if (!isset($parameter[$fieldName])) {
+            if (!isset($parameter[(string)$fieldName])) {
                 throw new RuntimeException("Missing argument '$fieldName'");
             }
         }
