@@ -18,6 +18,18 @@ help: ## Show this help
 install: composer_install ## Runs all kind of stuff
 	cp config/local.ini.in config/local.ini
 
+reset_screen: ## basic clearing of history and screen of terminal
+	reset
+
+
+
+
+### some continious integration ###
+
+ci_codacy: ## report coverage to coverage
+	export CODACY_PROJECT_TOKEN=acb8cbb9cc4e46b285cb5723fe3529de
+	vendor/bin/codacycoverage clover reports/coverage
+
 
 
 
@@ -60,8 +72,4 @@ test_unit: ## run unit tests
 
 test_psalm: ## run psalm static analysis
 	./vendor/bin/psalm --config='tests/psalm.xml' --show-info=false
-
-reset_screen: ## basic clearing of history and screen of terminal
-	reset
-
 

@@ -19,6 +19,7 @@
     "symfony/var-dumper": "4.*",
     "phpunit/phpunit": "8.*",
     "vimeo/psalm": "3.*",
-    "dg/bypass-finals": "^1.1"
+    "dg/bypass-finals": "^1.1",
+    "codacy/coverage": "dev-master"
   }
 }
