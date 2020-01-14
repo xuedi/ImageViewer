@@ -7,8 +7,16 @@ SQL:=mysql --user=$(SQL_USER) --password=$(SQL_PASS) --database=$(SQL_NAME) --ho
 
 default: help
 
+
+
+
+### some basics ###
+
 help: ## Show this help
 	@cat $(MAKEFILE_LIST) | grep -e "^[a-zA-Z_\-]*: *.*## *" | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
+
+install: composer_install ## Runs all kind of stuff
+	cp config/local.ini.in config/local.ini
 
 
 
