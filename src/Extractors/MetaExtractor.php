@@ -12,31 +12,38 @@ class MetaExtractor
     private array $tagGroup;
     private string $path;
     private Database $database;
+    private ProgressBar $progressBar;
     private OutputInterface $output;
 
-    public function __construct(Database $database, OutputInterface $output, string $path, array $tagGroup)
-    {
+    public function __construct(
+        Database $database,
+        OutputInterface $output,
+        ProgressBar $progressBar,
+        string $path,
+        array $tagGroup
+    ) {
         $this->database = $database;
         $this->output = $output;
         $this->path = $path;
         $this->tagGroup = $this->buildLookup($tagGroup);
+        $this->progressBar = $progressBar;
     }
 
     public function parse(array $newFiles): array
     {
-        $progressBar = new ProgressBar($this->output, count($newFiles));
-        $progressBar->setFormat('Tags:      [%bar%] %memory:6s%');
-        $progressBar->start();
+        $this->progressBar->setMaxSteps(count($newFiles));
+        $this->progressBar->setFormat('Tags:      [%bar%] %memory:6s%');
+        $this->progressBar->start();
 
         $this->tags = $this->database->getTags();
 
         foreach ($newFiles as $newFile) {
-            $progressBar->advance();
+            $this->progressBar->advance();
             $tags = $this->getTags($newFile);
             $this->saveTags($tags);
         }
-        $progressBar->advance();
-        $progressBar->finish();
+        $this->progressBar->advance();
+        $this->progressBar->finish();
 
         $this->output->write(PHP_EOL);
         return $this->database->getTags(true);

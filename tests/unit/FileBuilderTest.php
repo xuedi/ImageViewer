@@ -41,7 +41,7 @@ final class FileBuilderTest extends TestCase
             $this->outputMock,
             $this->metaExtractorMock,
             $this->progressBar,
-            'Path'
+            $this->basePath
         );
     }
 
@@ -68,7 +68,7 @@ final class FileBuilderTest extends TestCase
             4 => $this->basePath . 'China/2002-04-00 Day in HongKong/lf-franciz--VxduY2PV-g-unsplash.jpg',
             5 => $this->basePath . 'Germany/2019-09-13 Out in the green/SunFlowerCouple.jpg',
             6 => $this->basePath . 'Germany/2019-09-13 Out in the green/SunFlowerHouse.jpeg',
-            7 => $this->basePath . 'Germany/2019-09-13 Out in the green/SunflowersFromWikipedia.jpg',
+            7 => $this->basePath . 'Germany/2019-09-13 Out in the green/SunflowersFromWikipedia.jpg', // exif issue
         ];
         $events = [];
         $tags = [];

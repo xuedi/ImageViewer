@@ -48,8 +48,11 @@ class FileBuilder
 
     private function parseFile(string $file, array $events): array
     {
-        $imageExif = exif_read_data($file);
         $imageSite = getimagesize($file);
+        $imageExif = @exif_read_data($file);
+        if($imageExif===false) {
+            $imageExif = null;
+        }
 
         $width = (int)$imageSite[0];
         $height = (int)$imageSite[1];

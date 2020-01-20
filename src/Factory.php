@@ -93,6 +93,7 @@ class Factory
         return new MetaExtractor(
             $this->getDatabase(),
             $this->getOutput(),
+            $this->getProgressBar(),
             $this->config->getImagePath(),
             $this->config->getTagGroup()
         );
