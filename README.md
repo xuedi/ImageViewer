@@ -1,6 +1,6 @@
 
 [![Build Status](https://travis-ci.org/xuedi/ImageViewer.svg?branch=master)](https://travis-ci.org/xuedi/ImageViewer)
-[![alt text](https://raw.githubusercontent.com/xuedi/ImageViewer/master/tests/badge/coverage.svg)](https://raw.githubusercontent.com/xuedi/ImageViewer/master/tests/badge/coverage.svg)
+![alt text](https://raw.githubusercontent.com/xuedi/ImageViewer/master/tests/badge/coverage.svg?sanitize=true)
 
 ## introduction
 ImageViewer is a tool for managing your Images Collection its written
