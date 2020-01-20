@@ -6,11 +6,12 @@
   },
   "require": {
     "php": "7.4.*",
+    "ext-gd": "*",
+    "ext-pdo": "*",
     "ext-json": "*",
     "ext-exif": "*",
-    "ext-pdo": "*",
-    "ext-mbstring": "*",
     "ext-pcntl": "*",
+    "ext-mbstring": "*",
     "symfony/console": "4.*",
     "robmorgan/phinx": "0.11.*",
     "symfony/process": "^5.0"
@@ -20,6 +21,6 @@
     "phpunit/phpunit": "8.*",
     "vimeo/psalm": "3.*",
     "dg/bypass-finals": "^1.1",
-    "codacy/coverage": "dev-master"
+    "ext-simplexml": "*"
   }
 }

@@ -26,9 +26,9 @@ reset_screen: ## basic clearing of history and screen of terminal
 
 ### some continious integration ###
 
-ci_codacy: ## report coverage to coverage
-	export CODACY_PROJECT_TOKEN=%Project_Token%
-	vendor/bin/codacycoverage clover reports/coverage/clover.xml
+ci_coverage_badge: ## generate badge and add it to repo
+	php tests/badge_generator.php
+	git add tests/badge/coverage.svg
 
 
 

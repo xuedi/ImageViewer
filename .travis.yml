@@ -7,6 +7,3 @@ install:
 
 script:
   - make test_unit
-
-after_script:
-  - make ci_codacy

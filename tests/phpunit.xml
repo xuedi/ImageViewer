@@ -6,8 +6,8 @@
     </testsuite>
 
     <logging>
-        <log type="coverage-html" target="../reports/coverage/unit" highLowerBound="100"/>
-        <log type="coverage-clover" target="../reports/coverage/clover.xml" highLowerBound="100"/>
+        <log type="coverage-html" target="../reports/unit" highLowerBound="100"/>
+        <log type="coverage-clover" target="../reports/clover.xml" highLowerBound="100"/>
         <log type="coverage-text" target="php://stdout" showOnlySummary="true"/>
     </logging>
 
