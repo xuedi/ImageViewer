@@ -35,13 +35,16 @@ ci_codacy: ## report coverage to coverage
 
 ### app actions ###
 
-rebuild: reset_database ## Runs all kind of stuff
+app_rebuild: app_reset_database ## Runs all kind of stuff (reset & rebuild)
 	./ImageViewer app:discover
 
-thumbs: ## Generate thumbnails
+app_scan: ## Scans the library for changes (incremental)
+	./ImageViewer app:scan
+
+app_thumbs: ## Generate thumbnails (see settings for number of threads)
 	./ImageViewer app:generateThumbnails
 
-reset_database: ## resets the database to basic seed
+app_reset_database: ## resets the database to basic seed
 	$(SQL) --execute='DROP TABLE IF EXISTS phinxlog, files, tags, locations, events, file_tags, tag_group, thumbs, thumb_size;'
 	vendor/bin/phinx migrate -e default -c database/phinx.php
 	vendor/bin/phinx seed:run -e default -c database/phinx.php -s LocationsSeed -s EventsSeed -s TagGroupSeed

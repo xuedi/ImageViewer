@@ -10,30 +10,38 @@ class FileBuilder
 {
     private string $path;
     private Database $database;
+    private ProgressBar $progressBar;
     private OutputInterface $output;
     private MetaExtractor $metaExtractor;
 
-    public function __construct(Database $database, OutputInterface $output, MetaExtractor $metaExtractor, string $path)
-    {
+    public function __construct(
+        Database $database,
+        OutputInterface $output,
+        MetaExtractor $metaExtractor,
+        ProgressBar $progressBar,
+        string $path
+    ) {
         $this->database = $database;
         $this->output = $output;
         $this->path = $path;
         $this->metaExtractor = $metaExtractor;
+        $this->progressBar = $progressBar;
     }
 
     public function build(array $newFiles, array $events, array $tags): void
     {
-        $progressBar = new ProgressBar($this->output, count($newFiles));
-        $progressBar->setFormat('Files:     [%bar%] %memory:6s%');
-        $progressBar->start();
+        $this->progressBar->setMaxSteps(count($newFiles));
+        $this->progressBar->setFormat('Files:     [%bar%] %memory:6s%');
+        $this->progressBar->start();
+
         foreach ($newFiles as $newFile) {
             $file = $this->parseFile($newFile, $events);
             $this->parseTags($file, $tags, $this->database->insert('files', $file));
 
-            $progressBar->advance();
+            $this->progressBar->advance();
         }
-        $progressBar->advance();
-        $progressBar->finish();
+        $this->progressBar->advance();
+        $this->progressBar->finish();
 
         $this->output->write(PHP_EOL);
     }

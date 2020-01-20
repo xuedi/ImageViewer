@@ -104,6 +104,7 @@ class Factory
             $this->getDatabase(),
             $this->getOutput(),
             $this->getMetaExtractor(),
+            $this->getProgressBar(),
             $this->config->getImagePath()
         );
     }
