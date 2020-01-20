@@ -16,9 +16,10 @@ class ThumbnailsWorkerCommand extends FactoryCommand
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('start worker');
-        sleep(2);
+
+        $this->factory->getThumbnailGenerator()->run();
+
         $output->writeln('stop worker');
-        //$this->factory->getThumbnailGenerator()->run();
 
         return 0;
     }

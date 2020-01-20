@@ -5,7 +5,10 @@ namespace ImageViewer\DataTransferObjects;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
-// TODO: use dataProvider to test each attribute one, but with all wrong types
+/**
+ * @covers \ImageViewer\DataTransferObjects\LocationsDto
+ * TODO: use dataProvider to test each attribute one, but with all wrong types
+ */
 final class LocationsDtoTest extends TestCase
 {
     public function testCanBeBuild(): void
