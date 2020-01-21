@@ -1,4 +1,5 @@
 
+[![Actions Status](https://github.com/xuedi/ImageViewer/workflows/PHP-Unit/badge.svg)](https://github.com/ImageViewer/master/actions)
 [![Build Status](https://travis-ci.org/xuedi/ImageViewer.svg?branch=master)](https://travis-ci.org/xuedi/ImageViewer)
 [![Code Coverage](https://raw.githubusercontent.com/xuedi/ImageViewer/master/tests/badge/coverage.svg?sanitize=true)](https://github.com/xuedi/ImageViewer/blob/master/tests/badge_generator.php)
 
