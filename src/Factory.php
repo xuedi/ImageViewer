@@ -40,6 +40,11 @@ class Factory
         );
     }
 
+    public function getConfig(): Configuration
+    {
+        return $this->config;
+    }
+
     public function getExtractorService(): ExtractorService
     {
         return new ExtractorService(

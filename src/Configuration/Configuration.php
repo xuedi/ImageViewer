@@ -10,6 +10,7 @@ class Configuration
     private string $imagePath;
     private string $cache;
     private string $migrations;
+    private OptionsConfig $options;
     private DatabaseConfig $database;
     private TagGroupConfig $tagGroup;
 
@@ -24,6 +25,10 @@ class Configuration
 
         $this->tagGroup = new TagGroupConfig(
             $this->getSections($configFile, 'tagGroups')
+        );
+
+        $this->options = new OptionsConfig(
+            $this->getSections($configFile, 'options')
         );
 
         $locations = $this->getSections($configFile, 'locations');
@@ -43,6 +48,11 @@ class Configuration
     public function getDatabase(): DatabaseConfig
     {
         return $this->database;
+    }
+
+    public function getOptions(): OptionsConfig
+    {
+        return $this->options;
     }
 
     public function getImagePath(): string

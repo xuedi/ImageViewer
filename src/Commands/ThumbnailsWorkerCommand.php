@@ -2,6 +2,7 @@
 
 namespace ImageViewer\Commands;
 
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -11,15 +12,16 @@ class ThumbnailsWorkerCommand extends FactoryCommand
     {
         $this->setName('app:generateThumbnails:worker');
         $this->setDescription('Internal thumbnail generator, please use \'app:generateThumbnails\' instead');
+        $this->addArgument('thread', InputArgument::REQUIRED, 'The number of the worker');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $output->writeln('start worker');
+        $worker = $input->getArgument('thread');
+
+        $output->write('worker ' . $worker);
 
         $this->factory->getThumbnailGenerator()->run();
-
-        $output->writeln('stop worker');
 
         return 0;
     }

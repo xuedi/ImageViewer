@@ -16,9 +16,13 @@ jobs:
       with:
         php-version: '7.4'
         extensions: mbstring, xml, pcntl, exif, json, pdo, gd
-        ini-values: post_max_size=256M, short_open_tag=On #optional, setup php.ini configuration
-        coverage: xdebug #optional, setup coverage driver
-        tools: php-cs-fixer, phpunit
+        ini-values: post_max_size=256M, short_open_tag=On
+        coverage: xdebug
+        tools: phpunit
+
+    - name: Create config file
+      run: |
+        cp config/local.ini.in config/local.ini
 
     - name: Install Composer dependencies
       run: |

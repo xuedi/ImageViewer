@@ -16,32 +16,46 @@ class ThumbnailsCommand extends FactoryCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $maxWorker = 16;
+        $maxWorker = $this->factory->getConfig()->getOptions()->getThreads();
 
-        $output->write("Start $maxWorker worker ... ");
+        $output->writeln("--- Start $maxWorker worker --- ");
 
         pcntl_async_signals(true);
 
         $runningProcesses = [];
-        for ($numbers = 1; $numbers <= $maxWorker; $numbers++) {
-            //$process = new Process(['./ImageViewer', 'app:generateThumbnails:worker', $number]);
-            $process = new Process(['stress', '--cpu', '1', '--timeout', '2']);
-            $process->disableOutput();
+        for ($number = 1; $number <= $maxWorker; $number++) {
+            $process = new Process(['./ImageViewer', 'app:generateThumbnails:worker', "$number"]);
+            $process->enableOutput();
+            $process->setInput($number);
             $process->start();
 
             $runningProcesses[] = $process;
         }
 
         while (count($runningProcesses)) {
+            /** @var Process $runningProcess */
             foreach ($runningProcesses as $i => $runningProcess) {
                 if (!$runningProcess->isRunning()) {
+
+
+                    foreach ($runningProcess as $type => $data) {
+                        if ($runningProcess::OUT === $type) {
+                            echo $data."\n";
+                        } else {
+                            echo "Worker::Error: ".$data."\n";
+                        }
+                    }
+
+
+                    //$runningProcess->
+
                     unset($runningProcesses[$i]);
                 }
                 sleep(1);
             }
         }
 
-        $output->writeln('DONE');
+        $output->writeln('---');
 
         return 0;
     }
