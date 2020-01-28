@@ -21,7 +21,7 @@ class OptionsConfig
     private function ensureParameter(array $parameters, string $field): string
     {
         if (!isset($parameters[$field])) {
-            throw new RuntimeException("Config 'database' is missing: '{$field}'");
+            throw new RuntimeException("Config 'options' is missing: '{$field}'");
         }
 
         return (string)$parameters[$field];

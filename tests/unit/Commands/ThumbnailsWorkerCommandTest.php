@@ -20,6 +20,9 @@ final class ThumbnailsWorkerCommandTest extends TestCase
         $command = $application->find('app:generateThumbnails:worker');
 
         $commandTester = new CommandTester($command);
-        $commandTester->execute([]);
+        $commandTester->execute([
+            'command' => $command->getName(),
+            'thread' => '2',
+        ]);
     }
 }
