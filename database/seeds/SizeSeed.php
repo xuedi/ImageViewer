@@ -19,12 +19,12 @@ class SizeSeed extends AbstractSeed
                 'size' => 400,
             ],
             [
-                'id' => 2,
+                'id' => 3,
                 'size' => 1000,
             ],
         ];
 
-        $events = $this->table('thumb_size');
-        $events->insert($data)->save();
+        $thumbSite = $this->table('thumb_size');
+        $thumbSite->insert($data)->save();
     }
 }

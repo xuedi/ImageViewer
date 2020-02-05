@@ -17,6 +17,8 @@ class ThumbnailGenerator
 
     public function run(int $thread = 0): void
     {
-        dump($thread);
+        $thumbPath = realpath(__DIR__ . '/../') . '/public/thumbs';
+        $missingThumbnails = $this->database->getMissingThumbnails();
+        dump($missingThumbnails);
     }
 }

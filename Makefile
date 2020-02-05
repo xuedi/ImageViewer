@@ -37,9 +37,10 @@ ci_coverage_badge: ## generate badge and add it to repo
 
 app_rebuild: app_reset_database ## Runs all kind of stuff (reset & rebuild)
 	./ImageViewer app:discover
+	./ImageViewer app:generateThumbnails
 
-app_scan: ## Scans the library for changes (incremental)
-	./ImageViewer app:scan
+app_discover: ## Scans the library for changes (incremental)
+	./ImageViewer app:discover
 
 app_thumbs: ## Generate thumbnails (see settings for number of threads)
 	./ImageViewer app:generateThumbnails
@@ -47,7 +48,7 @@ app_thumbs: ## Generate thumbnails (see settings for number of threads)
 app_reset_database: ## resets the database to basic seed
 	$(SQL) --execute='DROP TABLE IF EXISTS phinxlog, files, tags, locations, events, file_tags, tag_group, thumbs, thumb_size;'
 	vendor/bin/phinx migrate -e default -c database/phinx.php
-	vendor/bin/phinx seed:run -e default -c database/phinx.php -s LocationsSeed -s EventsSeed -s TagGroupSeed
+	vendor/bin/phinx seed:run -e default -c database/phinx.php -s LocationsSeed -s EventsSeed -s TagGroupSeed -s SizeSeed
 
 
 

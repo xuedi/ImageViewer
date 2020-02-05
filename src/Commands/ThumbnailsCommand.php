@@ -40,9 +40,9 @@ class ThumbnailsCommand extends FactoryCommand
 
                     foreach ($runningProcess as $type => $data) {
                         if ($runningProcess::OUT === $type) {
-                            echo (string)$data . "\n";
+                            echo (string)$data . PHP_EOL;
                         } else {
-                            echo "Worker::Error: " . (string)$data . "\n";
+                            echo "Worker::Error: " . (string)$data . PHP_EOL;
                         }
                     }
 

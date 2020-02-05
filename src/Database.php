@@ -38,6 +38,28 @@ class Database
         return $statement->fetchAll(PDO::FETCH_COLUMN);
     }
 
+    public function getMissingThumbnails(): array
+    {
+        // TODO: via native query
+        $sizeQuery = $this->pdo->prepare("SELECT id, size FROM thumb_size; ");
+        $sizeQuery->execute();
+        $size = $sizeQuery->fetchAll(PDO::FETCH_KEY_PAIR);
+        dump($size);
+
+
+        $filesQuery = $this->pdo->prepare("SELECT id, fileName FROM files; ");
+        $filesQuery->execute();
+        $files = $filesQuery->fetchAll(PDO::FETCH_KEY_PAIR);
+        dump($files);
+
+        $thumbsQuery = $this->pdo->prepare("SELECT file_id, size_id FROM thumbs; ");
+        $thumbsQuery->execute();
+        $thumbs = $filesQuery->fetchAll(PDO::FETCH_COLUMN);
+        dump($thumbs);
+
+        return [];
+    }
+
     public function getLocations(bool $reverse = false): array
     {
         $statement = $this->pdo->prepare("SELECT id, name FROM locations; ");
