@@ -40,24 +40,47 @@ class Database
 
     public function getMissingThumbnails(): array
     {
-        // TODO: via native query
+        // TODO: via native query and save all that loop BS
+
         $sizeQuery = $this->pdo->prepare("SELECT id, size FROM thumb_size; ");
         $sizeQuery->execute();
         $size = $sizeQuery->fetchAll(PDO::FETCH_KEY_PAIR);
-        dump($size);
-
 
         $filesQuery = $this->pdo->prepare("SELECT id, fileName FROM files; ");
         $filesQuery->execute();
         $files = $filesQuery->fetchAll(PDO::FETCH_KEY_PAIR);
-        dump($files);
+
+        $hashQuery = $this->pdo->prepare("SELECT id, fileHash FROM files; ");
+        $hashQuery->execute();
+        $hash = $hashQuery->fetchAll(PDO::FETCH_KEY_PAIR);
 
         $thumbsQuery = $this->pdo->prepare("SELECT file_id, size_id FROM thumbs; ");
         $thumbsQuery->execute();
-        $thumbs = $filesQuery->fetchAll(PDO::FETCH_COLUMN);
-        dump($thumbs);
+        $thumbs = $thumbsQuery->fetchAll(PDO::FETCH_ASSOC);
 
-        return [];
+        $missingThumbnails = [];
+        foreach ($size as $sizeKey => $sizeValue) {
+            foreach ($files as $fileKey => $fileValue) {
+                $noEntry = true;
+                foreach ($thumbs as $thumb) {
+                    if($thumb['file_id'] == $fileKey && $thumb['size_id'] == $sizeKey) {
+                        $noEntry = false;
+                        break;
+                    }
+                }
+                if($noEntry) {
+                    $missingThumbnails[] = [
+                        'name'=> $hash[$fileKey] . '_' . $sizeValue,
+                        'size'=> $sizeValue,
+                        'size_id'=> $sizeKey,
+                        'file'=> $fileValue,
+                        'file_id'=> $fileKey,
+                    ];
+                }
+            }
+        }
+
+        return $missingThumbnails;
     }
 
     public function getLocations(bool $reverse = false): array

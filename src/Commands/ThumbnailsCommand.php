@@ -14,7 +14,7 @@ class ThumbnailsCommand extends FactoryCommand
         $this->setDescription('Regenerates all thumbnails');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $maxWorker = $this->factory->getConfig()->getOptions()->getThreads();
 
@@ -23,7 +23,7 @@ class ThumbnailsCommand extends FactoryCommand
         pcntl_async_signals(true);
 
         $runningProcesses = [];
-        for ($number = 1; $number <= $maxWorker; $number++) {
+        for ($number = 0; $number < $maxWorker; $number++) {
             $process = new Process(['./ImageViewer', 'app:generateThumbnails:worker', "$number"]);
             $process->enableOutput();
             $process->setInput($number);
@@ -51,12 +51,9 @@ class ThumbnailsCommand extends FactoryCommand
 
                     unset($runningProcesses[$i]);
                 }
-                sleep(1);
             }
         }
 
         $output->writeln('---');
-
-        return 0;
     }
 }

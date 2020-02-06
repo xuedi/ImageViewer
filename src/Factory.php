@@ -89,7 +89,9 @@ class Factory
     public function getThumbnailGenerator(): ThumbnailGenerator
     {
         return new ThumbnailGenerator(
-            $this->getDatabase()
+            $this->getDatabase(),
+            $this->getConfig()->getImagePath(),
+            $this->getConfig()->getOptions()->getThreads()
         );
     }
 
