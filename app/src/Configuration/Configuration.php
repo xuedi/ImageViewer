@@ -98,10 +98,16 @@ class Configuration
 
     private function processImagePath(string $imagePath): string
     {
-        if (is_dir($imagePath)) {
-            return realpath($imagePath) . '/';
+        if ($imagePath[0] == '/') {
+            $absolutePath = $imagePath;
+        } else {
+            $absolutePath = realpath(__DIR__ . '/../../../') . '/' . $imagePath;
         }
 
-        throw new RuntimeException("Could not find the image path: '$imagePath'");
+        if (is_dir($absolutePath)) {
+            return $absolutePath;
+        }
+
+        throw new RuntimeException("Could not find the image absolute path: '$absolutePath', config: '$imagePath'");
     }
 }

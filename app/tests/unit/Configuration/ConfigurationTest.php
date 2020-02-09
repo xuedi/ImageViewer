@@ -14,7 +14,7 @@ final class ConfigurationTest extends TestCase
 
     protected function setUp(): void
     {
-        $file = __DIR__ . '/../../resources/config.ini';
+        $file = realpath(__DIR__ . '/../../resources/') . '/config.ini';
         $this->subject = new Configuration($file);
     }
 
@@ -34,9 +34,19 @@ final class ConfigurationTest extends TestCase
     public function testCanRetrieveRelativeBasePath(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage("Could not find the image path: '/tmp/nonExistingPath'");
+        $this->expectExceptionMessage("Could not find the image absolute path: '/tmp/nonExistingPath', config: '/tmp/nonExistingPath'");
 
-        $file = __DIR__ . '/../../resources/configMissingImagePath.ini';
+        $file = __DIR__ . '/../../resources/configMissingAbsoluteImagePath.ini';
+        new Configuration($file);
+    }
+
+    public function testCanRetrieveAbsoluteBasePath(): void
+    {
+        $realPath = realpath(__DIR__ .'/../../../../');
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage("Could not find the image absolute path: '$realPath/nonExistingPath', config: 'nonExistingPath'");
+
+        $file = __DIR__ . '/../../resources/configMissingRelativeImagePath.ini';
         new Configuration($file);
     }
 
@@ -50,7 +60,7 @@ final class ConfigurationTest extends TestCase
 
     public function testCanRetrieveCachePath(): void
     {
-        $expected = 'tests/resources/tmp/';
+        $expected = 'app/tests/resources/tmp/';
         $actual = $this->subject->getCachePath();
 
         $this->assertEquals($expected, $actual);
@@ -58,7 +68,7 @@ final class ConfigurationTest extends TestCase
 
     public function testCanRetrieveMigrationsPath(): void
     {
-        $expected = 'database/migrations/';
+        $expected = 'app/database/migrations/';
         $actual = $this->subject->getMigrationsPath();
 
         $this->assertEquals($expected, $actual);
@@ -78,7 +88,7 @@ final class ConfigurationTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    public function testCanRetrievetagGroup(): void
+    public function testCanRetrieveTagGroup(): void
     {
         $actual = $this->subject->getTagGroup();
         $expected = [

@@ -141,7 +141,7 @@ final class ThumbnailGeneratorTest extends TestCase
     public function testExceptionToBeShownOnAlreadyExistingThumbnail(): void
     {
         $file = '.gitkeep';
-        $expectedFile = realpath(__DIR__ . '/../../') . '/public/thumbs/'. $file;
+        $expectedFile = realpath(__DIR__ . '/../../../') . '/public/thumbs/'. $file;
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessage("Thumbnail already exist '$expectedFile'");

@@ -27,8 +27,8 @@ reset_screen: ## basic clearing of history and screen of terminal
 ### some continious integration ###
 
 ci_coverage_badge: ## generate badge and add it to repo
-	php tests/badge_generator.php
-	git add tests/badge/coverage.svg
+	php app/tests/badge_generator.php
+	git add app/tests/badge/coverage.svg
 
 
 
@@ -36,19 +36,27 @@ ci_coverage_badge: ## generate badge and add it to repo
 ### app actions ###
 
 app_rebuild: app_reset_database ## Runs all kind of stuff (reset & rebuild)
-	./ImageViewer app:discover
-	./ImageViewer app:generateThumbnails
+	./app/ImageViewer app:discover
+	./app/ImageViewer app:generateThumbnails
 
 app_discover: ## Scans the library for changes (incremental)
-	./ImageViewer app:discover
+	./app/ImageViewer app:discover
 
 app_thumbs: ## Generate thumbnails (see settings for number of threads)
-	./ImageViewer app:generateThumbnails
+	./app/ImageViewer app:generateThumbnails
 
 app_reset_database: ## resets the database to basic seed
 	$(SQL) --execute='DROP TABLE IF EXISTS phinxlog, files, tags, locations, events, file_tags, tag_group, thumbs, thumb_size;'
-	vendor/bin/phinx migrate -e default -c database/phinx.php
-	vendor/bin/phinx seed:run -e default -c database/phinx.php -s LocationsSeed -s EventsSeed -s TagGroupSeed -s SizeSeed
+	app/vendor/bin/phinx migrate -e default -c database/phinx.php
+	app/vendor/bin/phinx seed:run -e default -c database/phinx.php -s LocationsSeed -s EventsSeed -s TagGroupSeed -s SizeSeed
+
+
+
+
+### frontend ###
+
+frontend_install: ## insalling frontend dependencies
+	npm install --prefix frontend
 
 
 
@@ -56,13 +64,13 @@ app_reset_database: ## resets the database to basic seed
 ### composer ###
 
 composer_autoload: ## Just update the autoloader
-	./composer.phar dump-autoload
+	./app/composer.phar dump-autoload --working-dir=app
 
 composer_install: ## for the incial install
-	./composer.phar install
+	./app/composer.phar install --working-dir=app
 
 composer_update: ## update the app
-	./composer.phar update
+	./app/composer.phar update --working-dir=app
 
 
 
@@ -72,8 +80,8 @@ composer_update: ## update the app
 test: reset_screen composer_autoload test_unit test_psalm ## run all tests
 
 test_unit: ## run unit tests
-	./vendor/bin/phpunit -c tests/phpunit.xml
+	./app/vendor/bin/phpunit -c app/tests/phpunit.xml
 
 test_psalm: ## run psalm static analysis
-	./vendor/bin/psalm --config='tests/psalm.xml' --show-info=false
+	./app/vendor/bin/psalm --config='app/tests/psalm.xml' --show-info=false
 

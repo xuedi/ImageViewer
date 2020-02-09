@@ -21,7 +21,8 @@ class ThumbnailGenerator
     {
         $generated = 0;
 
-        $thumbPath = realpath(__DIR__ . '/../') . '/public/thumbs/';
+        $thumbPath = realpath(__DIR__ . '/../../') . '/public/thumbs/';
+
         $imagePath = realpath($this->imagePath) . '/';
         $missingThumbnails = $this->database->getMissingThumbnails();
 
