@@ -1,5 +1,5 @@
 
-[![Actions Status](https://github.com/xuedi/ImageViewer/workflows/PHP-Unit/badge.svg)](https://github.com/ImageViewer/master/actions)
+[![Actions Status](https://github.com/xuedi/ImageViewer/workflows/PHP-Unit/badge.svg)](https://github.com/xuedi/ImageViewer/actions)
 [![Code Coverage](https://raw.githubusercontent.com/xuedi/ImageViewer/master/tests/badge/coverage.svg?sanitize=true)](https://github.com/xuedi/ImageViewer/blob/master/tests/badge_generator.php)
 
 ## introduction
