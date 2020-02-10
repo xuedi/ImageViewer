@@ -56,7 +56,18 @@ app_reset_database: ## resets the database to basic seed
 ### frontend ###
 
 frontend_install: ## insalling frontend dependencies
-	npm install --prefix frontend
+	yarn --cwd frontend install
+
+frontend_start: ## insalling frontend dependencies
+	yarn --cwd frontend start
+
+
+
+
+### backend ###
+
+backend_start: ## start a caddy webserver (feel free to use whatever php ready server)
+	caddy -conf public/Caddyfile
 
 
 

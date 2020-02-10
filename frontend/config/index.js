@@ -7,6 +7,9 @@ const path = require('path')
 module.exports = {
   dev: {
 
+    // overwrite for dev
+    changeOrigin: false,
+
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',

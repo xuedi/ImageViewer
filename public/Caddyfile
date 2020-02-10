@@ -1,4 +1,11 @@
-localhost:8080
+localhost:8081
+root public/
 index index.php
-fastcgi / /run/php-fpm/php-fpm.sock php
+fastcgi / 127.0.0.1:9000 php {
+    ext .php
+    index index.php
+}
+rewrite {
+        to {path} {path}/ /index.php?uri={path_escaped}&{query}
+    }
 log stdout
