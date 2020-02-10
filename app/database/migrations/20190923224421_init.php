@@ -27,6 +27,11 @@ class Init extends AbstractMigration
         $tags->addColumn('tag_group_id', 'integer');
         $tags->create();
 
+        $user = $this->table('user');
+        $user->addColumn('email', 'string', ['limit' => 128]);
+        $user->addColumn('password', 'string', ['limit' => 128]);
+        $user->create();
+
         $tags = $this->table('tag_group');
         $tags->addColumn('name', 'string', ['limit' => 128]);
         $tags->create();

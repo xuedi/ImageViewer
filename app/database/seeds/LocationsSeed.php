@@ -2,9 +2,6 @@
 
 use Phinx\Seed\AbstractSeed;
 
-/**
- * Class LocationsSeed
- */
 class LocationsSeed extends AbstractSeed
 {
     const UNKNOWN_ID = 1;

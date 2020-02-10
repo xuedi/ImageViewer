@@ -3,6 +3,8 @@
 namespace ImageViewer;
 
 use ImageViewer\Configuration\Configuration;
+use ImageViewer\Controller\Controller;
+use ImageViewer\Controller\RegisterController;
 use ImageViewer\Extractors\EventExtractor;
 use ImageViewer\Extractors\LocationExtractor;
 use ImageViewer\Extractors\MetaExtractor;
@@ -92,6 +94,13 @@ class Factory
             $this->getDatabase(),
             $this->getConfig()->getImagePath(),
             $this->getConfig()->getOptions()->getThreads()
+        );
+    }
+
+    public function getRegisterController(): RegisterController
+    {
+        return new RegisterController(
+            $this->getDatabase()
         );
     }
 

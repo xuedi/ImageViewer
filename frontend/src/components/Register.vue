@@ -1,5 +1,5 @@
 <template>
-  <div class="hello">
+  <div>
     <h1>Register</h1>
     <p>
       <label>
@@ -47,7 +47,7 @@ export default {
           email: this.email,
           password: this.password
         })
-        console.log('got response: ', response)
+        console.log('got response: ', response.data)
       } catch (error) {
         console.log('error: ', error.response.data.error)
       }

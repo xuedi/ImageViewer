@@ -14,7 +14,8 @@
     "ext-mbstring": "*",
     "symfony/console": "4.*",
     "robmorgan/phinx": "0.11.*",
-    "symfony/process": "^5.0"
+    "symfony/process": "^5.0",
+    "bramus/router": "~1.4"
   },
   "require-dev": {
     "symfony/var-dumper": "4.*",

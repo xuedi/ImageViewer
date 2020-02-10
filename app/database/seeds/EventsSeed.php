@@ -2,9 +2,6 @@
 
 use Phinx\Seed\AbstractSeed;
 
-/**
- * Class EventsSeed
- */
 class EventsSeed extends AbstractSeed
 {
     const UNKNOWN_ID = 1;

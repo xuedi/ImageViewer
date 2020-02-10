@@ -2,9 +2,6 @@
 
 use Phinx\Seed\AbstractSeed;
 
-/**
- * Class SizeSeed
- */
 class SizeSeed extends AbstractSeed
 {
     public function run()

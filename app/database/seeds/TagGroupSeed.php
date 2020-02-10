@@ -2,9 +2,6 @@
 
 use Phinx\Seed\AbstractSeed;
 
-/**
- * Class EventsSeed
- */
 class TagGroupSeed extends AbstractSeed
 {
     public function run()

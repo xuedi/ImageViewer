@@ -1,5 +1,5 @@
 <?php
-$root = realpath(dirname(__FILE__) . '/..');
+$root = realpath(dirname(__FILE__) . '/../..');
 $data = parse_ini_file($root . '/config/local.ini', true);
 
 return [
