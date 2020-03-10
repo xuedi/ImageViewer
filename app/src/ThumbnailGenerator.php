@@ -3,6 +3,7 @@
 namespace ImageViewer;
 
 use Exception;
+use ImageViewer\DataTransferObjects\MissingThumbnailDto;
 
 class ThumbnailGenerator
 {
@@ -34,12 +35,14 @@ class ThumbnailGenerator
         if (!isset($workLoad[$thread])) {
             return $generated;
         }
+
+        /** @var MissingThumbnailDto $item */
         foreach ($workLoad[$thread] as $item) {
-            $size = (int)$item['size'];
-            $file_id = (int)$item['file_id'];
-            $size_id = (int)$item['size_id'];
-            $file = $imagePath . $item['file'];
-            $thumbnail = $thumbPath . $item['name'];
+            $size = $item->getSize();
+            $file_id = $item->getFileId();
+            $size_id = $item->getSizeId();
+            $file = $imagePath . $item->getFile();
+            $thumbnail = $thumbPath . $item->getName();
             $this->database->insert('thumbs', ['file_id' => $file_id, 'size_id' => $size_id]);
             $this->generate($file, $size, $thumbnail);
             $generated++;

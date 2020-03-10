@@ -4,6 +4,7 @@ namespace ImageViewer;
 
 use ImageViewer\DataTransferObjects\EventsDto;
 use ImageViewer\DataTransferObjects\LocationsDto;
+use ImageViewer\DataTransferObjects\MissingThumbnailDto;
 use PDO;
 
 class Database
@@ -69,13 +70,14 @@ class Database
                     }
                 }
                 if($noEntry) {
-                    $missingThumbnails[] = [
-                        'name'=> $hash[$fileKey] . '_' . $sizeValue,
-                        'size'=> $sizeValue,
-                        'size_id'=> $sizeKey,
-                        'file'=> $fileValue,
-                        'file_id'=> $fileKey,
-                    ];
+                    $name = $hash[$fileKey] . '_' . $sizeValue;
+                    $missingThumbnails[] = MissingThumbnailDto::from(
+                        $name,
+                        $sizeValue,
+                        $sizeKey,
+                        $fileValue,
+                        $fileKey,
+                    );
                 }
             }
         }
