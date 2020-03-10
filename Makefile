@@ -1,3 +1,7 @@
+########################################################################################################
+## I use make comman inside a target instead of using the internal dependency, just for the looks ^^ ###
+########################################################################################################
+
 SQL_USER:=$(shell sed -n 's/.*user *= *\([^ ]*.*\)/\1/p' < config/local.ini)
 SQL_PASS:=$(shell sed -n 's/.*pass *= *\([^ ]*.*\)/\1/p' < config/local.ini)
 SQL_NAME:=$(shell sed -n 's/.*name *= *\([^ ]*.*\)/\1/p' < config/local.ini)
@@ -15,8 +19,15 @@ default: help
 help: ## Show this help
 	@cat $(MAKEFILE_LIST) | grep -e "^[a-zA-Z_\-]*: *.*## *" | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
-install: composer_install ## Runs all kind of stuff
-	cp config/local.ini.in config/local.ini
+install: ## Runs all kind of stuff
+	cp -n config/local.ini.in config/local.ini
+	make app_reset_database
+	make frontend_install
+	make backend_install
+
+update: ## Runs all kind of stuff
+	make frontend_update
+	make backend_update
 
 reset_screen: ## basic clearing of history and screen of terminal
 	reset
@@ -35,7 +46,8 @@ ci_coverage_badge: ## generate badge and add it to repo
 
 ### app actions ###
 
-app_rebuild: app_reset_database ## Runs all kind of stuff (reset & rebuild)
+app_rebuild: ## Runs all kind of stuff (reset & rebuild)
+	make app_reset_database
 	./app/ImageViewer app:discover
 	./app/ImageViewer app:generateThumbnails
 
@@ -58,6 +70,9 @@ app_reset_database: ## resets the database to basic seed
 frontend_install: ## insalling frontend dependencies
 	yarn --cwd frontend install
 
+frontend_update: ## insalling frontend dependencies
+	yarn --cwd frontend upgrade
+
 frontend_start: ## insalling frontend dependencies
 	yarn --cwd frontend start
 
@@ -66,29 +81,28 @@ frontend_start: ## insalling frontend dependencies
 
 ### backend ###
 
+backend_install: ## start a caddy webserver (feel free to use whatever php ready server)
+	./app/composer.phar install --working-dir=app
+
+backend_update: ## update the app
+	./app/composer.phar update --working-dir=app
+
 backend_start: ## start a caddy webserver (feel free to use whatever php ready server)
 	caddy -conf public/Caddyfile
 
-
-
-
-### composer ###
-
-composer_autoload: ## Just update the autoloader
+backend_autoload: ## Just update the autoloader
 	./app/composer.phar dump-autoload --working-dir=app
-
-composer_install: ## for the incial install
-	./app/composer.phar install --working-dir=app
-
-composer_update: ## update the app
-	./app/composer.phar update --working-dir=app
 
 
 
 
 ### tests ###
 
-test: reset_screen composer_autoload test_unit test_psalm ## run all tests
+test: ## run all tests
+	make reset_screen
+	make backend_autoload
+	make test_unit
+	make test_psalm
 
 test_unit: ## run unit tests
 	./app/vendor/bin/phpunit -c app/tests/phpunit.xml

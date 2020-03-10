@@ -1,8 +1,8 @@
 
 [locations]
 cache = 'public/cache/'
-images = 'tests/resources/images/'
-migrations = 'database/migrations/'
+images = 'app/tests/resources/images/'
+migrations = 'app/database/migrations/'
 
 [database]
 host = '127.0.0.1'

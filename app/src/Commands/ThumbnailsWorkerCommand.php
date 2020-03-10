@@ -15,12 +15,14 @@ class ThumbnailsWorkerCommand extends FactoryCommand
         $this->addArgument('thread', InputArgument::REQUIRED, 'The number of the worker');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $worker = (int)$input->getArgument('thread');
 
         $generated = $this->factory->getThumbnailGenerator()->run($worker);
 
         $output->write("worker $worker: $generated");
+
+        return 0;
     }
 }
