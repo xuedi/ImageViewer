@@ -20,17 +20,23 @@ foreach ($metrics as $metric) {
 }
 $coverage = round(($checkedElements / $totalElements) * 100);
 
-$color = 'cd3616';
-if($coverage > 50) $color = 'd19017';
-if($coverage > 60) $color = 'd1d117';
-if($coverage > 70) $color = '7ad117';
-if($coverage > 80) $color = '39d117';
+$color = 'ff0000';
+if ($coverage >= 50) $color = 'd80000';
+if ($coverage >= 60) $color = 'c4a600';
+if ($coverage >= 70) $color = 'b9d117';
+if ($coverage >= 80) $color = '7ad117';
+if ($coverage >= 90) $color = '34D058';
+
+$darkeningFactor = 2;
+$R = sprintf("%02X", floor(hexdec(substr($color, 0, 2)) / $darkeningFactor));
+$G = sprintf("%02X", floor(hexdec(substr($color, 2, 2)) / $darkeningFactor));
+$B = sprintf("%02X", floor(hexdec(substr($color, 4, 2)) / $darkeningFactor));
 
 $values = [
     'coverage' => $coverage,
-    'color' => $color,
+    'colorStart' => $color,
+    'colorStop' => $R . $G . $B,
 ];
-
 
 
 $svg = file_get_contents($template);
