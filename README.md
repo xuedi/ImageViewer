@@ -1,6 +1,6 @@
 
 [![Actions Status](https://github.com/xuedi/ImageViewer/workflows/PHP-Unit/badge.svg)](https://github.com/xuedi/ImageViewer/actions)
-[![Code Coverage](https://raw.githubusercontent.com/xuedi/ImageViewer/master/app/tests/badge/coverage.svg?sanitize=true)](https://github.com/xuedi/ImageViewer/blob/master/tests/badge_generator.php)
+[![Code Coverage](https://raw.githubusercontent.com/xuedi/ImageViewer/master/app/tests/badge/coverage.svg?sanitize=true)](https://github.com/xuedi/ImageViewer/blob/master/app/tests/badge_generator.php)
 
 ## introduction
 ImageViewer is a tool for managing your Images Collection its written

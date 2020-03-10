@@ -27,7 +27,7 @@ if ($coverage >= 70) $color = 'b9d117';
 if ($coverage >= 80) $color = '7ad117';
 if ($coverage >= 90) $color = '34D058';
 
-$darkeningFactor = 2;
+$darkeningFactor = 1.2;
 $R = sprintf("%02X", floor(hexdec(substr($color, 0, 2)) / $darkeningFactor));
 $G = sprintf("%02X", floor(hexdec(substr($color, 2, 2)) / $darkeningFactor));
 $B = sprintf("%02X", floor(hexdec(substr($color, 4, 2)) / $darkeningFactor));
