@@ -11,6 +11,8 @@ final class ThumbnailsWorkerCommandTest extends TestCase
 {
     public function testCanBuildFactory(): void
     {
+        $this->setOutputCallback(function() {});
+        
         $factory = $this->createMock(Factory::class);
         $factory->expects($this->once())->method('getThumbnailGenerator');
 
