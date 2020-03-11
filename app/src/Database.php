@@ -60,7 +60,9 @@ class Database
         $thumbs = $thumbsQuery->fetchAll(PDO::FETCH_ASSOC);
 
         $missingThumbnails = [];
+        /** @var int $sizeKey */
         foreach ($size as $sizeKey => $sizeValue) {
+            /** @var int $fileKey */
             foreach ($files as $fileKey => $fileValue) {
                 $noEntry = true;
                 foreach ($thumbs as $thumb) {
