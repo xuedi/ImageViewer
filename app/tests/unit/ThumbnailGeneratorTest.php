@@ -9,11 +9,11 @@ use PHPUnit\Framework\TestCase;
 
 final class ThumbnailGeneratorTest extends TestCase
 {
-    private string $imagePath;
-    private ThumbnailGenerator $subject;
-
     /** @var MockObject|Database */
     private $database;
+
+    private string $imagePath;
+    private ThumbnailGenerator $subject;
 
     public function setUp(): void
     {

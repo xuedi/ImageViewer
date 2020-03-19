@@ -13,9 +13,6 @@ use Symfony\Component\Console\Output\ConsoleOutput;
  */
 final class MetaExtractorTest extends TestCase
 {
-    /** @var string */
-    private string $basePath;
-
     /** @var MockObject|Database */
     private $database;
 
@@ -25,8 +22,8 @@ final class MetaExtractorTest extends TestCase
     /** @var MockObject|ConsoleOutput */
     private $consoleOutput;
 
-    /** @var MetaExtractor */
-    private $subject;
+    private string $basePath;
+    private MetaExtractor $subject;
 
     protected function setUp(): void
     {

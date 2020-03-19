@@ -10,8 +10,6 @@ use PHPUnit\Framework\TestCase;
 
 final class ExtractorServiceTest extends TestCase
 {
-    private ExtractorService $subject;
-
     /** @var MockObject|FileBuilder */
     private $fileBuilderMock;
 
@@ -26,6 +24,8 @@ final class ExtractorServiceTest extends TestCase
 
     /** @var MockObject|FileScanner */
     private $fileScannerMock;
+
+    private ExtractorService $subject;
 
     public function setUp(): void
     {

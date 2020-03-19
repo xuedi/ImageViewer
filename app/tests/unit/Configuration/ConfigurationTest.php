@@ -9,8 +9,7 @@ use RuntimeException;
 
 final class ConfigurationTest extends TestCase
 {
-    /** @var Configuration */
-    private $subject;
+    private Configuration $subject;
 
     protected function setUp(): void
     {
@@ -42,7 +41,7 @@ final class ConfigurationTest extends TestCase
 
     public function testCanRetrieveAbsoluteBasePath(): void
     {
-        $realPath = realpath(__DIR__ .'/../../../../');
+        $realPath = realpath(__DIR__ . '/../../../../');
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage("Could not find the image absolute path: '$realPath/nonExistingPath', config: 'nonExistingPath'");
 
@@ -133,8 +132,7 @@ final class ConfigurationTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    public
-    function testExceptionOnMissingConfiguration(): void
+    public function testExceptionOnMissingConfiguration(): void
     {
         $configFile = '/MeepMeep';
 
@@ -144,8 +142,7 @@ final class ConfigurationTest extends TestCase
         new Configuration($configFile);
     }
 
-    public
-    function testExceptionOnMissingConfigurationSection(): void
+    public function testExceptionOnMissingConfigurationSection(): void
     {
         $configFile = __DIR__ . '/../../resources/configMissingSection.ini';
 

@@ -7,9 +7,7 @@ use RuntimeException;
 
 final class EventDateTest extends TestCase
 {
-    /**
-     * @dataProvider validDates
-     */
+    /** @dataProvider validDates */
     public function testCanBuildEventDate(string $expected): void
     {
         $subject = EventDate::fromString($expected);
@@ -28,9 +26,7 @@ final class EventDateTest extends TestCase
         EventDate::fromString($badDate);
     }
 
-    /**
-     * @dataProvider wrongFormattedYears
-     */
+    /** @dataProvider wrongFormattedYears */
     public function testExceptionOnMismatchingYear(string $badDate): void
     {
         $this->expectException(RuntimeException::class);
@@ -39,9 +35,7 @@ final class EventDateTest extends TestCase
         EventDate::fromString($badDate);
     }
 
-    /**
-     * @dataProvider wrongFormattedMonths
-     */
+    /**  @dataProvider wrongFormattedMonths */
     public function testExceptionOnMismatchingMonth(string $badDate): void
     {
         $this->expectException(RuntimeException::class);
@@ -50,9 +44,7 @@ final class EventDateTest extends TestCase
         EventDate::fromString($badDate);
     }
 
-    /**
-     * @dataProvider wrongFormattedDays
-     */
+    /** @dataProvider wrongFormattedDays */
     public function testExceptionOnMismatchingDay(string $badDate): void
     {
         $this->expectException(RuntimeException::class);
@@ -60,9 +52,8 @@ final class EventDateTest extends TestCase
 
         EventDate::fromString($badDate);
     }
-    /**
-     * @dataProvider wrongOrder
-     */
+
+    /**  @dataProvider wrongOrder */
     public function testWrongOrderOfUndefinedChunks(string $badDate): void
     {
         $this->expectException(RuntimeException::class);

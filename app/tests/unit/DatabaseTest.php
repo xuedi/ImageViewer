@@ -21,7 +21,6 @@ final class DatabaseTest extends TestCase
     /** @var MockObject|PDO */
     private MockObject $pdo;
 
-    /** @var Database */
     private Database $subject;
 
     public function setUp(): void

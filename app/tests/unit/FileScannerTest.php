@@ -9,9 +9,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class FileScannerTest extends TestCase
 {
-    private string $basePath;
-    private FileScanner $subject;
-
     /** @var MockObject|OutputInterface */
     private $output;
 
@@ -20,6 +17,9 @@ final class FileScannerTest extends TestCase
 
     /** @var MockObject|Database */
     private $database;
+
+    private string $basePath;
+    private FileScanner $subject;
 
     public function setUp(): void
     {

@@ -10,9 +10,6 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 
 final class LocationExtractorTest extends TestCase
 {
-    /** @var string */
-    private string $basePath;
-
     /** @var MockObject|Database */
     private $database;
 
@@ -22,8 +19,8 @@ final class LocationExtractorTest extends TestCase
     /** @var MockObject|ConsoleOutput */
     private $consoleOutput;
 
-    /** @var LocationExtractor */
-    private $subject;
+    private string $basePath;
+    private LocationExtractor $subject;
 
     protected function setUp(): void
     {

@@ -13,7 +13,8 @@ final class ThumbnailsCommandTest extends TestCase
 {
     public function testCanBuildFactory(): void
     {
-        $this->setOutputCallback(function() {});
+        $this->setOutputCallback(function () {
+        });
 
         $optionsMock = $this->createMock(OptionsConfig::class);
         $optionsMock->expects($this->once())->method('getThreads')->willReturn(2);

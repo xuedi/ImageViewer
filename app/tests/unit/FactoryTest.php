@@ -13,10 +13,10 @@ use PHPUnit\Framework\TestCase;
  */
 final class FactoryTest extends TestCase
 {
-    private Factory $subject;
-
     /** @var MockObject|Configuration */
     private MockObject $config;
+
+    private Factory $subject;
 
     public function setUp(): void
     {

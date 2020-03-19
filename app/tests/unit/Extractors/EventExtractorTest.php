@@ -10,9 +10,6 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 
 final class EventExtractorTest extends TestCase
 {
-    /** @var string */
-    private string $basePath;
-
     /** @var MockObject|Database */
     private $database;
 
@@ -22,8 +19,8 @@ final class EventExtractorTest extends TestCase
     /** @var MockObject|ConsoleOutput */
     private $consoleOutput;
 
-    /** @var EventExtractor */
-    private $subject;
+    private string $basePath;
+    private EventExtractor $subject;
 
     protected function setUp(): void
     {
