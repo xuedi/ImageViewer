@@ -5,6 +5,9 @@ namespace ImageViewer;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
+/**
+ * @covers \ImageViewer\EventDate
+ */
 final class EventDateTest extends TestCase
 {
     /** @dataProvider validDates */

@@ -8,6 +8,9 @@ use ImageViewer\Extractors\MetaExtractor;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \ImageViewer\ExtractorService
+ */
 final class ExtractorServiceTest extends TestCase
 {
     /** @var MockObject|FileBuilder */

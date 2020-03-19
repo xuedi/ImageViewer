@@ -1,12 +1,16 @@
 <?php declare(strict_types=1);
 
-namespace ImageViewer;
+namespace ImageViewer\Commands;
 
-use ImageViewer\Commands\DiscoverCommand;
+use ImageViewer\Factory;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
+/**
+ * @covers \ImageViewer\Commands\DiscoverCommand
+ * @covers \ImageViewer\Commands\FactoryCommand
+ */
 final class DiscoverCommandTest extends TestCase
 {
     public function testCanBuildFactory(): void

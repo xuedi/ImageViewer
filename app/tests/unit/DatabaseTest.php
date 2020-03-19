@@ -2,7 +2,6 @@
 
 namespace ImageViewer;
 
-use ImageViewer\Configuration\DatabaseConfig;
 use ImageViewer\DataTransferObjects\EventsDto;
 use ImageViewer\DataTransferObjects\LocationsDto;
 use PDO;
@@ -12,6 +11,10 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \ImageViewer\Database
+ * @uses   \ImageViewer\DataTransferObjects\EventsDto
+ * @uses   \ImageViewer\EventDate
+ * @uses   \DtoTypes
+ * @uses   \ImageViewer\DataTransferObjects\LocationsDto
  */
 final class DatabaseTest extends TestCase
 {

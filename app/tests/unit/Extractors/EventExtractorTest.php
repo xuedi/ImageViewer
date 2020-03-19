@@ -8,6 +8,10 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
+/**
+ * @covers \ImageViewer\Extractors\EventExtractor
+ * @uses   \ImageViewer\EventDate
+ */
 final class EventExtractorTest extends TestCase
 {
     /** @var MockObject|Database */

@@ -1,11 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace ImageViewer;
+namespace ImageViewer\Configuration;
 
-use ImageViewer\Configuration\DatabaseConfig;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
+/**
+ * @covers \ImageViewer\Configuration\DatabaseConfig
+ */
 final class DatabaseConfigTest extends TestCase
 {
     private DatabaseConfig $subject;

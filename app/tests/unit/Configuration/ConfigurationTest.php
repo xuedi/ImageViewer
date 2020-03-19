@@ -1,12 +1,16 @@
 <?php declare(strict_types=1);
 
-namespace ImageViewer;
+namespace ImageViewer\Configuration;
 
-use ImageViewer\Configuration\Configuration;
-use ImageViewer\Configuration\DatabaseConfig;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
+/**
+ * @covers \ImageViewer\Configuration\Configuration
+ * @uses   \ImageViewer\Configuration\DatabaseConfig
+ * @uses   \ImageViewer\Configuration\OptionsConfig
+ * @uses   \ImageViewer\Configuration\TagGroupConfig
+ */
 final class ConfigurationTest extends TestCase
 {
     private Configuration $subject;

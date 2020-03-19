@@ -7,6 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \ImageViewer\DataTransferObjects\EventsDto
+ * @uses   \ImageViewer\EventDate
  * TODO: use dataProvider to test each attribute one, but with all wrong types
  */
 final class EventsDtoTest extends TestCase

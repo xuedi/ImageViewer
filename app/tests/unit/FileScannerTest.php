@@ -7,6 +7,9 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * @covers \ImageViewer\FileScanner
+ */
 final class FileScannerTest extends TestCase
 {
     /** @var MockObject|OutputInterface */

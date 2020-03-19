@@ -7,6 +7,10 @@ use ImageViewer\DataTransferObjects\MissingThumbnailDto;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \ImageViewer\ThumbnailGenerator
+ * @uses   \ImageViewer\DataTransferObjects\MissingThumbnailDto
+ */
 final class ThumbnailGeneratorTest extends TestCase
 {
     /** @var MockObject|Database */

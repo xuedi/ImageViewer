@@ -4,12 +4,22 @@ namespace ImageViewer;
 
 use ImageViewer\Configuration\Configuration;
 use ImageViewer\Configuration\DatabaseConfig;
+use ImageViewer\Controller\RegisterController;
 use ImageViewer\Extractors\LocationExtractor;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \ImageViewer\Factory
+ * @uses   \ImageViewer\Database
+ * @uses   \ImageViewer\ExtractorService
+ * @uses   \ImageViewer\Extractors\EventExtractor
+ * @uses   \ImageViewer\Extractors\LocationExtractor
+ * @uses   \ImageViewer\Extractors\MetaExtractor
+ * @uses   \ImageViewer\FileBuilder
+ * @uses   \ImageViewer\FileScanner
+ * @uses   \ImageViewer\ThumbnailGenerator
+ * @uses   \ImageViewer\Controller\RegisterController
  */
 final class FactoryTest extends TestCase
 {
@@ -58,5 +68,10 @@ final class FactoryTest extends TestCase
     public function testCanGetLocationExtractor(): void
     {
         $this->assertInstanceOf(LocationExtractor::class, $this->subject->getLocationExtractor());
+    }
+
+    public function testGetRegisterController(): void
+    {
+        $this->assertInstanceOf(RegisterController::class, $this->subject->getRegisterController());
     }
 }

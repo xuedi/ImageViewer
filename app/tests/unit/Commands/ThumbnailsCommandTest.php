@@ -1,14 +1,18 @@
 <?php declare(strict_types=1);
 
-namespace ImageViewer;
+namespace ImageViewer\Commands;
 
-use ImageViewer\Commands\ThumbnailsCommand;
 use ImageViewer\Configuration\Configuration;
 use ImageViewer\Configuration\OptionsConfig;
+use ImageViewer\Factory;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
+/**
+ * @covers \ImageViewer\Commands\ThumbnailsCommand
+ * @covers \ImageViewer\Commands\FactoryCommand
+ */
 final class ThumbnailsCommandTest extends TestCase
 {
     public function testCanBuildFactory(): void

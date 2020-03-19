@@ -8,6 +8,9 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
+/**
+ * @covers \ImageViewer\Extractors\LocationExtractor
+ */
 final class LocationExtractorTest extends TestCase
 {
     /** @var MockObject|Database */
