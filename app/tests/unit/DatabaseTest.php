@@ -10,7 +10,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \ImageViewer\Database
+ * @covers \ImageViewer\Filesystem
  * @uses   \ImageViewer\DataTransferObjects\EventsDto
  * @uses   \ImageViewer\EventDate
  * @uses   \DtoTypes
@@ -24,7 +24,7 @@ final class DatabaseTest extends TestCase
     /** @var MockObject|PDO */
     private MockObject $pdo;
 
-    private Database $subject;
+    private Filesystem $subject;
 
     public function setUp(): void
     {
@@ -33,12 +33,12 @@ final class DatabaseTest extends TestCase
         $this->pdo = $this->createMock(PDO::class);
         $this->pdo->method('prepare')->willReturn($this->statement);
 
-        $this->subject = new Database($this->pdo);
+        $this->subject = new Filesystem($this->pdo);
     }
 
     public function testCanBuildFactory(): void
     {
-        $this->assertInstanceOf(Database::class, $this->subject);
+        $this->assertInstanceOf(Filesystem::class, $this->subject);
     }
 
     public function testRunInsert(): void
@@ -68,7 +68,7 @@ final class DatabaseTest extends TestCase
     {
         $this->statement->expects($this->once())->method('execute');
         $this->statement->expects($this->once())->method('fetchAll')->willReturn([]);
-        $this->subject->getImages();
+        $this->subject->getImagesNames();
     }
 
     public function testCanGetLocations(): void
