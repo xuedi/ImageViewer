@@ -7,6 +7,9 @@ use ImageViewer\DataTransferObjects\LocationsDto;
 use ImageViewer\DataTransferObjects\MissingThumbnailDto;
 use PDO;
 
+/**
+ * Cleanup or use an ORM
+ */
 class Database
 {
     private PDO $pdo;
@@ -24,19 +27,98 @@ class Database
             $columns[] = $key;
             $placeholder[] = ":$key";
         }
-        $statement = $this->pdo->prepare("INSERT INTO $table (" . implode(', ', $columns) . ") VALUES (" . implode(', ',
-                $placeholder) . ")");
+        $statement = $this->pdo->prepare(
+            "INSERT INTO $table (" . implode(', ', $columns) . ") VALUES (" . implode(', ', $placeholder) . ")");
         $statement->execute($data);
 
         return (int)$this->pdo->lastInsertId();
     }
 
-    public function getImages(): array
+    public function update(string $table, int $id, array $data): void
     {
-        $statement = $this->pdo->prepare("SELECT nameHash FROM files; ");
+        if (isset($data['id'])) {
+            unset($data['id']);
+        }
+
+        $placeholder = [];
+        foreach ($data as $key => $value) {
+            $placeholder[] = "$key = :$key";
+        }
+        $data['id'] = $id;
+
+        $statement = $this->pdo->prepare("UPDATE $table SET " . implode(', ', $placeholder) . " WHERE id = :id ");
+        $statement->execute($data);
+    }
+
+    public function getImagesNamesWithStatus(int $statusId): array
+    {
+        $statement = $this->pdo->prepare("SELECT id, fileName FROM files WHERE status_id = {$statusId}; ");
+        $statement->bindParam('statusId', $statusId);
         $statement->execute();
 
-        return $statement->fetchAll(PDO::FETCH_COLUMN);
+        return $statement->fetchAll(PDO::FETCH_KEY_PAIR);
+    }
+
+    public function getAllImagesNames(): array
+    {
+        $statement = $this->pdo->prepare("SELECT id, fileName FROM files; ");
+        $statement->execute();
+
+        return $statement->fetchAll(PDO::FETCH_KEY_PAIR);
+    }
+
+    public function deleteLocations(): int
+    {
+        $statement = $this->pdo->prepare("DELETE FROM locations WHERE id > 1; ");
+        $statement->execute();
+        $rows = $statement->rowCount();
+
+        $statement = $this->pdo->prepare("ALTER TABLE locations AUTO_INCREMENT = 1;");
+        $statement->execute();
+
+        return $rows;
+    }
+
+    public function deleteEvents(): int
+    {
+        $statement = $this->pdo->prepare("DELETE FROM events WHERE id > 1; ");
+        $statement->execute();
+        $rows = $statement->rowCount();
+
+        $statement = $this->pdo->prepare("ALTER TABLE events AUTO_INCREMENT = 1;");
+        $statement->execute();
+
+        return $rows;
+    }
+
+    public function updateTagIds(int $fileId, array $tagIds): void
+    {
+        if (count($tagIds) == 0) {
+            return;
+        }
+        $valuePairs = [];
+        foreach ($tagIds as $tagId) {
+            $valuePairs[] = "($fileId, $tagId)";
+        }
+        $values = implode(',',$valuePairs);
+        $sql = "DELETE FROM file_tags WHERE file_id = {$fileId}; INSERT INTO file_tags (file_id, tag_id) VALUES {$values};";
+
+        $statement = $this->pdo->exec($sql);
+    }
+
+    public function addFileTags(int $fileId, array $tagIds): void
+    {
+        $statement = $this->pdo->prepare("DELETE FROM file_tags WHERE file_id = :fileId; ");
+        $statement->bindParam('fileId', $fileId);
+        $statement->execute();
+    }
+
+    public function getImagesHashes(): array
+    {
+        $statement = $this->pdo->prepare("SELECT id, fileHash FROM files; ");
+        $statement->execute();
+
+        return $statement->fetchAll(PDO::FETCH_KEY_PAIR);
     }
 
     public function getMissingThumbnails(): array
@@ -66,12 +148,12 @@ class Database
             foreach ($files as $fileKey => $fileValue) {
                 $noEntry = true;
                 foreach ($thumbs as $thumb) {
-                    if($thumb['file_id'] == $fileKey && $thumb['size_id'] == $sizeKey) {
+                    if ($thumb['file_id'] == $fileKey && $thumb['size_id'] == $sizeKey) {
                         $noEntry = false;
                         break;
                     }
                 }
-                if($noEntry) {
+                if ($noEntry) {
                     $name = $hash[$fileKey] . '_' . $sizeValue;
                     $missingThumbnails[] = MissingThumbnailDto::from(
                         $name,
@@ -79,25 +161,12 @@ class Database
                         $sizeKey,
                         $fileValue,
                         $fileKey,
-                    );
+                        );
                 }
             }
         }
 
         return $missingThumbnails;
-    }
-
-    public function getLocations(bool $reverse = false): array
-    {
-        $statement = $this->pdo->prepare("SELECT id, name FROM locations; ");
-        $statement->execute();
-
-        $result = $statement->fetchAll(PDO::FETCH_KEY_PAIR);
-        if ($reverse) {
-            $result = array_flip($result);
-        }
-
-        return $result;
     }
 
     public function getTags(bool $reverse = false): array

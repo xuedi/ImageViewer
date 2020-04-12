@@ -21,9 +21,9 @@ help: ## Show this help
 
 install: ## Runs all kind of stuff
 	cp -n config/local.ini.in config/local.ini
+	make backend_install
 	make app_reset_database
 	make frontend_install
-	make backend_install
 
 update: ## Runs all kind of stuff
 	make frontend_update
@@ -46,21 +46,20 @@ ci_coverage_badge: ## generate badge and add it to repo
 
 ### app actions ###
 
-app_rebuild: ## Runs all kind of stuff (reset & rebuild)
-	make app_reset_database
-	./app/ImageViewer app:discover
-	./app/ImageViewer app:generateThumbnails
+app_rebuild: app_reset_database app_discover app_thumbs ## Runs all kind of stuff (reset & rebuild)
 
 app_discover: ## Scans the library for changes (incremental)
-	./app/ImageViewer app:discover
+	@./app/ImageViewer app:updateFilesystem
+	@./app/ImageViewer app:updateStructure
+	@./app/ImageViewer app:updateMetadata
 
 app_thumbs: ## Generate thumbnails (see settings for number of threads)
 	./app/ImageViewer app:generateThumbnails
 
 app_reset_database: ## resets the database to basic seed
-	$(SQL) --execute='DROP TABLE IF EXISTS phinxlog, files, tags, locations, events, file_tags, tag_group, thumbs, thumb_size, user;'
+	$(SQL) --execute='DROP TABLE IF EXISTS phinxlog, files, tags, locations, events, file_tags, tag_group, thumbs, thumb_size, user, status;'
 	app/vendor/bin/phinx migrate -e default -c app/database/phinx.php
-	app/vendor/bin/phinx seed:run -e default -c app/database/phinx.php -s LocationsSeed -s EventsSeed -s TagGroupSeed -s SizeSeed -s UserSeed
+	app/vendor/bin/phinx seed:run -e default -c app/database/phinx.php -s LocationsSeed -s EventsSeed -s SizeSeed -s UserSeed -s StatusSeed
 
 
 

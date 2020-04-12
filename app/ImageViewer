@@ -4,7 +4,9 @@
 namespace ImageViewer;
 
 use Exception;
-use ImageViewer\Commands\DiscoverCommand;
+use ImageViewer\Commands\UpdateFilesystemCommand;
+use ImageViewer\Commands\UpdateMetadataCommand;
+use ImageViewer\Commands\UpdateStructureCommand;
 use ImageViewer\Commands\ThumbnailsCommand;
 use ImageViewer\Commands\ThumbnailsWorkerCommand;
 use ImageViewer\Configuration\Configuration;
@@ -18,7 +20,9 @@ require __DIR__ . '/vendor/autoload.php';
     $factory = new Factory($config);
 
     $application = new Application();
-    $application->add(new DiscoverCommand($factory));
+    $application->add(new UpdateFilesystemCommand($factory));
+    $application->add(new UpdateStructureCommand($factory));
+    $application->add(new UpdateMetadataCommand($factory));
     $application->add(new ThumbnailsCommand($factory));
     $application->add(new ThumbnailsWorkerCommand($factory));
     $application->run();

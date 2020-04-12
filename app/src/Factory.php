@@ -3,11 +3,10 @@
 namespace ImageViewer;
 
 use ImageViewer\Configuration\Configuration;
-use ImageViewer\Controller\Controller;
 use ImageViewer\Controller\RegisterController;
-use ImageViewer\Extractors\EventExtractor;
-use ImageViewer\Extractors\LocationExtractor;
-use ImageViewer\Extractors\MetaExtractor;
+use ImageViewer\Updater\Filesystem as updaterFilesystem;
+use ImageViewer\Updater\Metadata as updaterMetadata;
+use ImageViewer\Updater\Structure as updaterStructure;
 use PDO;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -47,20 +46,9 @@ class Factory
         return $this->config;
     }
 
-    public function getExtractorService(): ExtractorService
+    public function getUpdaterFilesystem(): updaterFilesystem
     {
-        return new ExtractorService(
-            $this->getFileScanner(),
-            $this->getLocationExtractor(),
-            $this->getEventExtractor(),
-            $this->getMetaExtractor(),
-            $this->getFileBuilder()
-        );
-    }
-
-    public function getFileScanner(): FileScanner
-    {
-        return new FileScanner(
+        return new updaterFilesystem(
             $this->getDatabase(),
             $this->getOutput(),
             $this->getProgressBar(),
@@ -68,9 +56,9 @@ class Factory
         );
     }
 
-    public function getLocationExtractor(): LocationExtractor
+    public function getUpdaterStructure(): updaterStructure
     {
-        return new LocationExtractor(
+        return new updaterStructure(
             $this->getDatabase(),
             $this->getOutput(),
             $this->getProgressBar(),
@@ -78,9 +66,9 @@ class Factory
         );
     }
 
-    public function getEventExtractor(): EventExtractor
+    public function getUpdaterMetadata(): updaterMetadata
     {
-        return new EventExtractor(
+        return new updaterMetadata(
             $this->getDatabase(),
             $this->getOutput(),
             $this->getProgressBar(),
@@ -101,28 +89,6 @@ class Factory
     {
         return new RegisterController(
             $this->getDatabase()
-        );
-    }
-
-    private function getMetaExtractor(): MetaExtractor
-    {
-        return new MetaExtractor(
-            $this->getDatabase(),
-            $this->getOutput(),
-            $this->getProgressBar(),
-            $this->config->getImagePath(),
-            $this->config->getTagGroup()
-        );
-    }
-
-    private function getFileBuilder(): FileBuilder
-    {
-        return new FileBuilder(
-            $this->getDatabase(),
-            $this->getOutput(),
-            $this->getMetaExtractor(),
-            $this->getProgressBar(),
-            $this->config->getImagePath()
         );
     }
 

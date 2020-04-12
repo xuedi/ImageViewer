@@ -43,3 +43,10 @@ make install
 ### usage
 make help
 
+### todo
+ - add function to check integrity (imageHash, nameHash mismatch)
+ - remove tagGroups from the config into DB (fixtures for tests) via selfReferring table
+ - actually generate thumbnails
+ - auto select markers on heads (ml)
+ - train people selection on head-markers
+ 
