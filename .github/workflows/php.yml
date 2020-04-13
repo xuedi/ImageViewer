@@ -15,7 +15,7 @@ jobs:
       uses: shivammathur/setup-php@v1
       with:
         php-version: '7.4'
-        extensions: mbstring, xml, pcntl, exif, json, pdo, gd
+        extensions: mbstring, xml, pcntl, exif, json, pdo, imagick
         ini-values: post_max_size=256M, short_open_tag=On
         coverage: xdebug
         tools: phpunit
