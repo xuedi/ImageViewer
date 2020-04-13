@@ -6,11 +6,11 @@
   },
   "require": {
     "php": "7.4.*",
-    "ext-gd": "*",
     "ext-pdo": "*",
     "ext-json": "*",
     "ext-exif": "*",
     "ext-pcntl": "*",
+    "ext-imagick": "*",
     "ext-mbstring": "*",
     "symfony/console": "5.*",
     "robmorgan/phinx": "0.11.*",
