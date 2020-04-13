@@ -35,7 +35,7 @@ to Shotwell plus some more tag cloud navigation and other stuff i was missing.
  - ext-pdo
  - ext-mbstring
  - ext-pcntl
- - ext-gd
+ - ext-imagick
 
 ### install
 make install
@@ -45,8 +45,8 @@ make help
 
 ### todo
  - add function to check integrity (imageHash, nameHash mismatch)
- - remove tagGroups from the config into DB (fixtures for tests) via selfReferring table
- - actually generate thumbnails
+ - add self referencing category table to sort the tags into hierarchy
+ - create basic frontend list of tiles API-Requests (or json preGeneration)
  - auto select markers on heads (ml)
  - train people selection on head-markers
  
