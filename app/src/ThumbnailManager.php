@@ -25,8 +25,9 @@ class ThumbnailManager
         $generated = 0;
 
         $thumbPath = realpath(__DIR__ . '/../../') . '/public/thumbs/';
-
         $imagePath = realpath($this->imagePath) . '/';
+
+        // TODO: massive fucked up code,clean up!!
         $missingThumbnails = $this->database->getMissingThumbnails();
 
         $chunkSize = (int)ceil(count($missingThumbnails) / $this->maxThreads);

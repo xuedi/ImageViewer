@@ -3,6 +3,7 @@
 namespace ImageViewer\DataTransferObjects;
 
 use DtoTypes;
+use ImageViewer\Ensure;
 use JsonSerializable;
 
 class LocationsDto implements JsonSerializable
@@ -10,7 +11,7 @@ class LocationsDto implements JsonSerializable
     private int          $id;
     private string       $name;
 
-    use DtoTypes;
+    use Ensure;
 
     static function fromArray(array $parameter): self
     {

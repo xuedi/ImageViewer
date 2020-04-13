@@ -93,7 +93,7 @@ final class ConfigurationTest extends TestCase
     public function testCanRetrieveOptions(): void
     {
         $actual = $this->subject->getOptions();
-        $expected = new OptionsConfig([
+        $expected = OptionsConfig::fromParameters([
             'threads' => 2,
         ]);
 

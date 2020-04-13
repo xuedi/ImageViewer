@@ -22,7 +22,7 @@ class Configuration
             $this->getSections($configFile, 'database')
         );
 
-        $this->options = new OptionsConfig(
+        $this->options = OptionsConfig::fromParameters(
             $this->getSections($configFile, 'options')
         );
 

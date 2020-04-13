@@ -1,6 +1,10 @@
 <?php declare(strict_types=1);
 
-trait DtoTypes
+namespace ImageViewer;
+
+use RuntimeException;
+
+trait Ensure
 {
     public static function ensureParameter(array $parameter, array $expectedFields): void
     {
@@ -11,6 +15,7 @@ trait DtoTypes
         }
     }
 
+    // use cant be casted, instead of is not type (typechecking will be done my the constructors)
     public static function ensureInteger(array $parameter, string $field): void
     {
         if (!is_int($parameter[$field])) {
@@ -18,6 +23,7 @@ trait DtoTypes
         }
     }
 
+    // use cant be casted, instead of is not type (typechecking will be done my the constructors)
     public static function ensureString(array $parameter, string $field): void
     {
         if (!is_string($parameter[$field])) {

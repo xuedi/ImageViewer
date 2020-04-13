@@ -14,7 +14,7 @@ final class OptionsConfigTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->subject = new OptionsConfig([
+        $this->subject = OptionsConfig::fromParameters([
             'threads' => 4,
         ]);
     }
@@ -27,9 +27,9 @@ final class OptionsConfigTest extends TestCase
     public function testCanNotBuildBecauseOfMissingParameter(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage("Config 'options' is missing: 'threads'");
+        $this->expectExceptionMessage("Missing argument 'threads'");
 
-        new OptionsConfig([]);
+        OptionsConfig::fromParameters([]);
     }
 
     public function testCanRetrieveThreads(): void

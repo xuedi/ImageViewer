@@ -2,15 +2,23 @@
 
 namespace ImageViewer\Configuration;
 
+use ImageViewer\Ensure;
 use RuntimeException;
 
 class OptionsConfig
 {
+    use Ensure;
+
     private int $threads;
 
-    public function __construct(array $configValues)
+    static public function fromParameters(array $parameter): self
     {
-        $this->threads = $this->ensureParameterInteger($configValues, 'threads');
+        self::ensureParameter($parameter, ['threads']);
+        self::ensureReasonableThreads($parameter['threads']);
+
+        return new self(
+            (int)$parameter['threads']
+        );
     }
 
     public function getThreads(): int
@@ -18,19 +26,18 @@ class OptionsConfig
         return $this->threads;
     }
 
-    private function ensureParameter(array $parameters, string $field): string
+    private function __construct(int $threads)
     {
-        if (!isset($parameters[$field])) {
-            throw new RuntimeException("Config 'options' is missing: '{$field}'");
-        }
-
-        return (string)$parameters[$field];
+        $this->threads = $threads;
     }
 
-    private function ensureParameterInteger(array $parameters, string $field): int
+    private static function ensureReasonableThreads($threads)
     {
-        $value = $this->ensureParameter($parameters, $field);
-
-        return (int)$value;
+        if ($threads <= 0) {
+            throw new RuntimeException('You have to have minimum of 1 worker (config:options:thread)');
+        }
+        if ($threads > 256) {
+            throw new RuntimeException('Assuming most system have not that many cores (>256), check your config');
+        }
     }
 }

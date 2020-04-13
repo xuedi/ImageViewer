@@ -2,6 +2,7 @@
 
 namespace ImageViewer\Commands;
 
+use RuntimeException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
@@ -22,6 +23,16 @@ class ThumbnailsCommand extends FactoryCommand
 
         pcntl_async_signals(true);
 
+        $this->monitorProcessPool(
+            $this->createProcessingPool($maxWorker)
+        );
+
+        $output->writeln('---');
+        return 0;
+    }
+
+    private function createProcessingPool(int $maxWorker): array
+    {
         $processesPool = [];
         for ($number = 0; $number < $maxWorker; $number++) {
             $process = $this->factory->startThumbnailProcess($number);
@@ -30,9 +41,13 @@ class ThumbnailsCommand extends FactoryCommand
 
             $processesPool[] = $process;
         }
+        return $processesPool;
+    }
 
+    private function monitorProcessPool(array $processesPool)
+    {
         while (count($processesPool)) {
-            // TODO: do microsleep to not use the CPU for just looping
+            usleep(20000); // sleep 0.02s to not bother the CPU TODO: exclude from tests via env?
 
             /** @var Process $runningProcess */
             foreach ($processesPool as $i => $runningProcess) {
@@ -50,8 +65,5 @@ class ThumbnailsCommand extends FactoryCommand
                 }
             }
         }
-
-        $output->writeln('---');
-        return 0;
     }
 }

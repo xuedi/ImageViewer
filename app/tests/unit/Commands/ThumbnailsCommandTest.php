@@ -16,7 +16,7 @@ use Symfony\Component\Process\Process;
  */
 final class ThumbnailsCommandTest extends TestCase
 {
-    public function testCanBuildFactory(): void
+    public function testCanExecuteCommand(): void
     {
         $this->setOutputCallback(function () {
         });
