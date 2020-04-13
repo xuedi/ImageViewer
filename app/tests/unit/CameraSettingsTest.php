@@ -46,40 +46,25 @@ final class CameraSettingsTest extends TestCase
 
     public function testCanBuildCameraWithBackupData(): void
     {
-        $expectedHeight = 1920;
-        $expectedWidth = 1080;
+        $expectedHeight = 0;
+        $expectedWidth = 0;
         $expectedCreatedAt = new DateTime('1970-01-01 00:00:00');
-        $expectedFileType = 'image/Jpeg';
+        $expectedFileType = 'unknown';
         $expectedIso = null;
         $expectedAperture = null;
         $expectedExposure = null;
 
         $subject = CameraSettings::fromExifData([
             'DateTime' => 'BROKEN-DATE-FORMAT',
-            'MimeType' => $expectedFileType,
-            'COMPUTED' => [
-                'Height' => $expectedHeight,
-                'Width' => $expectedWidth,
-            ]
         ]);
 
         $this->assertEquals($expectedCreatedAt, $subject->getCreatedAt());
+        $this->assertEquals($expectedFileType, $subject->getFileType());
         $this->assertEquals($expectedIso, $subject->getIso());
         $this->assertEquals($expectedAperture, $subject->getAperture());
         $this->assertEquals($expectedExposure, $subject->getExposure());
-    }
-
-    public function testExceptionOnInvalidMimeType(): void
-    {
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Unknown MimeType');
-
-        CameraSettings::fromExifData([
-            'COMPUTED' => [
-                'Height' => 1920,
-                'Width' => 1080,
-            ]
-        ]);
+        $this->assertEquals($expectedHeight, $subject->getWidth());
+        $this->assertEquals($expectedWidth, $subject->getHeight());
     }
 
     public function testExceptionOnInvalidNumerator(): void
@@ -88,12 +73,7 @@ final class CameraSettingsTest extends TestCase
         $this->expectExceptionMessage("Numerator has to be a numeric: 'x'");
 
         CameraSettings::fromExifData([
-            'MimeType' => 'someType',
             'FNumber' => 'x/100',
-            'COMPUTED' => [
-                'Height' => 1920,
-                'Width' => 1080,
-            ]
         ]);
     }
 
@@ -103,38 +83,7 @@ final class CameraSettingsTest extends TestCase
         $this->expectExceptionMessage("Denominator has to be a numeric: 'x'");
 
         CameraSettings::fromExifData([
-            'MimeType' => 'someType',
             'FNumber' => '10/x',
-            'COMPUTED' => [
-                'Height' => 1920,
-                'Width' => 1080,
-            ]
-        ]);
-    }
-
-    public function testExceptionOnInvalidHeight(): void
-    {
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Could not extract height');
-
-        CameraSettings::fromExifData([
-            'MimeType' => 'someType',
-            'COMPUTED' => [
-                'Width' => 1080,
-            ]
-        ]);
-    }
-
-    public function testExceptionOnInvalidWidth(): void
-    {
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Could not extract width');
-
-        CameraSettings::fromExifData([
-            'MimeType' => 'someType',
-            'COMPUTED' => [
-                'Height' => 1920,
-            ]
         ]);
     }
 }

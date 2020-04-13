@@ -75,7 +75,7 @@ class Metadata
     private function parseFile(string $fileName, int $fileId, array $events, array $cameraList): void
     {
         $file = $this->path . $fileName;
-        $imageExif = @exif_read_data($file) ?? [];
+        $imageExif = $this->extractExifData($file);
 
         $settings = CameraSettings::fromExifData($imageExif);
         $camera = Camera::fromExifData($imageExif);
@@ -110,6 +110,16 @@ class Metadata
         $this->database->updateTagIds($fileId, $tagIds);
     }
 
+    private function findTagId($tag, array $tagList): int
+    {
+        $tagId = array_search($tag, $tagList);
+        if ($tagId === false) {
+            throw new RuntimeException('Expected tag not found!');
+        }
+
+        return $tagId;
+    }
+
     private function updateTagList(array $tagList, array $tags): array
     {
         foreach ($tags as $tag) {
@@ -131,7 +141,10 @@ class Metadata
             $iptc = iptcparse($info["APP13"]);
             if (isset($iptc['2#025']) && is_array($iptc['2#025'])) {
                 foreach ($iptc['2#025'] as $tag) {
-                    $tags[] = strtolower($tag);
+                    $tag = strtolower(trim($tag));
+                    if(!empty($tag)) {
+                        $tags[] = $tag;
+                    }
                 }
             }
         }
@@ -142,7 +155,7 @@ class Metadata
     private function updateCameraList(array $cameraIdentList, string $fileName): array
     {
         $file = $this->path . $fileName;
-        $imageExif = @exif_read_data($file) ?? [];
+        $imageExif = $this->extractExifData($file);
 
         $camera = Camera::fromExifData($imageExif);
 
@@ -159,86 +172,13 @@ class Metadata
         return $cameraIdentList;
     }
 
-    /*
-     *
-private function parseTags(array $file, array $tags, int $fileId): void
-{
-    $fileName = $this->path . (string)$file['fileName'];
-    if (file_exists($fileName)) {
-        $fileTags = $this->metaExtractor->getTags($fileName);
-        foreach ($fileTags as $tag) {
-            $tagId = $tags[strtolower($tag)] ?? null;
-            if ($tagId == null) {
-                echo "Unknown TagId for '$tag'" . PHP_EOL;
-                continue;
-            }
-            $this->database->insert('file_tags', [
-                'file_id' => $fileId,
-                'tag_id' => $tagId
-            ]);
-        }
-    }
-}
-*/
-
-
-    /*
-
-
-        private function saveTags(array $tags): void
-        {
-            $knownTags = $this->database->getTags(true);
-            foreach ($tags as $tag) {
-                $tagGroup = $this->getTagGroupId($tag);
-                if (!isset($knownTags[$tag])) {
-                    $knownTags[$tag] = $this->database->insert('tags', [
-                        'name' => $tag,
-                        'tag_group_id' => $tagGroup
-                    ]);
-                }
-            }
-        }
-
-        private function getTagGroupId(string $tag): int
-        {
-            $tag = strtolower(trim($tag));
-            if (!isset($this->tagGroup[$tag])) {
-                return 1; // unknown
-            }
-            return (int)$this->tagGroup[$tag];
-        }
-
-        private function buildLookup(array $tagGroup): array
-        {
-            $groupLookup = [
-                'unknown' => 1,
-                'country' => 2,
-                'city' => 3,
-                'people' => 4,
-                'madeby' => 5,
-                'misc' => 6,
-                'year' => 7,
-                'event' => 8,
-            ];
-            $retVal = [];
-            foreach ($tagGroup as $group => $values) {
-                foreach ($values as $tag) {
-                    $tag = strtolower(trim($tag));
-                    $group = strtolower(trim((string)$group));
-                    $retVal[$tag] = $groupLookup[(string)$group];
-                }
-            }
-
-            return $retVal;
-        }
-         */
-    private function findTagId($tag, array $tagList): int
+    private function extractExifData(string $file): array
     {
-        $tagId = array_search($tag, $tagList);
-        if ($tagId === false) {
-            throw new RuntimeException('Expected tag not found!');
+        $imageExif = @exif_read_data($file);
+        if ($imageExif === false) {
+            $imageExif = [];
         }
 
-        return $tagId;
+        return $imageExif;
     }
 }

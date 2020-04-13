@@ -99,12 +99,7 @@ class CameraSettings
 
     private static function extractFileType(array $exifData): string
     {
-        $fileType = $exifData['MimeType'] ?? null;
-        if ($fileType === null) {
-            throw new RuntimeException("Unknown MimeType");
-        }
-
-        return (string)$fileType;
+        return (string)($exifData['MimeType'] ?? 'unknown');
     }
 
     private static function extractExposure(array $exifData): ?string
@@ -140,20 +135,12 @@ class CameraSettings
 
     private static function extractWidth(array $exifData): int
     {
-        if (!isset($exifData['COMPUTED']['Width'])) {
-            throw new RuntimeException("Could not extract width");
-        }
-
-        return (int)$exifData['COMPUTED']['Width'];
+        return (int)($exifData['COMPUTED']['Width'] ?? 0);
     }
 
     private static function extractHeight(array $exifData): int
     {
-        if (!isset($exifData['COMPUTED']['Height'])) {
-            throw new RuntimeException("Could not extract height");
-        }
-
-        return (int)$exifData['COMPUTED']['Height'];
+        return (int)($exifData['COMPUTED']['Height'] ?? 0);
     }
 
     private static function extractFactors(string $factors): array

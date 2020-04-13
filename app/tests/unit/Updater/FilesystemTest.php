@@ -20,7 +20,7 @@ final class FileBuilderTest extends TestCase
     private $outputMock;
 
     /** @var MockObject|ProgressBar */
-    private $progressBar;
+    private $progressBarMock;
 
     private string $basePath;
     private Filesystem $subject;
@@ -30,12 +30,12 @@ final class FileBuilderTest extends TestCase
         $this->basePath = realpath(__DIR__ . '/../../resources/images/') . '/';
         $this->databaseMock = $this->createMock(Database::class);
         $this->outputMock = $this->createMock(ConsoleOutput::class);
-        $this->progressBar = $this->createMock(ProgressBar::class);
+        $this->progressBarMock = $this->createMock(ProgressBar::class);
 
         $this->subject = new Filesystem(
             $this->databaseMock,
             $this->outputMock,
-            $this->progressBar,
+            $this->progressBarMock,
             $this->basePath
         );
     }
@@ -62,11 +62,11 @@ final class FileBuilderTest extends TestCase
 
         $this->databaseMock->expects($this->exactly(2))->method('update');
 
-        $this->progressBar->expects($this->once())->method('setMaxSteps')->with($imageCount);
-        $this->progressBar->expects($this->once())->method('start');
-        $this->progressBar->expects($this->once())->method('finish');
-        $this->progressBar->expects($this->exactly($imageCount + 1))->method('advance');
-        $this->progressBar->expects($this->once())->method('setFormat')->with(
+        $this->progressBarMock->expects($this->once())->method('setMaxSteps')->with($imageCount);
+        $this->progressBarMock->expects($this->once())->method('start');
+        $this->progressBarMock->expects($this->once())->method('finish');
+        $this->progressBarMock->expects($this->exactly($imageCount + 1))->method('advance');
+        $this->progressBarMock->expects($this->once())->method('setFormat')->with(
             'Syncing filesystem and database: [%bar%] %memory:6s%'
         );
 

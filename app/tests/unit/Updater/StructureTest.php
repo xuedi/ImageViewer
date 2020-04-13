@@ -21,7 +21,7 @@ final class StructureTest extends TestCase
     private $outputMock;
 
     /** @var MockObject|ProgressBar */
-    private $progressBar;
+    private $progressBarMock;
 
     private string $basePath;
     private Structure $subject;
@@ -31,12 +31,12 @@ final class StructureTest extends TestCase
         $this->basePath = realpath(__DIR__ . '/../../resources/images/') . '/';
         $this->databaseMock = $this->createMock(Database::class);
         $this->outputMock = $this->createMock(ConsoleOutput::class);
-        $this->progressBar = $this->createMock(ProgressBar::class);
+        $this->progressBarMock = $this->createMock(ProgressBar::class);
 
         $this->subject = new Structure(
             $this->databaseMock,
             $this->outputMock,
-            $this->progressBar,
+            $this->progressBarMock,
             $this->basePath
         );
     }
@@ -63,11 +63,11 @@ final class StructureTest extends TestCase
             7 => 'Germany/2019-09-13 Out in the green/SunflowersFromWikipedia.jpg', // exif issue
         ]);
 
-        $this->progressBar->expects($this->once())->method('setMaxSteps')->with($imageCount * 2);
-        $this->progressBar->expects($this->once())->method('start');
-        $this->progressBar->expects($this->once())->method('finish');
-        $this->progressBar->expects($this->exactly(($imageCount * 2) + 1))->method('advance');
-        $this->progressBar->expects($this->once())->method('setFormat')->with(
+        $this->progressBarMock->expects($this->once())->method('setMaxSteps')->with($imageCount * 2);
+        $this->progressBarMock->expects($this->once())->method('start');
+        $this->progressBarMock->expects($this->once())->method('finish');
+        $this->progressBarMock->expects($this->exactly(($imageCount * 2) + 1))->method('advance');
+        $this->progressBarMock->expects($this->once())->method('setFormat')->with(
             'Restructuring: [%bar%] %memory:6s%'
         );
 
