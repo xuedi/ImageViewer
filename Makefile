@@ -54,7 +54,7 @@ app_discover: ## Scans the library for changes (incremental)
 	@./app/ImageViewer app:updateMetadata
 
 app_thumbs: ## Generate thumbnails (see settings for number of threads)
-	./app/ImageViewer app:generateThumbnails
+	@./app/ImageViewer app:generateThumbnails
 
 app_reset_database: ## resets the database to basic seed
 	$(SQL) --execute='DROP TABLE IF EXISTS phinxlog, files, tags, locations, events, file_tags, tag_group, thumbs, thumb_size, user, status, camera;'

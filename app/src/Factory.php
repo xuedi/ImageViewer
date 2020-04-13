@@ -10,6 +10,7 @@ use ImageViewer\Updater\Structure as updaterStructure;
 use PDO;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Process\Process;
 
 class Factory
 {
@@ -18,6 +19,11 @@ class Factory
     public function __construct(Configuration $config)
     {
         $this->config = $config;
+    }
+
+    public function startThumbnailProcess(int $threadIdent): Process
+    {
+        return new Process(['./app/ImageViewer', 'app:generateThumbnails:worker', "$threadIdent"]);
     }
 
     public function getDatabase(): Database

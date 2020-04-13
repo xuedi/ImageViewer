@@ -1,3 +1,4 @@
 public/cache/*
+public/thumbs/*
 config/local.ini
 .idea/*

@@ -11,7 +11,7 @@ class ThumbnailsWorkerCommand extends FactoryCommand
     protected function configure()
     {
         $this->setName('app:generateThumbnails:worker');
-        $this->setDescription('Internal thumbnail generator, please use \'app:generateThumbnails\' instead');
+        $this->setDescription("Internal thumbnail generator, please use 'app:generateThumbnails' instead");
         $this->addArgument('thread', InputArgument::REQUIRED, 'The number of the worker');
     }
 

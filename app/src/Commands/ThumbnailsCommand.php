@@ -11,7 +11,7 @@ class ThumbnailsCommand extends FactoryCommand
     protected function configure()
     {
         $this->setName('app:generateThumbnails');
-        $this->setDescription('Regenerates all thumbnails');
+        $this->setDescription('Generates missing thumbnails');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -22,26 +22,31 @@ class ThumbnailsCommand extends FactoryCommand
 
         pcntl_async_signals(true);
 
-        $runningProcesses = [];
+        $processesPool = [];
         for ($number = 0; $number < $maxWorker; $number++) {
-            $process = new Process(['./app/ImageViewer', 'app:generateThumbnails:worker', "$number"]);
+            $process = $this->factory->startThumbnailProcess($number);
             $process->enableOutput();
-            $process->setInput($number);
             $process->start();
 
-            $runningProcesses[] = $process;
+            $processesPool[] = $process;
         }
 
-        while (count($runningProcesses)) {
+        while (count($processesPool)) {
+            // TODO: do microsleep to not use the CPU for just looping
+
             /** @var Process $runningProcess */
-            foreach ($runningProcesses as $i => $runningProcess) {
+            foreach ($processesPool as $i => $runningProcess) {
                 if (!$runningProcess->isRunning()) {
+
                     foreach ($runningProcess as $type => $data) {
                         if ($runningProcess::OUT !== $type) {
                             echo "Worker::Error: " . (string)$data . PHP_EOL;
+                        } else {
+                            echo (string)$data . PHP_EOL;
                         }
                     }
-                    unset($runningProcesses[$i]);
+
+                    unset($processesPool[$i]);
                 }
             }
         }

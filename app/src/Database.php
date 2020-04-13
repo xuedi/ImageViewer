@@ -108,6 +108,7 @@ class Database
 
     /**
      * TODO: via native query and save all that loop BS
+     * TODO: distribute the size of the files evenly hashSort?
      * @codeCoverageIgnore
      */
     public function getMissingThumbnails(): array
