@@ -88,8 +88,14 @@ class Factory
     public function getRegisterController(): RegisterController
     {
         return new RegisterController(
+            $this->getOutputWrapper(),
             $this->getDatabase()
         );
+    }
+
+    private function getOutputWrapper(): OutputWrapper
+    {
+        return new OutputWrapper();
     }
 
     private function getOutput(): ConsoleOutput

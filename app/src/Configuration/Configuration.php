@@ -12,7 +12,6 @@ class Configuration
     private string $migrations;
     private OptionsConfig $options;
     private DatabaseConfig $database;
-    private TagGroupConfig $tagGroup;
 
     public function __construct(string $configFile)
     {
@@ -21,10 +20,6 @@ class Configuration
 
         $this->database = new DatabaseConfig(
             $this->getSections($configFile, 'database')
-        );
-
-        $this->tagGroup = new TagGroupConfig(
-            $this->getSections($configFile, 'tagGroups')
         );
 
         $this->options = new OptionsConfig(
@@ -60,11 +55,6 @@ class Configuration
         return $this->imagePath;
     }
 
-    public function getTagGroup(): array
-    {
-        return $this->tagGroup->getGroup();
-    }
-
     public function getCachePath(): string
     {
         return $this->cache;
@@ -88,9 +78,6 @@ class Configuration
         $iniFile = parse_ini_file($configFile, $processSections);
         if (!isset($iniFile[$section])) {
             throw new RuntimeException("Could not get section '$section'");
-        }
-        if (!is_array($iniFile[$section])) {
-            throw new RuntimeException("Section is the wrong dataType '$section'");
         }
 
         return $iniFile[$section];

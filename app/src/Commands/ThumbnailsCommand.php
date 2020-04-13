@@ -36,19 +36,11 @@ class ThumbnailsCommand extends FactoryCommand
             /** @var Process $runningProcess */
             foreach ($runningProcesses as $i => $runningProcess) {
                 if (!$runningProcess->isRunning()) {
-
-
                     foreach ($runningProcess as $type => $data) {
-                        if ($runningProcess::OUT === $type) {
-                            echo (string)$data . PHP_EOL;
-                        } else {
+                        if ($runningProcess::OUT !== $type) {
                             echo "Worker::Error: " . (string)$data . PHP_EOL;
                         }
                     }
-
-
-                    //$runningProcess->
-
                     unset($runningProcesses[$i]);
                 }
             }

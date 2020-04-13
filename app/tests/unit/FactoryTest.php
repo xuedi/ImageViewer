@@ -16,6 +16,7 @@ use PHPUnit\Framework\TestCase;
  * @uses   \ImageViewer\Database
  * @uses   \ImageViewer\ThumbnailGenerator
  * @uses   \ImageViewer\Controller\RegisterController
+ * @uses   \ImageViewer\Controller\AbstractController
  * @uses   \ImageViewer\Updater\Filesystem
  * @uses   \ImageViewer\Updater\Structure
  * @uses   \ImageViewer\Updater\Metadata

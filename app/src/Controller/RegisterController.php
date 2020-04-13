@@ -3,13 +3,15 @@
 namespace ImageViewer\Controller;
 
 use ImageViewer\Database;
+use ImageViewer\OutputWrapper;
 
 class RegisterController extends AbstractController
 {
     private Database $db;
 
-    public function __construct(Database $db)
+    public function __construct(OutputWrapper $output, Database $db)
     {
+        parent::__construct($output);
         $this->db = $db;
     }
 
