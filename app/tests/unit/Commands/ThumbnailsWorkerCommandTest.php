@@ -20,7 +20,7 @@ final class ThumbnailsWorkerCommandTest extends TestCase
         });
 
         $factory = $this->createMock(Factory::class);
-        $factory->expects($this->once())->method('getThumbnailGenerator');
+        $factory->expects($this->once())->method('getThumbnailManager');
 
         $application = new Application();
         $application->add(new ThumbnailsWorkerCommand($factory));

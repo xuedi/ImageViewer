@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @covers \ImageViewer\Factory
  * @uses   \ImageViewer\Database
- * @uses   \ImageViewer\ThumbnailGenerator
+ * @uses   \ImageViewer\ThumbnailManager
  * @uses   \ImageViewer\Controller\RegisterController
  * @uses   \ImageViewer\Controller\AbstractController
  * @uses   \ImageViewer\Updater\Filesystem
@@ -45,9 +45,9 @@ final class FactoryTest extends TestCase
         $this->assertInstanceOf(Factory::class, $this->subject);
     }
 
-    public function testCanGetThumbnailGenerator(): void
+    public function testCanGetThumbnailManager(): void
     {
-        $this->assertInstanceOf(ThumbnailGenerator::class, $this->subject->getThumbnailGenerator());
+        $this->assertInstanceOf(ThumbnailManager::class, $this->subject->getThumbnailManager());
     }
 
     public function testCanGetDatabase(): void

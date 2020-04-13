@@ -76,10 +76,11 @@ class Factory
         );
     }
 
-    public function getThumbnailGenerator(): ThumbnailGenerator
+    public function getThumbnailManager(): ThumbnailManager
     {
-        return new ThumbnailGenerator(
+        return new ThumbnailManager(
             $this->getDatabase(),
+            $this->getThumbnailGenerator(),
             $this->getConfig()->getImagePath(),
             $this->getConfig()->getOptions()->getThreads()
         );
@@ -91,6 +92,11 @@ class Factory
             $this->getOutputWrapper(),
             $this->getDatabase()
         );
+    }
+
+    private function getThumbnailGenerator(): ThumbnailGenerator
+    {
+        return new ThumbnailGenerator();
     }
 
     private function getOutputWrapper(): OutputWrapper

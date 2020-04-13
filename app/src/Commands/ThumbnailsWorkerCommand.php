@@ -19,7 +19,7 @@ class ThumbnailsWorkerCommand extends FactoryCommand
     {
         $worker = (int)$input->getArgument('thread');
 
-        $generated = $this->factory->getThumbnailGenerator()->run($worker);
+        $generated = $this->factory->getThumbnailManager()->run($worker);
 
         $output->write("worker $worker: $generated");
 

@@ -6,30 +6,35 @@ use Exception;
 use ImageViewer\DataTransferObjects\MissingThumbnailDto;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
 /**
- * @covers \ImageViewer\ThumbnailGenerator
+ * @covers \ImageViewer\ThumbnailManager
  * @uses   \ImageViewer\DataTransferObjects\MissingThumbnailDto
  */
-final class ThumbnailGeneratorTest extends TestCase
+final class ThumbnailManagerTest extends TestCase
 {
     /** @var MockObject|Database */
     private $database;
 
+    /** @var MockObject|ThumbnailGenerator */
+    private $generatorMock;
+
     private string $imagePath;
-    private ThumbnailGenerator $subject;
+    private ThumbnailManager $subject;
 
     public function setUp(): void
     {
         $this->database = $this->createMock(Database::class);
+        $this->generatorMock = $this->createMock(ThumbnailGenerator::class);
         $this->imagePath = realpath(__DIR__ . '/../resources/images/') . '/';
 
-        $this->subject = new ThumbnailGenerator($this->database, $this->imagePath, 3);
+        $this->subject = new ThumbnailManager($this->database, $this->generatorMock, $this->imagePath, 3);
     }
 
     public function testCanBuildFactory(): void
     {
-        $this->assertInstanceOf(ThumbnailGenerator::class, $this->subject);
+        $this->assertInstanceOf(ThumbnailManager::class, $this->subject);
     }
 
     public function testCanScanForFiles(): void
@@ -122,38 +127,15 @@ final class ThumbnailGeneratorTest extends TestCase
         $this->assertEquals(0, $this->subject->run(2));
     }
 
-    public function testExceptionToBeShownOnNonExistingFile(): void
+    public function testCanContinueOnFailedGenerator(): void
     {
-        $file = 'meIsNotReallyHere.lost';
-        $expectedFile = $this->imagePath . $file;
-
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage("Could not find file '$expectedFile'");
+        $this->generatorMock->method('create')->willThrowException(
+            new RuntimeException('someThingWentWrong')
+        );
 
         $this->database->method('getMissingThumbnails')->willReturn([
             MissingThumbnailDto::from(
                 'someHash_200',
-                200,
-                1,
-                $file,
-                1
-            ),
-        ]);
-
-        $this->subject->run(0);
-    }
-
-    public function testExceptionToBeShownOnAlreadyExistingThumbnail(): void
-    {
-        $file = '.gitkeep';
-        $expectedFile = realpath(__DIR__ . '/../../../') . '/public/thumbs/' . $file;
-
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage("Thumbnail already exist '$expectedFile'");
-
-        $this->database->method('getMissingThumbnails')->willReturn([
-            MissingThumbnailDto::from(
-                '.gitkeep',
                 200,
                 1,
                 'China/2002-04-00 Day in HongKong/alex-azabache-YM71ka72TNw-unsplash.jpg',
@@ -161,6 +143,6 @@ final class ThumbnailGeneratorTest extends TestCase
             ),
         ]);
 
-        $this->subject->run(0);
+        $this->assertEquals(0, $this->subject->run(0));
     }
 }

@@ -81,7 +81,6 @@ final class MetadataTest extends TestCase
 
         $cameraList = [
             1 => "ed90a62d55a1834c9785b8e0f78785f4",
-            //2 => "1dc5191c41e7312cba35dedbc380a421", // will be added
         ];
 
 
@@ -107,6 +106,73 @@ final class MetadataTest extends TestCase
         $this->progressBarMock->expects($this->once())->method('setFormat')->with(
             'Updating metadata and tags: [%bar%] %memory:6s%'
         );
+
+        $this->subject->update();
+    }
+
+    public function testCanSaveData(): void
+    {
+        $fileList = [
+            1 => 'China/2002-04-00 Day in HongKong/chilam-siu-7pSxk2ThDEE-unsplash.jpg',
+        ];
+
+        $tagList = [
+            1 => "hong kong",
+            2 => "skyscraper",
+            3 => "brutalism",
+            4 => "skyline",
+            5 => "bus",
+            6 => "grey",
+            7 => "neon lights",
+            8 => "night",
+            9 => "street sign",
+            10 => "flower",
+            11 => "frienda",
+            12 => "friendb",
+            13 => "green",
+            14 => "sunflower",
+            15 => "landscape",
+        ];
+
+        $cameraList = [
+            1 => "ed90a62d55a1834c9785b8e0f78785f4",
+            2 => "1dc5191c41e7312cba35dedbc380a421",
+        ];
+
+
+        $this->databaseMock
+            ->expects($this->once())
+            ->method('getCameras')
+            ->willReturn($cameraList);
+
+        $this->databaseMock
+            ->expects($this->once())
+            ->method('getImagesNamesWithStatus')
+            ->willReturn($fileList);
+
+        $this->databaseMock
+            ->expects($this->once())
+            ->method('getTags')
+            ->willReturn($tagList);
+
+        $this->databaseMock
+            ->expects($this->once())
+            ->method('update')
+            ->with('files', 1, [
+                'event_id' => 1,
+                'camera_id' => 1,
+                'status_id' => 2,
+                'fileSize' => 1467015,
+                'fileType' => 'image/jpeg',
+                'pixel' => 10328064,
+                'iso' => null,
+                'exposure' => null,
+                'aperture' => null,
+                'width' => 2624,
+                'height' => 3936,
+                'createdAt' => '2019-12-30 14:08:01',
+            ]);
+
 
         $this->subject->update();
     }
