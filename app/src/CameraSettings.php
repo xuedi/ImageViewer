@@ -93,7 +93,7 @@ class CameraSettings
         try {
             return new DateTime($exifData['DateTime'] ?? '');
         } catch (Exception $e) {
-            return new DateTime();
+            return new DateTime('1970-01-01 00:00:00');
         }
     }
 
@@ -113,8 +113,8 @@ class CameraSettings
         if ($exposureTime) {
             list($numerator, $denominator) = self::extractFactors((string)$exposureTime);
             if ($denominator % $numerator == 0) {
-                $numerator = 1;
                 $denominator = ($denominator / $numerator);
+                $numerator = 1;
             }
             $exposureTime = "$numerator/$denominator";
         }
@@ -147,6 +147,15 @@ class CameraSettings
         return (int)$exifData['COMPUTED']['Width'];
     }
 
+    private static function extractHeight(array $exifData): int
+    {
+        if (!isset($exifData['COMPUTED']['Height'])) {
+            throw new RuntimeException("Could not extract height");
+        }
+
+        return (int)$exifData['COMPUTED']['Height'];
+    }
+
     private static function extractFactors(string $factors): array
     {
         list($numerator, $denominator) = explode('/', $factors);
@@ -155,18 +164,9 @@ class CameraSettings
             throw new RuntimeException("Numerator has to be a numeric: '$numerator'");
         }
         if (!is_numeric($denominator)) {
-            throw new RuntimeException("Denominator has to be a numeric: '$numerator'");
+            throw new RuntimeException("Denominator has to be a numeric: '$denominator'");
         }
 
-        return [$numerator, $denominator];
-    }
-
-    private static function extractHeight(array $exifData): int
-    {
-        if (!isset($exifData['COMPUTED']['Height'])) {
-            throw new RuntimeException("Could not extract height");
-        }
-
-        return (int)$exifData['COMPUTED']['Height'];
+        return [(int)$numerator, (int)$denominator];
     }
 }
