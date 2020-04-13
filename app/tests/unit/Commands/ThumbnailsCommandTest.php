@@ -18,6 +18,8 @@ final class ThumbnailsCommandTest extends TestCase
 {
     public function testCanExecuteCommand(): void
     {
+        $this->markTestSkipped('Skipped until either the iterator for the output can be mocked, or output is disabled');
+
         $this->setOutputCallback(function () {
         });
 
