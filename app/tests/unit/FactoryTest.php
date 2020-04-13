@@ -5,21 +5,20 @@ namespace ImageViewer;
 use ImageViewer\Configuration\Configuration;
 use ImageViewer\Configuration\DatabaseConfig;
 use ImageViewer\Controller\RegisterController;
-use ImageViewer\Extractors\LocationExtractor;
+use ImageViewer\Updater\Filesystem;
+use ImageViewer\Updater\Metadata;
+use ImageViewer\Updater\Structure;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \ImageViewer\Factory
  * @uses   \ImageViewer\Database
- * @uses   \ImageViewer\ExtractorService
- * @uses   \ImageViewer\Extractors\EventExtractor
- * @uses   \ImageViewer\Extractors\LocationExtractor
- * @uses   \ImageViewer\Extractors\MetaExtractor
- * @uses   \ImageViewer\FileBuilder
- * @uses   \ImageViewer\FileScanner
  * @uses   \ImageViewer\ThumbnailGenerator
  * @uses   \ImageViewer\Controller\RegisterController
+ * @uses   \ImageViewer\Updater\Filesystem
+ * @uses   \ImageViewer\Updater\Structure
+ * @uses   \ImageViewer\Updater\Metadata
  */
 final class FactoryTest extends TestCase
 {
@@ -55,23 +54,23 @@ final class FactoryTest extends TestCase
         $this->assertInstanceOf(Database::class, $this->subject->getDatabase());
     }
 
-    public function testCanGetFileScanner(): void
-    {
-        $this->assertInstanceOf(FileScanner::class, $this->subject->getFileScanner());
-    }
-
-    public function testCanGetExtractorService(): void
-    {
-        $this->assertInstanceOf(ExtractorService::class, $this->subject->getExtractorService());
-    }
-
-    public function testCanGetLocationExtractor(): void
-    {
-        $this->assertInstanceOf(LocationExtractor::class, $this->subject->getLocationExtractor());
-    }
-
     public function testGetRegisterController(): void
     {
         $this->assertInstanceOf(RegisterController::class, $this->subject->getRegisterController());
+    }
+
+    public function testGetUpdaterFilesystem(): void
+    {
+        $this->assertInstanceOf(Filesystem::class, $this->subject->getUpdaterFilesystem());
+    }
+
+    public function testGetUpdaterStructure(): void
+    {
+        $this->assertInstanceOf(Structure::class, $this->subject->getUpdaterStructure());
+    }
+
+    public function testGetUpdaterMetadata(): void
+    {
+        $this->assertInstanceOf(Metadata::class, $this->subject->getUpdaterMetadata());
     }
 }

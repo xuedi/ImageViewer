@@ -103,28 +103,15 @@ class Database
         $values = implode(',',$valuePairs);
         $sql = "DELETE FROM file_tags WHERE file_id = {$fileId}; INSERT INTO file_tags (file_id, tag_id) VALUES {$values};";
 
-        $statement = $this->pdo->exec($sql);
+        $this->pdo->exec($sql);
     }
 
-    public function addFileTags(int $fileId, array $tagIds): void
-    {
-        $statement = $this->pdo->prepare("DELETE FROM file_tags WHERE file_id = :fileId; ");
-        $statement->bindParam('fileId', $fileId);
-        $statement->execute();
-    }
-
-    public function getImagesHashes(): array
-    {
-        $statement = $this->pdo->prepare("SELECT id, fileHash FROM files; ");
-        $statement->execute();
-
-        return $statement->fetchAll(PDO::FETCH_KEY_PAIR);
-    }
-
+    /**
+     * TODO: via native query and save all that loop BS
+     * @codeCoverageIgnore
+     */
     public function getMissingThumbnails(): array
     {
-        // TODO: via native query and save all that loop BS
-
         $sizeQuery = $this->pdo->prepare("SELECT id, size FROM thumb_size; ");
         $sizeQuery->execute();
         $size = $sizeQuery->fetchAll(PDO::FETCH_KEY_PAIR);
@@ -169,9 +156,30 @@ class Database
         return $missingThumbnails;
     }
 
+    public function getImagesHashes(): array
+    {
+        $statement = $this->pdo->prepare("SELECT id, fileHash FROM files; ");
+        $statement->execute();
+
+        return $statement->fetchAll(PDO::FETCH_KEY_PAIR);
+    }
+
     public function getTags(bool $reverse = false): array
     {
         $statement = $this->pdo->prepare("SELECT id, name FROM tags; ");
+        $statement->execute();
+
+        $result = $statement->fetchAll(PDO::FETCH_KEY_PAIR);
+        if ($reverse) {
+            $result = array_flip($result);
+        }
+
+        return $result;
+    }
+
+    public function getCameras(bool $reverse = false): array
+    {
+        $statement = $this->pdo->prepare("SELECT id, ident FROM camera; ");
         $statement->execute();
 
         $result = $statement->fetchAll(PDO::FETCH_KEY_PAIR);

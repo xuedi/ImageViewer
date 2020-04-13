@@ -9,13 +9,24 @@ class Init extends AbstractMigration
         $files = $this->table('files');
         $files->addColumn('event_id', 'integer');
         $files->addColumn('status_id', 'integer');
+        $files->addColumn('camera_id', 'integer');
         $files->addColumn('fileName', 'string');
         $files->addColumn('fileHash', 'string', ['limit' => 40]);
-        $files->addColumn('width', 'integer');
-        $files->addColumn('height', 'integer');
-        $files->addColumn('pixel', 'integer');
-        $files->addColumn('size', 'integer');
+        $files->addColumn('fileType', 'string', ['null' => true, 'limit' => 40]);
+        $files->addColumn('fileSize', 'integer', ['null' => true]);
+        $files->addColumn('width', 'integer', ['null' => true]);
+        $files->addColumn('height', 'integer', ['null' => true]);
+        $files->addColumn('pixel', 'integer', ['null' => true]);
+        $files->addColumn('iso', 'integer', ['null' => true]);
+        $files->addColumn('exposure', 'string', ['null' => true, 'limit' => 40]);
+        $files->addColumn('aperture', 'string', ['null' => true, 'limit' => 40]);
         $files->addColumn('createdAt', 'datetime', ['default' => 'CURRENT_TIMESTAMP']);
+        $files->create();
+
+        $files = $this->table('camera');
+        $files->addColumn('ident', 'string');
+        $files->addColumn('model', 'string', ['null' => true]);
+        $files->addColumn('manufacturer', 'string', ['null' => true]);
         $files->create();
 
         $files = $this->table('status');

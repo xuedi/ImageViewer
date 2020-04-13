@@ -1,15 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace ImageViewer;
+namespace ImageViewer\Updater;
 
-use ImageViewer\Extractors\MetaExtractor;
+use ImageViewer\Database;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 /**
- * @covers \ImageViewer\FileBuilder
+ * @covers \ImageViewer\Updater\Filesystem
  */
 final class FileBuilderTest extends TestCase
 {
@@ -19,27 +19,22 @@ final class FileBuilderTest extends TestCase
     /** @var MockObject|ConsoleOutput */
     private $outputMock;
 
-    /** @var MockObject|MetaExtractor */
-    private $metaExtractorMock;
-
     /** @var MockObject|ProgressBar */
     private $progressBar;
 
     private string $basePath;
-    private FileBuilder $subject;
+    private Filesystem $subject;
 
     public function setUp(): void
     {
-        $this->basePath = realpath(__DIR__ . '/../resources/images/') . '/';
+        $this->basePath = realpath(__DIR__ . '/../../resources/images/') . '/';
         $this->databaseMock = $this->createMock(Database::class);
         $this->outputMock = $this->createMock(ConsoleOutput::class);
-        $this->metaExtractorMock = $this->createMock(MetaExtractor::class);
         $this->progressBar = $this->createMock(ProgressBar::class);
 
-        $this->subject = new FileBuilder(
+        $this->subject = new Filesystem(
             $this->databaseMock,
             $this->outputMock,
-            $this->metaExtractorMock,
             $this->progressBar,
             $this->basePath
         );
@@ -47,18 +42,33 @@ final class FileBuilderTest extends TestCase
 
     public function testCanBuildFactory(): void
     {
-        $this->assertInstanceOf(FileBuilder::class, $this->subject);
+        $this->assertInstanceOf(Filesystem::class, $this->subject);
     }
 
-    public function testCanBuildFileList(): void
+    public function testCanUpdate(): void
     {
         $imageCount = 8;
+
+        $this->databaseMock->expects($this->exactly(2))->method('getAllImagesNames')->willReturn([
+            0 => 'China/2002-04-00 Day in HongKong/alex-azabache-YM71ka72TNw-unsplash.jpg',
+            1 => 'China/2002-04-00 Day in HongKong/chilam-siu-7pSxk2ThDEE-unsplash.jpg',
+            99 => 'China/orphanedImage.jpg',
+        ]);
+        $this->databaseMock->expects($this->exactly(5))->method('insert');
+
+        $this->databaseMock->expects($this->once())->method('getImagesHashes')->willReturn([
+            1 => 'aebd27921aa1dfef7cc1fa5820dedd4fdc1c9ce0', // does exist, triggers a rename
+        ]);
+
+        $this->databaseMock->expects($this->exactly(2))->method('update');
 
         $this->progressBar->expects($this->once())->method('setMaxSteps')->with($imageCount);
         $this->progressBar->expects($this->once())->method('start');
         $this->progressBar->expects($this->once())->method('finish');
         $this->progressBar->expects($this->exactly($imageCount + 1))->method('advance');
-        $this->progressBar->expects($this->once())->method('setFormat')->with('Files:     [%bar%] %memory:6s%');
+        $this->progressBar->expects($this->once())->method('setFormat')->with(
+            'Syncing filesystem and database: [%bar%] %memory:6s%'
+        );
 
         $files = [
             0 => $this->basePath . 'China/2002-04-00 Day in HongKong/alex-azabache-YM71ka72TNw-unsplash.jpg',
@@ -73,6 +83,6 @@ final class FileBuilderTest extends TestCase
         $events = [];
         $tags = [];
 
-        $this->subject->build($files, $events, $tags);
+        $this->subject->update();
     }
 }

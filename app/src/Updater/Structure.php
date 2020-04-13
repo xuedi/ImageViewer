@@ -85,7 +85,7 @@ class Structure
                 $events[$eventId] = $event;
             }
         } catch (Exception $e) {
-            echo "Exeption: " . $e->getMessage() . "[$fileName]" . PHP_EOL;
+            echo "Could not process: '$fileName': " . $e->getMessage() . PHP_EOL;
         }
         return $events;
     }

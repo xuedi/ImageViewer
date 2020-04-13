@@ -2,8 +2,9 @@
 
 namespace ImageViewer\Updater;
 
+use ImageViewer\Camera;
+use ImageViewer\CameraSettings;
 use ImageViewer\Database;
-use ImageViewer\Filesystem;
 use RuntimeException;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -27,11 +28,7 @@ class Metadata
         $this->output = $output;
         $this->path = $path;
         $this->progressBar = $progressBar;
-        $this->stats = [
-            'MimeType' =>[],
-            'MakerNote' =>[],
-            'Rotation' =>[],
-        ];
+        $this->stats = [];
     }
 
 
@@ -40,6 +37,7 @@ class Metadata
         $fileList = $this->database->getImagesNamesWithStatus(1);
         $tagList = $this->database->getTags();
         $eventList = $this->database->getEvents();
+        $cameraList = $this->database->getCameras();
 
         $this->output->write(PHP_EOL);
 
@@ -50,12 +48,15 @@ class Metadata
         foreach ($fileList as $fileId => $fileName) {
 
             // handle tags
-            //$tags = $this->extractTags($fileName);
-            //$tagList = $this->updateTagList($tagList, $tags);
-            //$this->saveTags($tagList, $tags, $fileId);
+            $tags = $this->extractTags($fileName);
+            $tagList = $this->updateTagList($tagList, $tags);
+            $this->saveTags($tagList, $tags, $fileId);
+
+            // handle cameras
+            $cameraList = $this->updateCameraList($cameraList, $fileName);
 
             // extract metadata
-            $this->parseFile($fileName, $fileId, $eventList);
+            $this->parseFile($fileName, $fileId, $eventList, $cameraList);
 
             $this->progressBar->advance();
         }
@@ -64,37 +65,39 @@ class Metadata
 
         $this->output->write(PHP_EOL);
 
-        dump($this->stats);
+        $this->output->write(' -> images: ' . count($fileList) . PHP_EOL);
+        $this->output->write(' -> cameras: ' . count($cameraList) . PHP_EOL);
+        $this->output->write(' -> events: ' . count($eventList) . PHP_EOL);
+        $this->output->write(' -> tags: ' . count($tagList) . PHP_EOL);
+
     }
 
-    private function parseFile(string $fileName, int $fileId, array $events): void
+    private function parseFile(string $fileName, int $fileId, array $events, array $cameraList): void
     {
         $file = $this->path . $fileName;
-        $imageSite = getimagesize($file);
-        $imageExif = @exif_read_data($file);
-        if($imageExif!==false) {
-            $this->stats['MimeType'][$imageExif['MimeType']] = $imageExif['MimeType'];
-            $this->stats['MakerNote'][$imageExif['MakerNote']] = $imageExif['MakerNote'];
-            $this->stats['Rotation'][$imageExif['Rotation']] = $imageExif['Rotation'];
-        }
+        $imageExif = @exif_read_data($file) ?? [];
 
-        $width = (int)$imageSite[0];
-        $height = (int)$imageSite[1];
-
+        $settings = CameraSettings::fromExifData($imageExif);
+        $camera = Camera::fromExifData($imageExif);
+        $cameraId = array_search($camera->getIdent(), $cameraList) ?? 1;
         $event = strtolower(explode('/', $fileName)[1]);
         $eventName = trim(substr($event, 10));
         $eventId = $events[$eventName] ?? 1;
 
-        /*
         $this->database->update('files', $fileId, [
             'event_id' => $eventId,
-            //'status_id' => 2,
-            'width' => $width,
-            'height' => $height,
-            'pixel' => $width * $height,
-            'size' => filesize($file),
+            'camera_id' => $cameraId,
+            'status_id' => 2,
+            'fileSize' => filesize($file),
+            'fileType' => $settings->getFileType(),
+            'pixel' => $settings->getPixel(),
+            'iso' => $settings->getIso(),
+            'exposure' => $settings->getExposure(),
+            'aperture' => $settings->getAperture(),
+            'width' => $settings->getWidth(),
+            'height' => $settings->getHeight(),
+            'createdAt' => $settings->getCreatedAt()->format('Y-m-d H:i:s'), // on null: use event date
         ]);
-        */
     }
 
     private function saveTags(array $tagList, array $tags, int $fileId)
@@ -134,6 +137,26 @@ class Metadata
         }
 
         return $tags;
+    }
+
+    private function updateCameraList(array $cameraIdentList, string $fileName): array
+    {
+        $file = $this->path . $fileName;
+        $imageExif = @exif_read_data($file) ?? [];
+
+        $camera = Camera::fromExifData($imageExif);
+
+        $cameraId = array_search($camera->getIdent(), $cameraIdentList);
+        if ($cameraId == false) {
+            $cameraId = $this->database->insert('camera', [
+                'ident' => $camera->getIdent(),
+                'model' => $camera->getModel(),
+                'manufacturer' => $camera->getManufacturer(),
+            ]);
+            $cameraIdentList[$cameraId] = $camera->getIdent();
+        }
+
+        return $cameraIdentList;
     }
 
     /*

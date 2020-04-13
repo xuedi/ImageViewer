@@ -57,9 +57,9 @@ app_thumbs: ## Generate thumbnails (see settings for number of threads)
 	./app/ImageViewer app:generateThumbnails
 
 app_reset_database: ## resets the database to basic seed
-	$(SQL) --execute='DROP TABLE IF EXISTS phinxlog, files, tags, locations, events, file_tags, tag_group, thumbs, thumb_size, user, status;'
+	$(SQL) --execute='DROP TABLE IF EXISTS phinxlog, files, tags, locations, events, file_tags, tag_group, thumbs, thumb_size, user, status, camera;'
 	app/vendor/bin/phinx migrate -e default -c app/database/phinx.php
-	app/vendor/bin/phinx seed:run -e default -c app/database/phinx.php -s LocationsSeed -s EventsSeed -s SizeSeed -s UserSeed -s StatusSeed
+	app/vendor/bin/phinx seed:run -e default -c app/database/phinx.php -s LocationsSeed -s EventsSeed -s SizeSeed -s UserSeed -s StatusSeed -s CameraSeed
 
 
 

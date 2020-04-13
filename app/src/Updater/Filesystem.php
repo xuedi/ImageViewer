@@ -34,7 +34,6 @@ class Filesystem
         $databaseImageHashes = $this->database->getImagesHashes();
         $renamedImages = 0;
         $newImages = 0;
-        $maxImages = 1000000;
 
         $this->output->write(PHP_EOL);
 
@@ -43,9 +42,6 @@ class Filesystem
         $this->progressBar->start();
 
         foreach ($fileSystemImages as $file) {
-            if($newImages >= $maxImages) {
-                continue; // development
-            }
 
             $fileName = $this->getFileName($file);
             if (in_array($fileName, $databaseImageNames)) {
@@ -121,12 +117,9 @@ class Filesystem
             [
                 'event_id' => 1,
                 'status_id' => 1,
+                'camera_id' => 1,
                 'fileHash' => $fileHash,
                 'fileName' => $fileName,
-                'width' => 0,
-                'height' => 0,
-                'pixel' => 0,
-                'size' => 0,
             ]
         );
     }
