@@ -73,7 +73,7 @@ frontend_update: ## insalling frontend dependencies
 	yarn --cwd frontend upgrade
 
 frontend_start: ## insalling frontend dependencies
-	yarn --cwd frontend start
+	yarn --cwd frontend serve
 
 
 
