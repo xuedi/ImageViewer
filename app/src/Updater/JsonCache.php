@@ -42,6 +42,7 @@ class JsonCache
                 'name' => $eventObj['name'],
             ];
         }
+        unset($locationCache[1]);
         file_put_contents($this->path . '/locations.json', json_encode($locationCache, JSON_PRETTY_PRINT));
 
     }
