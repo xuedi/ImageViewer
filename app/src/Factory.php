@@ -7,6 +7,7 @@ use ImageViewer\Controller\RegisterController;
 use ImageViewer\Updater\Filesystem as updaterFilesystem;
 use ImageViewer\Updater\Metadata as updaterMetadata;
 use ImageViewer\Updater\Structure as updaterStructure;
+use ImageViewer\Updater\JsonCache as updaterJsonCache;
 use PDO;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -69,6 +70,16 @@ class Factory
             $this->getOutput(),
             $this->getProgressBar(),
             $this->config->getImagePath()
+        );
+    }
+
+    public function getUpdaterJsonCache(): updaterJsonCache
+    {
+        return new updaterJsonCache(
+            $this->getDatabase(),
+            $this->getOutput(),
+            $this->getProgressBar(),
+            $this->config->getJsonCachePath()
         );
     }
 

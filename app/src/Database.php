@@ -204,6 +204,27 @@ class Database
         return $result;
     }
 
+    public function getEventNames(): array
+    {
+        $statement = $this->pdo->prepare("SELECT e.id, e.locationId, CONCAT(e.`date`, ' ', e.name ) as name FROM events e");
+        $statement->execute();
+
+        return $statement->fetchAll();
+    }
+
+    public function getLocations(bool $reverse = false): array
+    {
+        $statement = $this->pdo->prepare("SELECT id, name FROM locations; ");
+        $statement->execute();
+
+        $result = $statement->fetchAll(PDO::FETCH_KEY_PAIR);
+        if ($reverse) {
+            $result = array_flip($result);
+        }
+
+        return $result;
+    }
+
     public function getEventDto(): array
     {
         $list = [];

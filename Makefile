@@ -52,6 +52,7 @@ app_discover: ## Scans the library for changes (incremental)
 	@./app/ImageViewer app:updateFilesystem
 	@./app/ImageViewer app:updateStructure
 	@./app/ImageViewer app:updateMetadata
+	@./app/ImageViewer app:updateJsonCache
 
 app_thumbs: ## Generate thumbnails (see settings for number of threads)
 	@./app/ImageViewer app:generateThumbnails

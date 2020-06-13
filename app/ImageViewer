@@ -5,6 +5,7 @@ namespace ImageViewer;
 
 use Exception;
 use ImageViewer\Commands\UpdateFilesystemCommand;
+use ImageViewer\Commands\UpdateJsonCacheCommand;
 use ImageViewer\Commands\UpdateMetadataCommand;
 use ImageViewer\Commands\UpdateStructureCommand;
 use ImageViewer\Commands\ThumbnailsCommand;
@@ -25,6 +26,7 @@ require __DIR__ . '/vendor/autoload.php';
     $application->add(new UpdateMetadataCommand($factory));
     $application->add(new ThumbnailsCommand($factory));
     $application->add(new ThumbnailsWorkerCommand($factory));
+    $application->add(new UpdateJsonCacheCommand($factory));
     $application->run();
 
 //} catch (Exception $e) {

@@ -1,6 +1,7 @@
 
 [locations]
 cache = 'public/cache/'
+json_cache = 'json_cache/'
 images = 'app/tests/resources/images/'
 migrations = 'app/database/migrations/'
 

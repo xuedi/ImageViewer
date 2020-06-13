@@ -9,6 +9,7 @@ class Configuration
     private string $path;
     private string $imagePath;
     private string $cache;
+    private string $jsonCache;
     private string $migrations;
     private OptionsConfig $options;
     private DatabaseConfig $database;
@@ -30,6 +31,7 @@ class Configuration
         $this->imagePath = $this->processImagePath((string)$locations['images']);
         $this->migrations = (string)$locations['migrations'];
         $this->cache = (string)$locations['cache'];
+        $this->jsonCache = $this->getBasePath().'../frontend/'.(string)$locations['json_cache']; // TODO: rethink
     }
 
     public function getBasePath(): string
@@ -58,6 +60,11 @@ class Configuration
     public function getCachePath(): string
     {
         return $this->cache;
+    }
+
+    public function getJsonCachePath(): string
+    {
+        return $this->jsonCache;
     }
 
     public function getMigrationsPath(): string
