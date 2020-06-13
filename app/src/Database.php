@@ -165,6 +165,14 @@ class Database
         return $statement->fetchAll(PDO::FETCH_KEY_PAIR);
     }
 
+    public function getFiles(): array
+    {
+        $statement = $this->pdo->prepare("SELECT id, event_id, fileHash FROM files; ");
+        $statement->execute();
+
+        return $statement->fetchAll();
+    }
+
     public function getTags(bool $reverse = false): array
     {
         $statement = $this->pdo->prepare("SELECT id, name FROM tags; ");

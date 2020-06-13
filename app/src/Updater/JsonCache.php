@@ -27,8 +27,12 @@ class JsonCache
     {
         $this->output->write(' -> wrote jsonCache: ' . $this->path . PHP_EOL);
 
+        $this->updateLocationCache();
+        $this->updateGalleryCache();
+    }
 
-        // country cache (menu)
+    private function updateLocationCache()
+    {
         $locationCache = [];
         foreach ($this->database->getLocations() as $id => $name) {
             $locationCache[$id] = [
@@ -44,6 +48,16 @@ class JsonCache
         }
         unset($locationCache[1]);
         file_put_contents($this->path . '/locations.json', json_encode($locationCache, JSON_PRETTY_PRINT));
+    }
 
+    private function updateGalleryCache()
+    {
+        $events = []; // TODO: Events are not properly written
+        foreach ($this->database->getFiles() as $file) {
+            $events[$file['event_id']][] = $file['fileHash'];
+        }
+        foreach ($events as $eventId => $files) {
+            file_put_contents($this->path . "/event_$eventId.json", json_encode($files, JSON_PRETTY_PRINT));
+        }
     }
 }

@@ -5,6 +5,7 @@ namespace ImageViewer\Updater;
 use Exception;
 use ImageViewer\Database;
 use ImageViewer\EventDate;
+use RuntimeException;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -43,8 +44,8 @@ class Structure
             $this->progressBar->advance();
         }
 
-        foreach ($databaseImageNames as $fileName) {
-            $events = $this->rebuildEvents($events, $locations, $fileName);
+        foreach ($databaseImageNames as $fileId => $fileName) {
+            $events = $this->rebuildEvents($events, $locations, $fileName, $fileId);
             $this->progressBar->advance();
         }
 
@@ -69,7 +70,7 @@ class Structure
         return $locations;
     }
 
-    private function rebuildEvents(array $events, array $locations, string $fileName): array
+    private function rebuildEvents(array $events, array $locations, string $fileName, int $fileId): array
     {
         $location = strtolower(explode('/', $fileName)[0]);
         $event = strtolower(explode('/', $fileName)[1]);
@@ -83,7 +84,15 @@ class Structure
                     'date' => $eventDate->asString(),
                 ]);
                 $events[$eventId] = $event;
+            } else {
+                $eventId = array_search($event, $events);
+                if($eventId === false) {
+                    throw new RuntimeException("Could not find processed event '$event'");
+                }
             }
+
+            // write back event ID to file
+            $this->database->update('files', $fileId, ['event_id' => $eventId]);
         } catch (Exception $e) {
             echo "Could not process: '$fileName': " . $e->getMessage() . PHP_EOL;
         }
