@@ -24,9 +24,9 @@
       <Navigation/>
     </v-navigation-drawer>
 
-    <v-content>
+    <v-main>
       <Gallery/>
-    </v-content>
+    </v-main>
 
     <v-bottom-navigation fixed dark>
       Selected tags and other stuff

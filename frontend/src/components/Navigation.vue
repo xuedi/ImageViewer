@@ -25,7 +25,7 @@
             </v-list-item-content>
           </template>
           <v-list-item v-for="event in location.events">
-            <v-list-item v-text="event.name" @click="console.log('Selected Gallery: '+event.link)"></v-list-item>
+            <v-list-item v-text="event.name" @click="loadGallery(event.link)"></v-list-item>
           </v-list-item>
         </v-list-group>
 
@@ -37,6 +37,7 @@
 
 <script>
   import locationList from '../../json_cache/locations.json'
+  import { EventBus } from '../eventBus';
 
   export default {
     name: 'Navigation',
@@ -45,6 +46,13 @@
       return {
         locations: locationList
       }
+    },
+
+    methods: {
+      loadGallery(link) {
+        EventBus.$emit('loadGallery', link);
+      }
     }
+
   }
 </script>
