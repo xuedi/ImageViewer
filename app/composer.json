@@ -13,7 +13,7 @@
     "ext-imagick": "*",
     "ext-mbstring": "*",
     "symfony/console": "5.*",
-    "robmorgan/phinx": "0.11.*",
+    "robmorgan/phinx": "0.12.*",
     "symfony/process": "5.*",
     "bramus/router": "1.*"
   },

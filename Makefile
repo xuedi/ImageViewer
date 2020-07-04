@@ -1,7 +1,3 @@
-########################################################################################################
-## I use make comman inside a target instead of using the internal dependency, just for the looks ^^ ###
-########################################################################################################
-
 SQL_USER:=$(shell sed -n 's/.*user *= *\([^ ]*.*\)/\1/p' < config/local.ini)
 SQL_PASS:=$(shell sed -n 's/.*pass *= *\([^ ]*.*\)/\1/p' < config/local.ini)
 SQL_NAME:=$(shell sed -n 's/.*name *= *\([^ ]*.*\)/\1/p' < config/local.ini)
@@ -22,7 +18,6 @@ help: ## Show this help
 install: ## Runs all kind of stuff
 	cp -n config/local.ini.in config/local.ini
 	make backend_install
-	make app_reset_database
 	make frontend_install
 
 update: ## Runs all kind of stuff
@@ -86,6 +81,9 @@ backend_install: ## start a caddy webserver (feel free to use whatever php ready
 
 backend_update: ## update the app
 	./app/composer.phar update --working-dir=app
+
+backend_upgrade: ## show upgradable packages
+	./app/composer.phar  show --outdated -D --working-dir=app
 
 backend_start: ## start a caddy webserver (feel free to use whatever php ready server)
 	caddy -conf public/Caddyfile

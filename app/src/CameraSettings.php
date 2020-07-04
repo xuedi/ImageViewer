@@ -107,6 +107,9 @@ class CameraSettings
         $exposureTime = $exifData['ExposureTime'] ?? null;
         if ($exposureTime) {
             list($numerator, $denominator) = self::extractFactors((string)$exposureTime);
+            if ($numerator == 0) {
+                return $exposureTime;
+            }
             if ($denominator % $numerator == 0) {
                 $denominator = ($denominator / $numerator);
                 $numerator = 1;
