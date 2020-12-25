@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 /**
  * @covers \ImageViewer\Updater\Filesystem
  */
-final class FileBuilderTest extends TestCase
+final class FilesystemTest extends TestCase
 {
     /** @var MockObject|Database */
     private $databaseMock;

@@ -41,7 +41,10 @@ ci_coverage_badge: ## generate badge and add it to repo
 
 ### app actions ###
 
-app_rebuild: app_reset_database app_discover app_thumbs ## Runs all kind of stuff (reset & rebuild)
+app_rebuild: ## Runs all kind of stuff (reset & rebuild)
+	make app_reset_database
+	make app_discover
+	make app_thumbs
 
 app_discover: ## Scans the library for changes (incremental)
 	@./app/ImageViewer app:updateFilesystem

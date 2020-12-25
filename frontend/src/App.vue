@@ -8,8 +8,7 @@
       </div>
       <v-spacer></v-spacer>
       <div class="d-flex align-center">
-        <v-text-field dense flat solo-inverted hide-details prepend-inner-icon="mdi-magnify" label="Search"
-                      class="hidden-sm-and-down"></v-text-field>
+        <v-text-field dense flat solo-inverted hide-details prepend-inner-icon="mdi-magnify" label="Search" class="hidden-sm-and-down"></v-text-field>
       </div>
       <v-spacer></v-spacer>
       <div class="d-flex align-center">
@@ -20,7 +19,7 @@
       </div>
     </v-app-bar>
 
-    <v-navigation-drawer v-model="drawer" clipped app>
+    <v-navigation-drawer v-model="drawer" clipped app width="320">
       <Navigation/>
     </v-navigation-drawer>
 

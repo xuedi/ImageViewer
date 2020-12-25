@@ -1,6 +1,13 @@
+<style>
+.event {
+  font-size: 14px;
+  white-space: nowrap;
+}
+</style>
+
 <template>
 
-  <v-card class="mx-auto" width="300" flat>
+  <v-card class="mx-auto" flat>
     <v-list dense>
       <v-list-item prepend-icon=">mdi-home">
         <v-list-item-icon>
@@ -24,8 +31,8 @@
               <v-list-item-title v-text="location.name"></v-list-item-title>
             </v-list-item-content>
           </template>
-          <v-list-item v-for="event in location.events">
-            <v-list-item v-text="event.name" @click="loadGallery(event.link)"></v-list-item>
+          <v-list-item class="pa-0" v-for="event in location.events">
+            <v-list-item class="event" v-text="event.name" @click="loadGallery(event.link)"></v-list-item>
           </v-list-item>
         </v-list-group>
 

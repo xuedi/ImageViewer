@@ -33,8 +33,8 @@ class Camera
     }
 
     private function __construct(
-        ?string $model,
-        ?string $manufacturer
+        string $model,
+        string $manufacturer
     )
     {
         $this->model = $model;
