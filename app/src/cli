@@ -13,9 +13,7 @@ use Symfony\Component\Console\Application;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-//dump(get_declared_classes()); exit;
-
-//try {
+try {
 
     $config = new Configuration(__dir__ . '/../../config/local.ini');
     $factory = new Factory($config);
@@ -29,8 +27,8 @@ require __DIR__ . '/../vendor/autoload.php';
     $application->add(new UpdateJsonCacheCommand($factory));
     $application->run();
 
-//} catch (Exception $e) {
-//    echo $e->getMessage();
-//}
+} catch (Exception $e) {
+    echo $e->getMessage();
+}
 
 
