@@ -3,14 +3,14 @@
 namespace ImageViewer;
 
 use Exception;
-use ImageViewer\DataTransferObjects\MissingThumbnailDto;
+use ImageViewer\DataTransferObjects\MissingThumbnail;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
 /**
  * @covers \ImageViewer\ThumbnailManager
- * @uses   \ImageViewer\DataTransferObjects\MissingThumbnailDto
+ * @uses   \ImageViewer\DataTransferObjects\MissingThumbnail
  */
 final class ThumbnailManagerTest extends TestCase
 {
@@ -40,56 +40,56 @@ final class ThumbnailManagerTest extends TestCase
     public function testCanScanForFiles(): void
     {
         $this->database->expects($this->exactly(3))->method('getMissingThumbnails')->willReturn([
-            MissingThumbnailDto::from(
+            MissingThumbnail::from(
                 'someHash_200',
                 200,
                 1,
                 'China/2002-04-00 Day in HongKong/alex-azabache-YM71ka72TNw-unsplash.jpg',
                 1
             ),
-            MissingThumbnailDto::from(
+            MissingThumbnail::from(
                 'someHash_200',
                 200,
                 1,
                 'China/2002-04-00 Day in HongKong/chilam-siu-7pSxk2ThDEE-unsplash.jpg',
                 2
             ),
-            MissingThumbnailDto::from(
+            MissingThumbnail::from(
                 'someHash_200',
                 200,
                 1,
                 'China/2002-04-00 Day in HongKong/chilam-siu-QZjd3hQGwVQ-unsplash.jpg',
                 3
             ),
-            MissingThumbnailDto::from(
+            MissingThumbnail::from(
                 'someHash_200',
                 200,
                 1,
                 'China/2002-04-00 Day in HongKong/frame-harirak-6xxj2JTLWc4-unsplash.jpg',
                 4
             ),
-            MissingThumbnailDto::from(
+            MissingThumbnail::from(
                 'someHash_200',
                 200,
                 1,
                 'China/2002-04-00 Day in HongKong/lf-franciz--VxduY2PV-g-unsplash.jpg',
                 5
             ),
-            MissingThumbnailDto::from(
+            MissingThumbnail::from(
                 'someHash_200',
                 200,
                 1,
                 'Germany/2019-09-13 Out in the green/SunFlowerCouple.jpg',
                 6
             ),
-            MissingThumbnailDto::from(
+            MissingThumbnail::from(
                 'someHash_200',
                 200,
                 1,
                 'Germany/2019-09-13 Out in the green/SunFlowerHouse.jpeg',
                 7
             ),
-            MissingThumbnailDto::from(
+            MissingThumbnail::from(
                 'someHash_200',
                 200,
                 1,
@@ -113,7 +113,7 @@ final class ThumbnailManagerTest extends TestCase
     public function testWillSkipOnBadDivider(): void
     {
         $this->database->expects($this->exactly(3))->method('getMissingThumbnails')->willReturn([
-            MissingThumbnailDto::from(
+            MissingThumbnail::from(
                 'someHash_200',
                 200,
                 1,
@@ -134,7 +134,7 @@ final class ThumbnailManagerTest extends TestCase
         );
 
         $this->database->method('getMissingThumbnails')->willReturn([
-            MissingThumbnailDto::from(
+            MissingThumbnail::from(
                 'someHash_200',
                 200,
                 1,

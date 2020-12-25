@@ -1,7 +1,9 @@
 {
   "autoload": {
     "psr-4": {
-      "ImageViewer\\": "src/ImageViewer/"
+      "ImageViewer\\": "src/ImageViewer/",
+      "Database\\": "src/Database/",
+      "Backend\\": "src/Backend/"
     }
   },
   "autoload-dev": {
@@ -20,7 +22,9 @@
     "symfony/console": "5.*",
     "robmorgan/phinx": "0.12.*",
     "symfony/process": "5.*",
-    "bramus/router": "1.*"
+    "bramus/router": "1.*",
+    "illuminate/database":"8.*",
+    "erusev/parsedown": "^1.7"
   },
   "require-dev": {
     "symfony/var-dumper": "5.*",

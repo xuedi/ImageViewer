@@ -1,0 +1,59 @@
+<html>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+</head>
+<body>
+<div class="container-fluid">
+    <h1>ImageViewer API</h1>
+    <p>make sure this is only run locally, since the app is not yet intended on public service.</p>
+
+    <h2>valid calls</h2>
+    <table class="table table-bordered align-middle">
+        <thead>
+        <tr>
+            <th scope="col">Type</th>
+            <th scope="col">Uri</th>
+            <th scope="col">Example</th>
+            <th scope="col">Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th rowspan="2">General</th>
+            <th>/</th>
+            <th><a href="/">open</a></th>
+            <th>This Help page :-)</th>
+        </tr>
+        <tr>
+            <th>/test</th>
+            <th><a href="/test">open</a></th>
+            <th>development dump</th>
+        </tr>
+        <tr>
+            <th rowspan="2">Events</th>
+            <th>/events</th>
+            <th><a href="/events">open</a></th>
+            <th>list of all events</th>
+        </tr>
+        <tr>
+            <th>/event/(number)</th>
+            <th><a href="/event/1">open</a></th>
+            <th>show just one event</th>
+        </tr>
+        <tr>
+            <th rowspan="2">Locations</th>
+            <th>/locations</th>
+            <th><a href="/locations">open</a></th>
+            <th>list of all locations</th>
+        </tr>
+        <tr>
+            <th>/location/(number)</th>
+            <th><a href="/location/1">open</a></th>
+            <th>show just one location</th>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

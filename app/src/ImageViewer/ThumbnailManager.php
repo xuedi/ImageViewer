@@ -3,7 +3,7 @@
 namespace ImageViewer;
 
 use Exception;
-use ImageViewer\DataTransferObjects\MissingThumbnailDto;
+use ImageViewer\DataTransferObjects\MissingThumbnail;
 
 class ThumbnailManager
 {
@@ -39,7 +39,7 @@ class ThumbnailManager
             return $generated;
         }
 
-        /** @var MissingThumbnailDto $item */
+        /** @var MissingThumbnail $item */
         foreach ($workLoad[$thread] as $item) {
             try {
                 $size = $item->getSize();

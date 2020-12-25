@@ -1,11 +1,10 @@
-localhost:8081
-root public/
-index index.php
-fastcgi / 127.0.0.1:9000 php {
-    ext .php
-    index index.php
-}
-rewrite {
-        to {path} {path}/ /index.php?uri={path_escaped}&{query}
+:8081 {
+    root * public/
+    tls internal
+    php_fastcgi 127.0.0.1:9000
+    try_files {path} /index.php?path={path}&{query}
+    log {
+        format console
+        output stdout
     }
-log stdout
+}

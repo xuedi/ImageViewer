@@ -57,8 +57,8 @@ app_thumbs: ## Generate thumbnails (see settings for number of threads)
 
 app_reset_database: ## resets the database to basic seed
 	$(SQL) --execute='DROP TABLE IF EXISTS phinxlog, files, tags, locations, events, file_tags, tag_group, thumbs, thumb_size, user, status, camera;'
-	app/vendor/bin/phinx migrate -e default -c app/database/phinx.php
-	app/vendor/bin/phinx seed:run -e default -c app/database/phinx.php -s LocationsSeed -s EventsSeed -s SizeSeed -s UserSeed -s StatusSeed -s CameraSeed
+	app/vendor/bin/phinx migrate -e default -c app/src/Database/config.php
+	app/vendor/bin/phinx seed:run -e default -c app/src/Database/config.php
 
 
 
@@ -88,8 +88,11 @@ backend_update: ## update the app
 backend_upgrade: ## show upgradable packages
 	./app/composer.phar  show --outdated -D --working-dir=app
 
-backend_start: ## start a caddy webserver (feel free to use whatever php ready server)
-	caddy -conf public/Caddyfile
+backend_start: ## start the caddy webserver (feel free to use whatever php ready server)
+	caddy run -config public/Caddyfile
+
+backend_stop: ## start the caddy webserver
+	caddy stop
 
 backend_autoload: ## Just update the autoloader
 	./app/composer.phar dump-autoload --working-dir=app

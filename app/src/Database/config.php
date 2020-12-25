@@ -1,11 +1,15 @@
 <?php
-$root = realpath(dirname(__FILE__) . '/../..');
+$root = realpath(dirname(__FILE__) . '/../../..');
 $data = parse_ini_file($root . '/config/local.ini', true);
 
 return [
     'paths' => [
-        'migrations' => '%%PHINX_CONFIG_DIR%%/migrations',
-        'seeds' => '%%PHINX_CONFIG_DIR%%/seeds',
+        'migrations' => [
+            'Database\Migrations' => '%%PHINX_CONFIG_DIR%%/Migrations',
+        ],
+        'seeds' => [
+            'Database\\Seeds' => '%%PHINX_CONFIG_DIR%%/Seeds',
+        ],
     ],
     'environments' => [
         'default_migration_table' => 'phinxlog',

@@ -2,7 +2,7 @@
 
 namespace ImageViewer\DataTransferObjects;
 
-class MissingThumbnailDto
+class MissingThumbnail
 {
     private int $size;
     private int $fileId;

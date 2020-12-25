@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Migrations;
+
 use Phinx\Migration\AbstractMigration;
 
 class Init extends AbstractMigration
@@ -46,9 +48,22 @@ class Init extends AbstractMigration
         $user->addColumn('password', 'string', ['limit' => 128]);
         $user->create();
 
+        $user = $this->table('people');
+        $user->addColumn('name', 'string', ['limit' => 128]);
+        $user->create();
+
         $tags = $this->table('file_tags', ['id' => false]);
         $tags->addColumn('file_id', 'integer');
         $tags->addColumn('tag_id', 'integer');
+        $tags->create();
+
+        $tags = $this->table('file_faces', ['id' => false]);
+        $tags->addColumn('file_id', 'integer');
+        $tags->addColumn('people_id', 'integer');
+        $tags->addColumn('p1x', 'integer');
+        $tags->addColumn('p1y', 'integer');
+        $tags->addColumn('p2x', 'integer');
+        $tags->addColumn('p3y', 'integer');
         $tags->create();
 
         $events = $this->table('events');

@@ -6,7 +6,7 @@ use DtoTypes;
 use ImageViewer\Ensure;
 use JsonSerializable;
 
-class LocationsDto implements JsonSerializable
+class Locations implements JsonSerializable
 {
     private int          $id;
     private string       $name;

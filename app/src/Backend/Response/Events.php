@@ -5,7 +5,7 @@ namespace ImageViewer\DataTransferObjects;
 use ImageViewer\EventDate;
 use JsonSerializable;
 
-class EventsDto implements JsonSerializable
+class Events implements JsonSerializable
 {
     private int       $id;
     private int       $location;

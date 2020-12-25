@@ -1,10 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace ImageViewer;
-
-use ImageViewer\DataTransferObjects\EventsDto;
-use ImageViewer\DataTransferObjects\LocationsDto;
-use ImageViewer\DataTransferObjects\MissingThumbnailDto;
+use ImageViewer\DataTransferObjects\Events;
+use ImageViewer\DataTransferObjects\Locations;
+use ImageViewer\DataTransferObjects\MissingThumbnail;
 use PDO;
 
 /**
@@ -17,6 +15,9 @@ class Database
     public function __construct(PDO $pdo)
     {
         $this->pdo = $pdo;
+        ORM::configure('mysql:host=localhost;dbname=imageViewer');
+        ORM::configure('username', 'root');
+        ORM::configure('password', 'member');
     }
 
     public function insert(string $table, array $data): int
@@ -143,7 +144,7 @@ class Database
                 }
                 if ($noEntry) {
                     $name = $hash[$fileKey] . '_' . $sizeValue;
-                    $missingThumbnails[] = MissingThumbnailDto::from(
+                    $missingThumbnails[] = MissingThumbnail::from(
                         $name,
                         $sizeValue,
                         $sizeKey,
@@ -242,7 +243,7 @@ class Database
 
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
         foreach ($results as $item) {
-            $list[] = EventsDto::fromArray($item);
+            $list[] = Events::fromArray($item);
         }
 
         return $list;
@@ -257,7 +258,7 @@ class Database
 
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
         foreach ($results as $item) {
-            $list[] = LocationsDto::fromArray($item);
+            $list[] = Locations::fromArray($item);
         }
 
         return $list;

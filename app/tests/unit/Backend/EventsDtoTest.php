@@ -6,7 +6,7 @@ use ImageViewer\EventDate;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \ImageViewer\DataTransferObjects\EventsDto
+ * @covers \ImageViewer\DataTransferObjects\Events
  * @uses   \ImageViewer\EventDate
  * TODO: use dataProvider to test each attribute one, but with all wrong types
  */
@@ -15,7 +15,7 @@ final class EventsDtoTest extends TestCase
     public function testCanBeBuild(): void
     {
         $expectedId = 1;
-        $expectedClass = EventsDto::class;
+        $expectedClass = Events::class;
         $expectedLocation = 6;
         $expectedEventDate = '2000-10-00';
         $expectedEventName = 'eventName';
@@ -26,7 +26,7 @@ final class EventsDtoTest extends TestCase
             'eventName' => $expectedEventName
         ];
 
-        $subject = EventsDto::fromArray($expectedJsonData); // parameter are the same as json return
+        $subject = Events::fromArray($expectedJsonData); // parameter are the same as json return
 
         $this->assertInstanceOf($expectedClass, $subject);
         $this->assertEquals($expectedId, $subject->getId());

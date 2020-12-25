@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeds;
+
 use Phinx\Seed\AbstractSeed;
 
 class CameraSeed extends AbstractSeed
