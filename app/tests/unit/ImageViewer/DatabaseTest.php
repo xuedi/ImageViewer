@@ -1,7 +1,9 @@
 <?php declare(strict_types=1);
 
-use ImageViewer\DataTransferObjects\Events;
-use ImageViewer\DataTransferObjects\Locations;
+namespace ImageViewer;
+
+use ImageViewer\DataTransferObjects\EventsDto;
+use ImageViewer\DataTransferObjects\LocationsDto;
 use PDO;
 use PDOStatement;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -9,9 +11,9 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \ImageViewer\Database
- * @uses   \ImageViewer\DataTransferObjects\Events
+ * @uses   \ImageViewer\DataTransferObjects\EventsDto
  * @uses   \ImageViewer\EventDate
- * @uses   \ImageViewer\DataTransferObjects\Locations
+ * @uses   \ImageViewer\DataTransferObjects\LocationsDto
  */
 final class DatabaseTest extends TestCase
 {
@@ -262,8 +264,8 @@ final class DatabaseTest extends TestCase
             'eventName' => 'eventA',
         ];
         $expected = [
-            Events::fromArray($itemA),
-            Events::fromArray($itemB),
+            EventsDto::fromArray($itemA),
+            EventsDto::fromArray($itemB),
         ];
 
         $this->pdo
@@ -290,8 +292,8 @@ final class DatabaseTest extends TestCase
             'name' => 'locationB',
         ];
         $expected = [
-            Locations::fromArray($itemA),
-            Locations::fromArray($itemB),
+            LocationsDto::fromArray($itemA),
+            LocationsDto::fromArray($itemB),
         ];
 
         $this->pdo

@@ -8,7 +8,9 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "ImageViewer\\": "tests/"
+      "ImageViewer\\": "tests/unit/ImageViewer/",
+      "Database\\": "tests/unit/Database/",
+      "Backend\\": "tests/unit/Backend/"
     }
   },
   "require": {
