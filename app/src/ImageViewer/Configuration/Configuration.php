@@ -31,12 +31,12 @@ class Configuration
         $this->imagePath = $this->processImagePath((string)$locations['images']);
         $this->migrations = (string)$locations['migrations'];
         $this->cache = (string)$locations['cache'];
-        $this->jsonCache = $this->getBasePath().'../frontend/'.(string)$locations['json_cache']; // TODO: rethink
+        $this->jsonCache = $this->getBasePath().'frontend/'.(string)$locations['json_cache']; // TODO: rethink
     }
 
     public function getBasePath(): string
     {
-        $basePath = realpath(__dir__ . '/../../');
+        $basePath = realpath(__dir__ . '/../../../../');
         $basePath = rtrim($basePath, '/') . '/';
 
         return $basePath;
@@ -95,7 +95,7 @@ class Configuration
         if ($imagePath[0] == '/') {
             $absolutePath = $imagePath;
         } else {
-            $absolutePath = realpath(__DIR__ . '/../../../') . '/' . $imagePath;
+            $absolutePath = realpath(__DIR__ . '/../../../../') . '/' . $imagePath;
         }
 
         if (is_dir($absolutePath)) {

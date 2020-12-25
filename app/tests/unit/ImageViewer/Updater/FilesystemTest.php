@@ -10,6 +10,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 
 /**
  * @covers \ImageViewer\Updater\Filesystem
+ * @uses   \ImageViewer\Database
  */
 final class FilesystemTest extends TestCase
 {
@@ -27,7 +28,7 @@ final class FilesystemTest extends TestCase
 
     public function setUp(): void
     {
-        $this->basePath = realpath(__DIR__ . '/../../resources/images/') . '/';
+        $this->basePath = realpath(__DIR__ . '/../../../resources/images/') . '/';
         $this->databaseMock = $this->createMock(Database::class);
         $this->outputMock = $this->createMock(ConsoleOutput::class);
         $this->progressBarMock = $this->createMock(ProgressBar::class);

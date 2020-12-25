@@ -1,7 +1,12 @@
 {
   "autoload": {
     "psr-4": {
-      "ImageViewer\\": "src/"
+      "ImageViewer\\": "src/ImageViewer/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "ImageViewer\\": "tests/"
     }
   },
   "require": {

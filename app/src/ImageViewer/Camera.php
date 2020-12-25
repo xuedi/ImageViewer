@@ -2,14 +2,12 @@
 
 namespace ImageViewer;
 
-use RuntimeException;
-
 class Camera
 {
     private string $model;
     private string $manufacturer;
 
-    public static function fromExifData(array $exifData)
+    public static function fromExifData(array $exifData): Camera
     {
         return new self(
             self::extractModel($exifData),
@@ -35,8 +33,7 @@ class Camera
     private function __construct(
         string $model,
         string $manufacturer
-    )
-    {
+    ) {
         $this->model = $model;
         $this->manufacturer = $manufacturer;
     }

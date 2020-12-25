@@ -47,13 +47,13 @@ app_rebuild: ## Runs all kind of stuff (reset & rebuild)
 	make app_thumbs
 
 app_discover: ## Scans the library for changes (incremental)
-	@./app/ImageViewer app:updateFilesystem
-	@./app/ImageViewer app:updateStructure
-	@./app/ImageViewer app:updateMetadata
-	@./app/ImageViewer app:updateJsonCache
+	@./app/src/cli app:updateFilesystem
+	@./app/src/cli app:updateStructure
+	@./app/src/cli app:updateMetadata
+	@./app/src/cli app:updateJsonCache
 
 app_thumbs: ## Generate thumbnails (see settings for number of threads)
-	@./app/ImageViewer app:generateThumbnails
+	@./app/src/cli app:generateThumbnails
 
 app_reset_database: ## resets the database to basic seed
 	$(SQL) --execute='DROP TABLE IF EXISTS phinxlog, files, tags, locations, events, file_tags, tag_group, thumbs, thumb_size, user, status, camera;'

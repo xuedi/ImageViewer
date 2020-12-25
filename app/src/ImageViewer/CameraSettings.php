@@ -16,7 +16,7 @@ class CameraSettings
     private ?string $exposure;
     private ?int $iso;
 
-    public static function fromExifData(array $exifData)
+    public static function fromExifData(array $exifData): CameraSettings
     {
         return new self(
             self::extractDateTime($exifData),

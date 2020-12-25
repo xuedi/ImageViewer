@@ -30,7 +30,7 @@ final class MetadataTest extends TestCase
 
     public function setUp(): void
     {
-        $this->basePath = realpath(__DIR__ . '/../../resources/images/') . '/';
+        $this->basePath = realpath(__DIR__ . '/../../../resources/images/') . '/';
         $this->databaseMock = $this->createMock(Database::class);
         $this->outputMock = $this->createMock(ConsoleOutput::class);
         $this->progressBarMock = $this->createMock(ProgressBar::class);

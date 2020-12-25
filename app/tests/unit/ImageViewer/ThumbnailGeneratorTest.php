@@ -11,11 +11,13 @@ use RuntimeException;
 final class ThumbnailGeneratorTest extends TestCase
 {
     private string $testFile;
+    private string $resourcePath;
     private ThumbnailGenerator $subject;
 
     public function setUp(): void
     {
-        $this->testFile = realpath(__DIR__ . '/../resources/tmp/') . '/testThumb.jpg';
+        $this->resourcePath = (string)realpath(__DIR__ . '/../../resources/');
+        $this->testFile = $this->resourcePath . '/tmp/testThumb.jpg';
         $this->subject = new ThumbnailGenerator();
 
         if (file_exists($this->testFile)) {
@@ -25,7 +27,7 @@ final class ThumbnailGeneratorTest extends TestCase
 
     public function testCreateThumbnail(): void
     {
-        $path = __DIR__ . '/../resources/images/China/2002-04-00 Day in HongKong/';
+        $path = $this->resourcePath . '/images/China/2002-04-00 Day in HongKong/';
         $file = $path . 'frame-harirak-6xxj2JTLWc4-unsplash.jpg';
 
         $this->subject->create($file, 200, $this->testFile);
@@ -35,7 +37,7 @@ final class ThumbnailGeneratorTest extends TestCase
 
     public function testCanCatchNonExistingFile(): void
     {
-        $file = __DIR__ . '/nonExisting.file';
+        $file = $this->resourcePath . '/nonExisting.file';
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage("Could not find file '$file'");
@@ -45,7 +47,7 @@ final class ThumbnailGeneratorTest extends TestCase
 
     public function testCanCatchNonAlreadyExistingThumbnail(): void
     {
-        $path = __DIR__ . '/../resources/images/China/2002-04-00 Day in HongKong/';
+        $path = $this->resourcePath . '/images/China/2002-04-00 Day in HongKong/';
         $file = $path . 'frame-harirak-6xxj2JTLWc4-unsplash.jpg';
         $thumbnail = $file; // same file,already exist
 

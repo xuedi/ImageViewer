@@ -12,12 +12,13 @@ use RuntimeException;
  */
 final class ConfigurationTest extends TestCase
 {
+    private string $resourcePath;
     private Configuration $subject;
 
     protected function setUp(): void
     {
-        $file = realpath(__DIR__ . '/../../resources/') . '/config.ini';
-        $this->subject = new Configuration($file);
+        $this->resourcePath = (string)realpath(__DIR__ . '/../../../resources/');
+        $this->subject = new Configuration($this->resourcePath . '/config.ini');
     }
 
     public function testCanBuildFactory(): void
@@ -27,7 +28,7 @@ final class ConfigurationTest extends TestCase
 
     public function testCanRetrieveBasePath(): void
     {
-        $expected = realpath(__dir__ . '/../../../') . '/';
+        $expected = realpath(__dir__ . '/../../../../../') . '/';
         $actual = $this->subject->getBasePath();
 
         $this->assertEquals($expected, $actual);
@@ -38,23 +39,21 @@ final class ConfigurationTest extends TestCase
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage("Could not find the image absolute path: '/tmp/nonExistingPath', config: '/tmp/nonExistingPath'");
 
-        $file = __DIR__ . '/../../resources/configMissingAbsoluteImagePath.ini';
-        new Configuration($file);
+        new Configuration($this->resourcePath . '/configMissingAbsoluteImagePath.ini');
     }
 
     public function testCanRetrieveAbsoluteBasePath(): void
     {
-        $realPath = realpath(__DIR__ . '/../../../../');
+        $realPath = realpath(__DIR__ . '/../../../../../');
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage("Could not find the image absolute path: '$realPath/nonExistingPath', config: 'nonExistingPath'");
 
-        $file = __DIR__ . '/../../resources/configMissingRelativeImagePath.ini';
-        new Configuration($file);
+        new Configuration($this->resourcePath . '/configMissingRelativeImagePath.ini');
     }
 
     public function testCanRetrieveImagePath(): void
     {
-        $expected = realpath(__DIR__ . '/../../resources/images/') . '/';
+        $expected = realpath(__DIR__ . '/../../../resources/images/') . '/';
         $actual = $this->subject->getImagePath();
 
         $this->assertEquals($expected, $actual);
@@ -112,7 +111,7 @@ final class ConfigurationTest extends TestCase
 
     public function testExceptionOnMissingConfigurationSection(): void
     {
-        $configFile = __DIR__ . '/../../resources/configMissingSection.ini';
+        $configFile = $this->resourcePath . '/configMissingSection.ini';
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage("Could not get section 'database'");
