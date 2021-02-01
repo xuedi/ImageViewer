@@ -29,7 +29,7 @@ generation. The **frontend** part will be vue based and should feel similar
 to Shotwell plus some more tag cloud navigation and other stuff i was missing.
 
 ##### PHP modules
- - PHP >= 7.4
+ - PHP >= 8.0
  - ext-json
  - ext-exif
  - ext-pdo
